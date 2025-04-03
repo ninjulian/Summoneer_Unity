@@ -22,16 +22,22 @@ public class SwitchCamera : MonoBehaviour
         aimAction = playerInput.actions["Aim"];
     }
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
     private void OnEnable()
     {
         aimAction.performed += _ => StartAim();
-        aimAction.performed += _ => StopAim();
+        aimAction.canceled += _ => StopAim();
     }
 
     private void OnDisable()
     {
         aimAction.performed -= _ => StartAim();
-        aimAction.performed -= _ => StopAim();
+        aimAction.canceled -= _ => StopAim();
     }
 
     private void StartAim()

@@ -5,46 +5,75 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
 public class MovementController : MonoBehaviour
-{   
-
+{
+    [Header("Movement")]
     public float playerSpeed = 2.0f;
     public float jumpHeight = 1.0f;
     public float gravityValue = -9.81f;
+    private Vector3 movementDir; // Movement Direction
 
+    [Header("Dash")]
+    public float dashSpeed = 10f;
+    public float dashTimer = 0.2f;
+    public float dashCooldown = 1f;
+    public bool canDash = true;
+    private bool isDashing = false;
 
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
-
+    [Header("Player Inputs")]
     private PlayerInput playerInput;
-
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction dashAction;
+    private InputAction shootAction;
 
+    [Header("Other")]
+    [SerializeField] private float rotationSpeed;
+    [SerializeField] private float shootingRotationSpeed = 10f;
+    [SerializeField] private TrailRenderer trailRenderer;
+   
+    private CharacterController controller;
     private Transform cameraTransform;
+    private Vector3 playerVelocity;
+    private bool groundedPlayer;
+    
 
-    [SerializeField] private float rotationSpeed = 5f;
     private void Start()
     {   
+        
         cameraTransform = Camera.main.transform;
 
+        // Initiatlise Trail renderer
+        trailRenderer = GetComponent<TrailRenderer>();
+        trailRenderer.enabled = false;
+        
         controller = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         dashAction = playerInput.actions["Dash"];
+        shootAction = playerInput.actions["Shoot"];
     }
 
     void Update()
     {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
+        HandleGrounding();
+       
+        HandleMovement();
+        HandleJump();
+        HandleShootingRotation();
+        ApplyGravity();
+      
 
-        //Gets move input
+        // Check for dash input
+        if (dashAction.triggered && canDash)
+        {
+            StartCoroutine(HandleDash());
+        }
+    }
+
+    private void HandleMovement()
+    {
+        //Gets movement input
         Vector2 input = moveAction.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, 0, input.y);
 
@@ -52,30 +81,142 @@ public class MovementController : MonoBehaviour
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
 
+        movementDir = move;
+
+
         controller.Move(move * Time.deltaTime * playerSpeed);
 
-        if (move != Vector3.zero)
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        controller.Move(playerVelocity * Time.deltaTime);
+
+        // Only rotate with movement when not shooting
+        if (!shootAction.IsPressed() && move != Vector3.zero)
         {
-            gameObject.transform.forward = move;
+            SmoothRotation(move, rotationSpeed);
         }
 
+
+        //// Set snapping rotation of the player
+        //if (move != Vector3.zero)
+        //{
+        //    gameObject.transform.forward = move;
+
+        //}
+
+    }
+
+    private void HandleJump()
+    {
         // Makes the player jump
         if (jumpAction.triggered && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
         }
+    }
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
 
+    private void HandleShootingRotation()
+    {
 
         // Want to have this for when the player is shooting
         // Rotate towards the camera direction 
         // Rotates around the y axis
-        float targetAngle = cameraTransform.eulerAngles.y;
-        Quaternion targetRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
+        if (shootAction.IsPressed())
+        {
+            // Get camera's forward direction without vertical component
+            Vector3 cameraForward = cameraTransform.forward;
+            cameraForward.y = 0;
+
+            // Rotate player to face camera direction
+            SmoothRotation(cameraForward, shootingRotationSpeed);
+        }
+    }
+
+    private void HandleGrounding()
+    {
+        groundedPlayer = controller.isGrounded;
+        if (groundedPlayer && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0f;
+        }
+    }
+
+    private void SmoothRotation(Vector3 direction, float speed)
+    {
+        if (direction == Vector3.zero) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
+    }
+
+    private void ApplyGravity()
+    {
+        if (isDashing) return;
+
+        if (groundedPlayer && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0f;
+        }
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        controller.Move(playerVelocity * Time.deltaTime);
+    }
+
+    private IEnumerator HandleDash()
+    {
+        canDash = false;
+        isDashing = true;
+
+        //// Store original speed and gravity
+        //float originalSpeed = playerSpeed;
+        //float originalGravity = gravityValue;
+
+        //// Set dash parameters
+        //playerSpeed = dashSpeed;
+        ////gravityValue = 0;
+        //playerVelocity.y = 0f;
+
+        Vector3 dashDirection = transform.forward;
+        float startTime = Time.time;
+
+       
+        // Dash movement
+        while (Time.time < startTime + dashTimer)
+        {
+
+            trailRenderer.enabled = true;
+            trailRenderer.time = dashTimer * 2f;
+
+            // Calculates dash direction
+            if (movementDir != Vector3.zero)
+            {
+                
+                controller.Move(movementDir * dashSpeed * Time.deltaTime);
+                //SmoothRotation(movementDir, rotationSpeed);
+
+                yield return null;
+            }
+            else
+            {   // If player is not moving the dash direction will go toward forward direction of player
+                
+                movementDir = transform.forward;
+                //SmoothRotation(movementDir, rotationSpeed);
+            }
+
+
+
+        }
+
+        trailRenderer.enabled = false;
+
+        // Reset parameters
+        //playerSpeed = originalSpeed;
+        //gravityValue = originalGravity;
+        isDashing = false;
+
+        // Cooldown
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
     }
 }
 
