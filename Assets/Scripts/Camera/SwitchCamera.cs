@@ -28,25 +28,25 @@ public class SwitchCamera : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void OnEnable()
-    {
-        aimAction.performed += _ => StartAim();
-        aimAction.canceled += _ => StopAim();
-    }
+    //private void OnEnable()
+    //{
+    //    aimAction.performed += _ => StartAim();
+    //    aimAction.canceled += _ => StopAim();
+    //}
 
-    private void OnDisable()
-    {
-        aimAction.performed -= _ => StartAim();
-        aimAction.canceled -= _ => StopAim();
-    }
+    //private void OnDisable()
+    //{
+    //    aimAction.performed -= _ => StartAim();
+    //    aimAction.canceled -= _ => StopAim();
+    //}
 
-    private void StartAim()
-    {
-        virtualCamera.Priority += cameraPriorityBoost;
-    }
+    //private void StartAim()
+    //{
+    //    virtualCamera.Priority += cameraPriorityBoost;
+    //}
 
-    private void StopAim()
-    {
-        virtualCamera.Priority -= cameraPriorityBoost;
-    }
+    //private void StopAim()
+    //{
+    //    virtualCamera.Priority -= cameraPriorityBoost;
+    //}
 }

@@ -5,45 +5,92 @@ using UnityEngine.InputSystem;
 
 public class PlayerShoot : MonoBehaviour
 {
-    private PlayerInput playerInput;
-
+    [Header("Player Shoot")]
     private InputAction shootAction;
+    private InputAction focusAction;
+    private PlayerInput playerInput;
+    public float fireRate;
 
+    [Header("Bullet Prefabs")]
     [SerializeField]
-    private GameObject bulletPrefab;
-    private Transform bulletParent;
+    private GameObject bullet1Prefab;
+    [SerializeField]
+    private GameObject bullet2Prefab;
+
+    public float bulletMissDistance = 100f;
 
     [SerializeField]
     private Transform muzzleTransform;
-
-
+    [SerializeField]
     private Transform cameraTransform;
 
-    // Start is called before the first frame update
-    void Start()
-    {   
-        cameraTransform = Camera.main.transform;
+    private PlayerController playerController;
 
+    private bool canShoot = true;
+
+    private void Awake()
+    {
+        playerController = GetComponent<PlayerController>();
+        playerInput = GetComponent<PlayerInput>();
         shootAction = playerInput.actions["Shoot"];
+        focusAction = playerInput.actions["Focus"];
     }
 
-
-    public void ShootGun()
+    void Start()
     {
-        RaycastHit hit;
-        GameObject bullet = GameObject.Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity, bulletParent);
-        ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
-        //Insert Player Range
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+        cameraTransform = playerController.cameraTransform;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        HandleInput();
+    }
+
+    public void HandleInput()
+    {
+        if (shootAction.IsPressed())
         {
-            projectileController.target = hit.point;
-            projectileController.hit = true; 
+            StartCoroutine(ShootGun(bullet1Prefab));
         }
-        else
+        else if (focusAction.IsPressed())
         {
-            projectileController.target = cameraTransform.position + cameraTransform.forward * 25f;
-            projectileController.hit = false;
+            StartCoroutine(ShootGun(bullet2Prefab));
         }
+    }
+
+    public IEnumerator ShootGun(GameObject bulletChoice)
+    {
+
+        if (canShoot)
+        {
+            RaycastHit hit;
+            GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
+            ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+            canShoot = false;
+
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+            {
+                Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
+                projectileController.target = hit.point;
+                projectileController.hit = true;
+                Debug.Log("hit something");
+                yield return new WaitForSeconds(fireRate);
+                canShoot = true;
+            }
+            else
+            {
+                Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
+                projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
+                projectileController.hit = true;
+                Debug.Log("nothing");
+                yield return new WaitForSeconds(fireRate);
+                canShoot = true;
+            }
+            
+        }
+
+        Debug.Log("Tryin to shoot");
 
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
-public class MovementController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float playerSpeed = 2.0f;
@@ -27,11 +27,7 @@ public class MovementController : MonoBehaviour
     private InputAction shootAction;
     private InputAction focusAction;
 
-    [Header("Player Shoot")]
-    [SerializeField]
-    private GameObject bullet1Prefab;
-    [SerializeField]
-    private GameObject bullet2Prefab;
+
 
     [SerializeField]
     private Transform bulletParent;
@@ -48,16 +44,16 @@ public class MovementController : MonoBehaviour
     [SerializeField] private TrailRenderer trailRenderer;
 
     private CharacterController controller;
-    private Transform cameraTransform;
+    [HideInInspector]
+    public  Transform cameraTransform;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
-    private PlayerShoot playerShoot;
+    
 
     private void Awake()
     {
-        playerShoot = GetComponent<PlayerShoot>();
-
+       
         cameraTransform = Camera.main.transform;
 
 
@@ -150,10 +146,6 @@ public class MovementController : MonoBehaviour
             Vector3 cameraForward = cameraTransform.forward;
             cameraForward.y = 0;
 
-            StartCoroutine(ShootGun(bullet1Prefab));
-            //ShootGun();
-
-            // Rotate player to face camera direction
             SmoothRotation(cameraForward, shootingRotationSpeed);
         }
         else if (focusAction.IsPressed())
@@ -162,10 +154,6 @@ public class MovementController : MonoBehaviour
             Vector3 cameraForward = cameraTransform.forward;
             cameraForward.y = 0;
 
-            StartCoroutine(ShootGun(bullet2Prefab));
-            //ShootGun();
-
-            // Rotate player to face camera direction
             SmoothRotation(cameraForward, shootingRotationSpeed);
         }
     }
@@ -270,11 +258,13 @@ public class MovementController : MonoBehaviour
             {
                 projectileController.target = hit.point;
                 projectileController.hit = true;
+                Debug.Log("hit something");
             }
             else
             {
                 projectileController.target = cameraTransform.position + cameraTransform.forward * 25f;
                 projectileController.hit = false;
+                Debug.Log("nothing");
             }
 
             yield return new WaitForSeconds(FireRate);
