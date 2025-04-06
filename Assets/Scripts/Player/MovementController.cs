@@ -25,44 +25,66 @@ public class MovementController : MonoBehaviour
     private InputAction jumpAction;
     private InputAction dashAction;
     private InputAction shootAction;
+    private InputAction focusAction;
+
+    [Header("Player Shoot")]
+    [SerializeField]
+    private GameObject bullet1Prefab;
+    [SerializeField]
+    private GameObject bullet2Prefab;
+
+    [SerializeField]
+    private Transform bulletParent;
+    private bool canShoot = true;
+    private bool isHitScan;
+    public float FireRate;
+
+    [SerializeField]
+    private Transform muzzleTransform;
 
     [Header("Other")]
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float shootingRotationSpeed = 10f;
     [SerializeField] private TrailRenderer trailRenderer;
-   
+
     private CharacterController controller;
     private Transform cameraTransform;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
-    
 
-    private void Start()
-    {   
-        
+    private PlayerShoot playerShoot;
+
+    private void Awake()
+    {
+        playerShoot = GetComponent<PlayerShoot>();
+
         cameraTransform = Camera.main.transform;
+
 
         // Initiatlise Trail renderer
         trailRenderer = GetComponent<TrailRenderer>();
         trailRenderer.enabled = false;
-        
+
         controller = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         dashAction = playerInput.actions["Dash"];
         shootAction = playerInput.actions["Shoot"];
+        focusAction = playerInput.actions["Focus"];
     }
+
+   
 
     void Update()
     {
         HandleGrounding();
-       
+
         HandleMovement();
         HandleJump();
         HandleShootingRotation();
         ApplyGravity();
-      
+
 
         // Check for dash input
         if (dashAction.triggered && canDash)
@@ -128,6 +150,21 @@ public class MovementController : MonoBehaviour
             Vector3 cameraForward = cameraTransform.forward;
             cameraForward.y = 0;
 
+            StartCoroutine(ShootGun(bullet1Prefab));
+            //ShootGun();
+
+            // Rotate player to face camera direction
+            SmoothRotation(cameraForward, shootingRotationSpeed);
+        }
+        else if (focusAction.IsPressed())
+        {
+            // Get camera's forward direction without vertical component
+            Vector3 cameraForward = cameraTransform.forward;
+            cameraForward.y = 0;
+
+            StartCoroutine(ShootGun(bullet2Prefab));
+            //ShootGun();
+
             // Rotate player to face camera direction
             SmoothRotation(cameraForward, shootingRotationSpeed);
         }
@@ -179,7 +216,7 @@ public class MovementController : MonoBehaviour
         Vector3 dashDirection = transform.forward;
         float startTime = Time.time;
 
-       
+
         // Dash movement
         while (Time.time < startTime + dashTimer)
         {
@@ -190,7 +227,7 @@ public class MovementController : MonoBehaviour
             // Calculates dash direction
             if (movementDir != Vector3.zero)
             {
-                
+
                 controller.Move(movementDir * dashSpeed * Time.deltaTime);
                 //SmoothRotation(movementDir, rotationSpeed);
 
@@ -198,7 +235,7 @@ public class MovementController : MonoBehaviour
             }
             else
             {   // If player is not moving the dash direction will go toward forward direction of player
-                
+
                 movementDir = transform.forward;
                 //SmoothRotation(movementDir, rotationSpeed);
             }
@@ -218,5 +255,38 @@ public class MovementController : MonoBehaviour
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
+
+    public IEnumerator ShootGun(GameObject bulletChoice)
+    {
+        RaycastHit hit;
+        GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
+        ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+
+        if (canShoot)
+        {
+            canShoot = false;
+
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+            {
+                projectileController.target = hit.point;
+                projectileController.hit = true;
+            }
+            else
+            {
+                projectileController.target = cameraTransform.position + cameraTransform.forward * 25f;
+                projectileController.hit = false;
+            }
+
+            yield return new WaitForSeconds(FireRate);
+
+            canShoot = true;
+        }
+
+        Debug.Log("Tryin to shoot");
+
+       
+    }
+
+
 }
 
