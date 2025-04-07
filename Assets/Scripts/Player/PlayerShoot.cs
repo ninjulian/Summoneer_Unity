@@ -5,10 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerShoot : MonoBehaviour
 {
-    [Header("Player Shoot")]
-    private InputAction shootAction;
-    private InputAction focusAction;
-    private PlayerInput playerInput;
+    [Header("Player Shoot Stats")]
+    public float damage;
     public float fireRate;
 
     [Header("Bullet Prefabs")]
@@ -19,14 +17,22 @@ public class PlayerShoot : MonoBehaviour
 
     public float bulletMissDistance = 100f;
 
+    // Transforms
     [SerializeField]
     private Transform muzzleTransform;
     [SerializeField]
     private Transform cameraTransform;
 
+    // Player Controller
     private PlayerController playerController;
 
     private bool canShoot = true;
+
+    // Input System
+    private InputAction shootAction;
+    private InputAction focusAction;
+    private PlayerInput playerInput;
+
 
     private void Awake()
     {
@@ -74,7 +80,7 @@ public class PlayerShoot : MonoBehaviour
                 Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
                 projectileController.target = hit.point;
                 projectileController.hit = true;
-                Debug.Log("hit something");
+                //Debug.Log("hit something");
                 yield return new WaitForSeconds(fireRate);
                 canShoot = true;
             }
@@ -83,14 +89,14 @@ public class PlayerShoot : MonoBehaviour
                 Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
                 projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
                 projectileController.hit = true;
-                Debug.Log("nothing");
+                //Debug.Log("nothing");
                 yield return new WaitForSeconds(fireRate);
                 canShoot = true;
             }
             
         }
 
-        Debug.Log("Tryin to shoot");
+       // Debug.Log("Tryin to shoot");
 
     }
 }

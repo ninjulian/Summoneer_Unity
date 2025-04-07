@@ -10,7 +10,7 @@ public class SwitchCamera : MonoBehaviour
     [SerializeField] PlayerInput playerInput;
     private InputAction aimAction;
 
-    [SerializeField] private int cameraPriorityBoost = 10;
+    //[SerializeField] private int cameraPriorityBoost = 10;
 
     [Header("Camera")]
     private CinemachineVirtualCamera virtualCamera;

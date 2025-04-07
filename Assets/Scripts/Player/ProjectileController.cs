@@ -13,6 +13,8 @@ public class ProjectileController : MonoBehaviour
     public Vector3 target { get; set; }
     public bool hit { get; set; }
 
+    public float Damage;
+
 
     private void OnEnable()
     {
@@ -30,10 +32,21 @@ public class ProjectileController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        ContactPoint contact = other.GetContact(0);
+        //ContactPoint contact = other.GetContact(0);
         //GameObject.Instantiate(bulletDecal, contact.point + contact.normal * .001f, Quaternion.LookRotation(contact.normal));
+
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            
+        }
+        else
+        {
+            
+        }
+
+
         Destroy(gameObject);
     }
 }
