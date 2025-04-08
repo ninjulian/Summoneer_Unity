@@ -18,6 +18,11 @@ public class ProjectileController : MonoBehaviour
     public string sourceTag; // Who shot this projectile
 
 
+    [Header("Damage Over Time")]
+    public bool applyFireDOT;
+    public bool applyPoisonDOT;
+    public float DOTDuration = 3f;
+
     private void OnEnable()
     {
         Destroy(gameObject, lifeSpan);
@@ -42,14 +47,20 @@ public class ProjectileController : MonoBehaviour
         if (other.CompareTag(sourceTag)) return;
 
         StatClass targetStats = other.GetComponent<StatClass>();
-
+        DamageHandler damageHandler = other.GetComponent<DamageHandler>();
         if (targetStats != null)
         {
             targetStats.TakeDamage(baseDamage);
             Destroy(gameObject);
+
+            //// Apply DOT effects
+            //if (applyFireDOT) damageHandler.ApplyFireDOT(baseDamage, DOTDuration);
+            //if (applyPoisonDOT) damageHandler.ApplyPoisonDOT(baseDamage, DOTDuration);
+
+            damageHandler.ApplyFireDOT(baseDamage, DOTDuration);
         }
 
 
-       
+
     }
 }

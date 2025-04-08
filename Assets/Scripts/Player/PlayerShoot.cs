@@ -110,10 +110,14 @@ public class PlayerShoot : MonoBehaviour
                 yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;
             }
+
             
+
         }
 
-       // Debug.Log("Tryin to shoot");
+        // Debug.Log("Tryin to shoot");
+
+
 
     }
 }

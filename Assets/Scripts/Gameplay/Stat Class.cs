@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.LowLevel;
 
 public abstract class StatClass : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public abstract class StatClass : MonoBehaviour
     public float damage = 10f;
     public float critChance = 5f;
     public float critMultiplier = 2f;
+
+   // public float dotDuration;
 
     protected virtual void Start()
     {
