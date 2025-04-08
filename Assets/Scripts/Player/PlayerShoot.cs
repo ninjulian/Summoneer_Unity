@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerShoot : MonoBehaviour
 {
     [Header("Player Shoot Stats")]
-    public float damage;
     public float fireRate;
+    public float fireCooldown;
 
     [Header("Bullet Prefabs")]
     [SerializeField]
@@ -33,6 +33,9 @@ public class PlayerShoot : MonoBehaviour
     private InputAction focusAction;
     private PlayerInput playerInput;
 
+    // Player Stats
+    private PlayerStats playerStats;
+
 
     private void Awake()
     {
@@ -40,11 +43,15 @@ public class PlayerShoot : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         shootAction = playerInput.actions["Shoot"];
         focusAction = playerInput.actions["Focus"];
+
+        playerStats = GetComponent<PlayerStats>();
     }
 
     void Start()
     {
         cameraTransform = playerController.cameraTransform;
+
+        fireCooldown = 60f / fireRate;
     }
 
     // Update is called once per frame
@@ -73,15 +80,25 @@ public class PlayerShoot : MonoBehaviour
             RaycastHit hit;
             GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+
+            // Gives bullet base damage from player stats
+            projectileController.baseDamage = playerStats.CalculateDamage();
+            projectileController.sourceTag = "Player";
+
             canShoot = false;
 
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+            // Ignore Layer 7 and 9
+            int layerToIgnore1 = 7;
+            int layerToIgnore2 = 9;
+            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
+
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
                 Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
                 projectileController.target = hit.point;
                 projectileController.hit = true;
                 //Debug.Log("hit something");
-                yield return new WaitForSeconds(fireRate);
+                yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;
             }
             else
@@ -90,7 +107,7 @@ public class PlayerShoot : MonoBehaviour
                 projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
                 projectileController.hit = true;
                 //Debug.Log("nothing");
-                yield return new WaitForSeconds(fireRate);
+                yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;
             }
             

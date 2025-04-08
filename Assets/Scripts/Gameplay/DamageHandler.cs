@@ -6,28 +6,31 @@ using UnityEngine;
 
 public class DamageHandler : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private StatClass entityStats;
 
-    public void TakeDamage(float incomingDamage)
-    {   
-        // Makes sure 
-        float damageTaken = Mathf.Max(incomingDamage * (100/100 + playerStats.defense), 0);
+    public void ReceiveDamage(float rawDamage)
+    {
+        float finalDamage = Mathf.Max(rawDamage - entityStats.defense, 1);
+        entityStats.currentHealth -= finalDamage;
 
-        playerStats.currentHealth -= damageTaken;
-        Debug.Log($"Player took {damageTaken} damage!");
+        Debug.Log($"{gameObject.name} took {finalDamage} damage!");
 
-        
-
-        if (playerStats.currentHealth <= 0)
+        if (entityStats.currentHealth <= 0)
         {
-            Die();
+            HandleDeath();
         }
     }
 
-    private void Die()
+    private void HandleDeath()
     {
-        Debug.Log("Player died!");
-        // Add death logic here
+        Debug.Log($"{gameObject.name} died!");
+        // Add death logic (animation, drops, etc)
+        Destroy(gameObject);
+    }
+
+    // For initialization in child classes
+    public void Initialize(StatClass stats)
+    {
+        entityStats = stats;
     }
 }

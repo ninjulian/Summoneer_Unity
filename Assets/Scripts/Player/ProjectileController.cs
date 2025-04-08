@@ -13,7 +13,9 @@ public class ProjectileController : MonoBehaviour
     public Vector3 target { get; set; }
     public bool hit { get; set; }
 
-    public float Damage;
+    [Header("Damage Settings")]
+    public float baseDamage;
+    public string sourceTag; // Who shot this projectile
 
 
     private void OnEnable()
@@ -37,16 +39,17 @@ public class ProjectileController : MonoBehaviour
         //ContactPoint contact = other.GetContact(0);
         //GameObject.Instantiate(bulletDecal, contact.point + contact.normal * .001f, Quaternion.LookRotation(contact.normal));
 
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.CompareTag(sourceTag)) return;
+
+        StatClass targetStats = other.GetComponent<StatClass>();
+
+        if (targetStats != null)
         {
-            
-        }
-        else
-        {
-            
+            targetStats.TakeDamage(baseDamage);
+            Destroy(gameObject);
         }
 
 
-        Destroy(gameObject);
+       
     }
 }

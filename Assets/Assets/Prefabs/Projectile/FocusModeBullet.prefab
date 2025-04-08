@@ -122,7 +122,8 @@ MonoBehaviour:
   bulletDecal: {fileID: 0}
   speed: 50
   lifeSpan: 2
-  Damage: 0
+  baseDamage: 0
+  sourceTag: Player
 --- !u!54 &5465665337373022107
 Rigidbody:
   m_ObjectHideFlags: 0

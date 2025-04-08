@@ -3,29 +3,26 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : StatClass 
 {
-    [Header("Player Stats")]
-    public float maxHealth;
-    public float currentHealth;
-    public float defense;
-    public float movementSpeed;
-    public float damage;
-    public float critChance;
-    public float critMultiplier;
+    [Header("Player Specific")]
+    public float movementSpeed = 5f;
     public float luck;
     public float affinity;
 
-    private void Awake()
-    {
-        currentHealth = maxHealth;
+    private DamageHandler damageHandler;
+
+    private void Start()
+    {   
+        base.Start();
+        damageHandler = GetComponent<DamageHandler>();
+        damageHandler.Initialize(this);
+
     }
 
-    public void TakeDamage(float dmgTaken)
+    public override void TakeDamage(float incomingDamage)
     {
-        currentHealth -= dmgTaken;
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-
+        damageHandler.ReceiveDamage(incomingDamage);
     }
 
     public float GetDamage()
