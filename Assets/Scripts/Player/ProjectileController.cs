@@ -53,11 +53,17 @@ public class ProjectileController : MonoBehaviour
             targetStats.TakeDamage(baseDamage);
             Destroy(gameObject);
 
-            //// Apply DOT effects
-            //if (applyFireDOT) damageHandler.ApplyFireDOT(baseDamage, DOTDuration);
-            //if (applyPoisonDOT) damageHandler.ApplyPoisonDOT(baseDamage, DOTDuration);
+            // Apply DOT effects
+            if (applyFireDOT)
+            {
+                damageHandler.ApplyFireDOT(baseDamage, DOTDuration);
+            }
 
-            damageHandler.ApplyFireDOT(baseDamage, DOTDuration);
+            if (applyPoisonDOT)
+            {
+                damageHandler.ApplyPoisonDOT(baseDamage, DOTDuration);
+            }
+
         }
 
 

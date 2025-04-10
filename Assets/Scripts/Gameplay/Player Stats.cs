@@ -6,13 +6,13 @@ using UnityEngine;
 public class PlayerStats : StatClass 
 {
     [Header("Player Specific")]
-    public float movementSpeed = 5f;
+
     public float luck;
     public float affinity;
 
     private DamageHandler damageHandler;
 
-    private void Start()
+    private void Awake()
     {   
         base.Start();
         damageHandler = GetComponent<DamageHandler>();
@@ -25,21 +25,21 @@ public class PlayerStats : StatClass
         damageHandler.ReceiveDamage(incomingDamage);
     }
 
-    public float GetDamage()
-    {
-        float damageDealt;
-        bool isCritical = Random.Range(0f, 100f) <= critChance;
+    //public float GetDamage()
+    //{
+    //    float damageDealt;
+    //    bool isCritical = Random.Range(0f, 100f) <= critChance;
 
-        if (!isCritical)
-        {
-            return damage;
-        }
-        else
-        {
-            damageDealt = critMultiplier * damage;
-            return damageDealt;
-        }
-    }
+    //    if (!isCritical)
+    //    {
+    //        return damage;
+    //    }
+    //    else
+    //    {
+    //        damageDealt = critMultiplier * damage;
+    //        return damageDealt;
+    //    }
+    //}
 
 
 }

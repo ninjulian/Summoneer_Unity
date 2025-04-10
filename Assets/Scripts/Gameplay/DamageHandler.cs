@@ -15,6 +15,19 @@ public class DamageHandler : MonoBehaviour
 
     private List<ActiveDOT> activeDOTs = new List<ActiveDOT>();
 
+    private struct ActiveDOT
+    {
+        public DOTType type;
+        public float totalDamage;
+        public float duration;
+        public float timeRemaining;
+        public float tickInterval;
+        public float timeSinceLastTick;
+        public ParticleSystem particles;
+    }
+
+    private enum DOTType { Fire, Poison }
+
     void Update()
     {
         ProcessDOTs();
@@ -61,7 +74,7 @@ public class DamageHandler : MonoBehaviour
             dot.timeRemaining -= Time.deltaTime;
             dot.timeSinceLastTick += Time.deltaTime;
 
-            // Apply damage tick
+            // Apply damage tick, by a tick loop
             if (dot.timeSinceLastTick >= dot.tickInterval)
             {
                 float damagePerTick = (dot.totalDamage / dot.duration) * dot.tickInterval;
@@ -96,18 +109,7 @@ public class DamageHandler : MonoBehaviour
         ApplyDOT(baseDamage * 0.05f, duration, 1f, DOTType.Poison, poisonParticles);
     }
 
-    private struct ActiveDOT
-    {
-        public DOTType type;
-        public float totalDamage;
-        public float duration;
-        public float timeRemaining;
-        public float tickInterval;
-        public float timeSinceLastTick;
-        public ParticleSystem particles;
-    }
-
-    private enum DOTType { Fire, Poison }
+    
 
     private void HandleDeath()
     {

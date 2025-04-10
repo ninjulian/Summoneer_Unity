@@ -68,7 +68,7 @@ public class PlayerShoot : MonoBehaviour
         }
         else if (focusAction.IsPressed())
         {
-            StartCoroutine(ShootGun(bullet2Prefab));
+            StartCoroutine(FocusShoot(bullet2Prefab));
         }
     }
 
@@ -81,7 +81,7 @@ public class PlayerShoot : MonoBehaviour
             GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
 
-            // Gives bullet base damage from player stats
+            // Gets bullet base damage from player stats
             projectileController.baseDamage = playerStats.CalculateDamage();
             projectileController.sourceTag = "Player";
 
@@ -111,7 +111,56 @@ public class PlayerShoot : MonoBehaviour
                 canShoot = true;
             }
 
-            
+
+
+        }
+
+        // Debug.Log("Tryin to shoot");
+
+
+
+    }
+
+    public IEnumerator FocusShoot(GameObject bulletChoice)
+    {
+
+        if (canShoot)
+        {
+            RaycastHit hit;
+            GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
+            ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+
+            // Gets bullet base damage from player stats
+            projectileController.baseDamage = playerStats.CalculateDamage();
+            projectileController.sourceTag = "Player";
+
+            canShoot = false;
+
+            // Ignore Layer 7 and 9
+            int layerToIgnore1 = 7;
+            int layerToIgnore2 = 9;
+            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
+
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
+            {
+                Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
+                projectileController.target = hit.point;
+                projectileController.hit = true;
+                //Debug.Log("hit something");
+                yield return new WaitForSeconds(fireCooldown);
+                canShoot = true;
+            }
+            else
+            {
+                Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
+                projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
+                projectileController.hit = true;
+                //Debug.Log("nothing");
+                yield return new WaitForSeconds(fireCooldown);
+                canShoot = true;
+            }
+
+
 
         }
 

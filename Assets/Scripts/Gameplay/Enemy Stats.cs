@@ -9,7 +9,7 @@ public class EnemyStats : StatClass
 
     private DamageHandler damageHandler;
 
-    private void Start()
+    private void Awake()
     {
         base.Start();
         damageHandler = gameObject.AddComponent<DamageHandler>();
