@@ -1,9 +1,9 @@
 using UnityEngine.AI;
 using UnityEngine;
 
-public enum AIState { Chase, Attack }
+public enum AIRangeState { Chase, Attack }
 
-public class EnemyAI : MonoBehaviour
+public class EnemyRangeAI : MonoBehaviour
 {
     [SerializeField] private AIState _currentState;
     [SerializeField] private float attackRange = 2f;
@@ -11,7 +11,7 @@ public class EnemyAI : MonoBehaviour
     private Transform player;
     private NavMeshAgent navAgent;
 
-    
+
 
     [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackCooldown = 1f;
@@ -90,6 +90,9 @@ public class EnemyAI : MonoBehaviour
         if (Time.time > lastAttackTime + attackCooldown)
         {
             // Face player
+
+            RaycastHit hit;
+
             Vector3 direction = (player.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
@@ -97,7 +100,7 @@ public class EnemyAI : MonoBehaviour
             // Perform attack
             if (Vector3.Distance(transform.position, player.position) <= attackRange)
             {
-                Debug.Log("Attacking the player");
+                Debug.Log("Range Attack the player");
                 lastAttackTime = Time.time;
 
                 Gizmos.color = Color.red;
