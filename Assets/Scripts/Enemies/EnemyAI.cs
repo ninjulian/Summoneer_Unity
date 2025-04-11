@@ -100,8 +100,7 @@ public class EnemyAI : MonoBehaviour
                 Debug.Log("Attacking the player");
                 lastAttackTime = Time.time;
 
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(transform.position, attackRange);
+               
             }
         }
     }

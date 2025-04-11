@@ -1,5 +1,7 @@
 using UnityEngine.AI;
 using UnityEngine;
+using Unity.VisualScripting;
+using System.Collections;
 
 public enum AIRangeState { Chase, Attack }
 
@@ -12,13 +14,17 @@ public class EnemyRangeAI : MonoBehaviour
     private NavMeshAgent navAgent;
 
 
-
     [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackCooldown = 1f;
     private float lastAttackTime;
 
     private DamageHandler damageHandler;
     private EnemyStats enemyStats;
+
+    [SerializeField]
+    private GameObject bulletPrefab;
+    [SerializeField]
+    private Transform muzzleTransform;
 
 
     private void Awake()
@@ -67,7 +73,7 @@ public class EnemyRangeAI : MonoBehaviour
                 ChasePlayer();
                 break;
             case AIState.Attack:
-                AttackPlayer();
+                StartCoroutine(AttackPlayer());
                 break;
         }
     }
@@ -82,7 +88,7 @@ public class EnemyRangeAI : MonoBehaviour
     }
 
 
-    void AttackPlayer()
+    IEnumerator AttackPlayer()
     {
         // Stop movement while attacking
         navAgent.isStopped = true;
@@ -92,6 +98,13 @@ public class EnemyRangeAI : MonoBehaviour
             // Face player
 
             RaycastHit hit;
+            GameObject bullet = GameObject.Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
+            ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+
+            // Ignore Layer 7 and 9
+            int layerToIgnore1 = 7;
+            int layerToIgnore2 = 9;
+            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
 
             Vector3 direction = (player.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -103,9 +116,32 @@ public class EnemyRangeAI : MonoBehaviour
                 Debug.Log("Range Attack the player");
                 lastAttackTime = Time.time;
 
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(transform.position, attackRange);
+
+                if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, ignoreMask))
+                {
+                    Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red, 1f);
+                    projectileController.target = hit.point;
+                    projectileController.hit = true;
+                    //Debug.Log("hit something");
+                    yield return new WaitForSeconds(attackCooldown);
+                   // canShoot = true;
+                }
+                else
+                {
+                    Debug.DrawRay(transform.position, transform.forward * 100, Color.blue, 1f);
+                    projectileController.target = transform.position + transform.forward * 100;
+                    projectileController.hit = true;
+                    //Debug.Log("nothing");
+                    yield return new WaitForSeconds(attackCooldown);
+                    //canShoot = true;
+                }
+
+
+
             }
+
+
+
         }
     }
 
