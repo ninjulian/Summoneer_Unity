@@ -8,7 +8,7 @@ public enum AIRangeState { Chase, Attack }
 public class EnemyRangeAI : MonoBehaviour
 {
     [SerializeField] private AIState _currentState;
-    [SerializeField] private float attackRange = 2f;
+    private float attackRange = 2f;
 
     private Transform player;
     private NavMeshAgent navAgent;
@@ -34,6 +34,8 @@ public class EnemyRangeAI : MonoBehaviour
         damageHandler = GetComponent<DamageHandler>();
         enemyStats = GetComponent<EnemyStats>();
 
+        attackRange = enemyStats.attackRange;
+
         navAgent.speed = enemyStats.movementSpeed;
 
         SetState(AIState.Chase);
@@ -43,6 +45,8 @@ public class EnemyRangeAI : MonoBehaviour
     {
         CheckStateTransition();
         UpdateCurrentState();
+
+      
     }
 
     void CheckStateTransition()
@@ -93,6 +97,11 @@ public class EnemyRangeAI : MonoBehaviour
         // Stop movement while attacking
         navAgent.isStopped = true;
 
+        Vector3 direction = (player.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+
+
         if (Time.time > lastAttackTime + attackCooldown)
         {
             // Face player
@@ -106,30 +115,28 @@ public class EnemyRangeAI : MonoBehaviour
             int layerToIgnore2 = 9;
             int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
 
-            Vector3 direction = (player.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
-
+            
             // Perform attack
             if (Vector3.Distance(transform.position, player.position) <= attackRange)
             {
                 Debug.Log("Range Attack the player");
                 lastAttackTime = Time.time;
 
+                Debug.DrawRay(transform.position, direction * 100f, Color.yellow, 1f);
 
-                if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, ignoreMask))
+                if (Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity, ignoreMask))
                 {
-                    Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red, 1f);
+                    Debug.DrawRay(transform.position, direction * hit.distance, Color.red, 1f);
                     projectileController.target = hit.point;
                     projectileController.hit = true;
                     //Debug.Log("hit something");
                     yield return new WaitForSeconds(attackCooldown);
-                   // canShoot = true;
+                    // canShoot = true;
                 }
                 else
                 {
-                    Debug.DrawRay(transform.position, transform.forward * 100, Color.blue, 1f);
-                    projectileController.target = transform.position + transform.forward * 100;
+                    Debug.DrawRay(transform.position, direction * 100, Color.blue, 1f);
+                    projectileController.target = transform.position + direction * 100;
                     projectileController.hit = true;
                     //Debug.Log("nothing");
                     yield return new WaitForSeconds(attackCooldown);
@@ -143,6 +150,8 @@ public class EnemyRangeAI : MonoBehaviour
 
 
         }
+
+
     }
 
 }

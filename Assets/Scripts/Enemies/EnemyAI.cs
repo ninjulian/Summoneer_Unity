@@ -6,7 +6,7 @@ public enum AIState { Chase, Attack }
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private AIState _currentState;
-    [SerializeField] private float attackRange = 2f;
+    private float attackRange = 2f;
 
     private Transform player;
     private NavMeshAgent navAgent;
@@ -27,6 +27,8 @@ public class EnemyAI : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         damageHandler = GetComponent<DamageHandler>();
         enemyStats = GetComponent<EnemyStats>();
+
+        attackRange = enemyStats.attackRange;
 
         navAgent.speed = enemyStats.movementSpeed;
 
