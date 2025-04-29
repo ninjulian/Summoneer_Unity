@@ -44,7 +44,7 @@ public class ProjectileController : MonoBehaviour
         //ContactPoint contact = other.GetContact(0);
         //GameObject.Instantiate(bulletDecal, contact.point + contact.normal * .001f, Quaternion.LookRotation(contact.normal));
 
-        if (other.CompareTag(sourceTag)) return;
+        if (other.CompareTag(sourceTag)) return; 
 
         StatClass targetStats = other.GetComponent<StatClass>();
         DamageHandler damageHandler = other.GetComponent<DamageHandler>();

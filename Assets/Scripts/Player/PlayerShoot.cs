@@ -97,6 +97,7 @@ public class PlayerShoot : MonoBehaviour
                 Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
                 projectileController.target = hit.point;
                 projectileController.hit = true;
+               
                 //Debug.Log("hit something");
                 yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;

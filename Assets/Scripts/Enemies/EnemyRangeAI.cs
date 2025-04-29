@@ -26,6 +26,8 @@ public class EnemyRangeAI : MonoBehaviour
     [SerializeField]
     private Transform muzzleTransform;
 
+    private bool hasLOS;
+
 
     private void Awake()
     {
@@ -42,7 +44,9 @@ public class EnemyRangeAI : MonoBehaviour
     }
 
     void Update()
-    {
+    {   
+
+        CheckLOS();
         CheckStateTransition();
         UpdateCurrentState();
 
@@ -53,11 +57,11 @@ public class EnemyRangeAI : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= attackRange && _currentState != AIState.Attack)
+        if (distanceToPlayer <= attackRange && hasLOS && _currentState != AIState.Attack)
         {
             SetState(AIState.Attack);
         }
-        else if (distanceToPlayer > attackRange && _currentState != AIState.Chase)
+        else if ((distanceToPlayer > attackRange || !hasLOS) && _currentState != AIState.Chase)
         {
             SetState(AIState.Chase);
         }
@@ -84,7 +88,7 @@ public class EnemyRangeAI : MonoBehaviour
 
     void ChasePlayer()
     {
-        if (navAgent.isStopped) navAgent.isStopped = false;
+        //if (navAgent.isStopped) navAgent.isStopped = false;
         navAgent.SetDestination(player.position);
 
         // Optional: Add acceleration when starting to chase
@@ -92,10 +96,21 @@ public class EnemyRangeAI : MonoBehaviour
     }
 
 
+    private void CheckLOS()
+    {
+        Vector3 direction = (player.position - transform.position).normalized;
+        int layerToIgnore1 = 7;
+        int layerToIgnore2 = 9;
+        int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
+
+        hasLOS = Physics.Raycast(transform.position, direction, out RaycastHit hit, attackRange, ignoreMask) && hit.collider.CompareTag("Player");
+        Debug.Log("LOS = " + hasLOS);
+    }
+
     IEnumerator AttackPlayer()
     {
         // Stop movement while attacking
-        navAgent.isStopped = true;
+        //navAgent.isStopped = true;
 
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -104,8 +119,6 @@ public class EnemyRangeAI : MonoBehaviour
 
         if (Time.time > lastAttackTime + attackCooldown)
         {
-            // Face player
-
             RaycastHit hit;
             GameObject bullet = GameObject.Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
@@ -115,33 +128,30 @@ public class EnemyRangeAI : MonoBehaviour
             int layerToIgnore2 = 9;
             int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
 
-            
+
+            Vector3 shotDirection = (player.position - muzzleTransform.position).normalized;
+            float maxDistance = 100f;
+
+            // Calculate target point in the shooting direction
+            projectileController.target = muzzleTransform.position + shotDirection * maxDistance;
+
+
             // Perform attack
             if (Vector3.Distance(transform.position, player.position) <= attackRange)
             {
                 Debug.Log("Range Attack the player");
                 lastAttackTime = Time.time;
 
-                Debug.DrawRay(transform.position, direction * 100f, Color.yellow, 1f);
+                if (Physics.Raycast(transform.position, shotDirection, out hit, maxDistance, ignoreMask))
+                {
+                    
 
-                if (Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity, ignoreMask))
-                {
-                    Debug.DrawRay(transform.position, direction * hit.distance, Color.red, 1f);
-                    projectileController.target = hit.point;
+                    Debug.DrawRay(transform.position, shotDirection * hit.distance, Color.green, 1f);
+                    //projectileController.target = hit.point;
                     projectileController.hit = true;
-                    //Debug.Log("hit something");
                     yield return new WaitForSeconds(attackCooldown);
-                    // canShoot = true;
                 }
-                else
-                {
-                    Debug.DrawRay(transform.position, direction * 100, Color.blue, 1f);
-                    projectileController.target = transform.position + direction * 100;
-                    projectileController.hit = true;
-                    //Debug.Log("nothing");
-                    yield return new WaitForSeconds(attackCooldown);
-                    //canShoot = true;
-                }
+
 
 
 
