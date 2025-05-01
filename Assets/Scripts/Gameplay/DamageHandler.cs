@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 
+[RequireComponent(typeof(HealthBar))]
 public class DamageHandler : MonoBehaviour
 {
     [Header("Stats")]
@@ -12,6 +14,9 @@ public class DamageHandler : MonoBehaviour
     [Header("Particle System")]
     [SerializeField] private ParticleSystem fireParticles;
     [SerializeField] private ParticleSystem poisonParticles;
+
+    [Header("UI")]
+    [SerializeField] private HealthBar healthBar;
 
     private List<ActiveDOT> activeDOTs = new List<ActiveDOT>();
 
@@ -28,6 +33,11 @@ public class DamageHandler : MonoBehaviour
 
     private enum DOTType { Fire, Poison }
 
+    private void Awake()
+    {
+        healthBar = GetComponent<HealthBar>();
+    }
+
     void Update()
     {
         ProcessDOTs();
@@ -37,6 +47,12 @@ public class DamageHandler : MonoBehaviour
     {
         float finalDamage = Mathf.Max(rawDamage - entityStats.defense, 1);
         entityStats.currentHealth -= finalDamage;
+
+        if (healthBar != null)
+        {
+            healthBar.UpdateHpUI();
+        }
+       
 
         Debug.Log($"{gameObject.name} took {finalDamage} damage!");
 
@@ -109,7 +125,7 @@ public class DamageHandler : MonoBehaviour
         ApplyDOT(baseDamage * 0.05f, duration, 1f, DOTType.Poison, poisonParticles);
     }
 
-    
+
 
     private void HandleDeath()
     {
@@ -123,6 +139,7 @@ public class DamageHandler : MonoBehaviour
     {
         entityStats = stats;
     }
+
 
 
 }

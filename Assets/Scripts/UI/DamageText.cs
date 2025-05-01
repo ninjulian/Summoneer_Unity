@@ -5,7 +5,7 @@ using TMPro;
 public class DamageText : MonoBehaviour
 {
     public float lifespan = 1f;
-    public float floatSpeed = 0.5f;      // How fast it moves downward
+    public float floatSpeed = 1f;      // How fast it moves downzward
     public float fadeDuration = 1f;      // How long it takes to fade
 
     private TextMeshPro tmpText;
@@ -28,7 +28,7 @@ public class DamageText : MonoBehaviour
         transform.forward = Camera.main.transform.forward;
 
         // Move downward over time
-        transform.position += Vector3.down * floatSpeed * Time.deltaTime;
+        transform.position += Vector3.up * floatSpeed * Time.deltaTime;
 
         // Fade out over time
         if (tmpText != null)
