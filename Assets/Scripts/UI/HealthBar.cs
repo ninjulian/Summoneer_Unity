@@ -6,27 +6,21 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     [Header("Health Bar")]
-    public Slider healthSlider;
     public Slider damageSlider;
+    public Slider healthSlider;
 
-    [Header("Settings")]
-    [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float healthLerpSpeed = 5f;
-    [SerializeField] private float delayedLerpSpeed = 2f;
 
     [Header("Stats")]
     [SerializeField] private StatClass entityStats;
 
+    private Coroutine hpCoroutine;
+
     void Start()
     {
         entityStats = GetComponent<StatClass>();
+        InitializeSliders();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void InitializeSliders()
     {
@@ -38,14 +32,39 @@ public class HealthBar : MonoBehaviour
 
     }
 
-    public void UpdateHpUI()
-    {
-        healthSlider.value = entityStats.currentHealth / entityStats.maxHealth;
+    //public void UpdateHpUI()
+    //{
+    //    // healthSlider.value = entityStats.currentHealth / entityStats.maxHealth;
 
-        // Smoothly transition health values
-        //    healthSlider.value = Mathf.MoveTowards(healthSlider.value, entityStats.currentHealth, healthLerpSpeed * Time.deltaTime);
-        //    damageSlider.value = Mathf.MoveTowards(damageSlider.value, healthSlider.value, delayedLerpSpeed * Time.deltaTime);
+    //    // Smoothly transition health values
+    //    healthSlider.value = Mathf.MoveTowards(healthSlider.value, entityStats.currentHealth, healthLerpSpeed * Time.deltaTime);
+    //    damageSlider.value = Mathf.MoveTowards(damageSlider.value, healthSlider.value, delayedLerpSpeed * Time.deltaTime);
+    //}
+
+
+    public void StartHpUIUpdate(float damageValue)
+    {
+        if (hpCoroutine != null)
+            StopCoroutine(hpCoroutine); // stop previous one if still running
+
+        hpCoroutine = StartCoroutine(UpdateHpUICoroutine(damageValue));
     }
 
+    private IEnumerator UpdateHpUICoroutine(float damageValue)
+    {
+        while (Mathf.Abs(healthSlider.value - entityStats.currentHealth) > 0.01f ||
+               Mathf.Abs(damageSlider.value - healthSlider.value) > 0.01f)
+        {
+            healthSlider.value = Mathf.MoveTowards(healthSlider.value, entityStats.currentHealth, (2f * damageValue) * Time.deltaTime);
+            damageSlider.value = Mathf.MoveTowards(damageSlider.value, healthSlider.value, ((damageValue / 2f) + damageValue) * Time.deltaTime);
 
+            yield return null; // wait until next frame
+        }
+
+        // Final snap to precise value (optional cleanup)
+        healthSlider.value = entityStats.currentHealth;
+        damageSlider.value = entityStats.currentHealth;
+
+        hpCoroutine = null; // finished
+    }
 }

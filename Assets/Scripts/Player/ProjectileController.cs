@@ -13,8 +13,7 @@ public class ProjectileController : MonoBehaviour
     public Vector3 target { get; set; }
     public bool hit { get; set; }
 
-    [Header("Damage Settings")]
-    public float baseDamage;
+    [HideInInspector] public float baseDamage;
     public string sourceTag; // Who shot this projectile
 
 

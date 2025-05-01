@@ -122,8 +122,11 @@ MonoBehaviour:
   bulletDecal: {fileID: 0}
   speed: 1000
   lifeSpan: 1
-  baseDamage: 0
+  baseDamage: 10
   sourceTag: Player
+  applyFireDOT: 1
+  applyPoisonDOT: 0
+  DOTDuration: 3
 --- !u!54 &2813969280978807811
 Rigidbody:
   m_ObjectHideFlags: 0

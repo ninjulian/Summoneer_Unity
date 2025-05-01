@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 
 public class EnemyStats : StatClass
 {
@@ -19,24 +20,25 @@ public class EnemyStats : StatClass
     private void Awake()
     {
         base.Start();
-        damageHandler = gameObject.AddComponent<DamageHandler>();
+        damageHandler = gameObject.GetComponent<DamageHandler>();
         damageHandler.Initialize(this);
     }
 
     public override void TakeDamage(float incomingDamage)
     {
+        Debug.Log("Taking damage");
         damageHandler.ReceiveDamage(incomingDamage);
 
         if (DamageText)
         {
             ShowDamageText(incomingDamage);
         }
-
+       
     }
 
     void ShowDamageText(float damageValue)
     {
-
+        Debug.Log("TRying to put up a damage text");
         Vector3 randomOffset = new Vector3(Random.Range(-spawnRadius, spawnRadius), Random.Range(0.5f, 1.5f), Random.Range(-spawnRadius, spawnRadius));
         Vector3 spawnPosition = transform.position + randomOffset;
 
@@ -44,8 +46,29 @@ public class EnemyStats : StatClass
 
         TextMeshProUGUI tmp = go.GetComponentInChildren<TextMeshProUGUI>();
 
-
         tmp.text = damageValue.ToString();
-        
+
+        var currentDOT = damageHandler.GetCurrentDOTType();
+
+       
+
+        ////Changes text colour dependent on the DOTType
+        //if (currentDOT.HasValue)
+        //{
+        //    switch (currentDOT.Value)
+        //    {
+        //        case DamageHandler.DOTType.Fire:
+        //            tmp.color = Color.red;
+        //            break;
+        //        case DamageHandler.DOTType.Poison:
+        //            tmp.color = Color.green;
+        //            break;
+        //    }
+        //}
+        //else
+        //{
+        //   tmp.color = Color.white;      
+        //}
+
     }
 }

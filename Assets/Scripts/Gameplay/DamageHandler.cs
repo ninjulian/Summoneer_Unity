@@ -20,7 +20,7 @@ public class DamageHandler : MonoBehaviour
 
     private List<ActiveDOT> activeDOTs = new List<ActiveDOT>();
 
-    private struct ActiveDOT
+    public struct ActiveDOT
     {
         public DOTType type;
         public float totalDamage;
@@ -31,7 +31,7 @@ public class DamageHandler : MonoBehaviour
         public ParticleSystem particles;
     }
 
-    private enum DOTType { Fire, Poison }
+    [HideInInspector] public enum DOTType { Fire, Poison }
 
     private void Awake()
     {
@@ -46,15 +46,9 @@ public class DamageHandler : MonoBehaviour
     public void ReceiveDamage(float rawDamage)
     {
         float finalDamage = Mathf.Max(rawDamage - entityStats.defense, 1);
-        entityStats.currentHealth -= finalDamage;
+        entityStats.TakeDamage(finalDamage);
 
-        if (healthBar != null)
-        {
-            healthBar.UpdateHpUI();
-        }
-       
-
-        Debug.Log($"{gameObject.name} took {finalDamage} damage!");
+        UpdateHPUI(finalDamage);
 
         if (entityStats.currentHealth <= 0)
         {
@@ -90,11 +84,12 @@ public class DamageHandler : MonoBehaviour
             dot.timeRemaining -= Time.deltaTime;
             dot.timeSinceLastTick += Time.deltaTime;
 
-            // Apply damage tick, by a tick loop
+            // Apply damage tick by a tick loop
             if (dot.timeSinceLastTick >= dot.tickInterval)
             {
-                float damagePerTick = (dot.totalDamage / dot.duration) * dot.tickInterval;
+                float damagePerTick = dot.totalDamage;
                 ReceiveDamage(damagePerTick);
+                Debug.Log("DOT dealing " + damagePerTick + "Damage");
                 dot.timeSinceLastTick = 0;
             }
 
@@ -140,6 +135,22 @@ public class DamageHandler : MonoBehaviour
         entityStats = stats;
     }
 
+    public void UpdateHPUI(float value)
+    {
+        if (healthBar != null)
+        {
+            healthBar.StartHpUIUpdate(value);
+        }
+    }
 
+    //Returns what DOTType is currently in action
+    public DOTType? GetCurrentDOTType()
+    {
+        if (activeDOTs.Count > 0)
+        {
+            return activeDOTs[0].type;
+        }
+        return null;
+    }
 
 }
