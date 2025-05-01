@@ -124,7 +124,7 @@ MonoBehaviour:
   lifeSpan: 1
   baseDamage: 10
   sourceTag: Player
-  applyFireDOT: 1
+  applyFireDOT: 0
   applyPoisonDOT: 0
   DOTDuration: 3
 --- !u!54 &2813969280978807811

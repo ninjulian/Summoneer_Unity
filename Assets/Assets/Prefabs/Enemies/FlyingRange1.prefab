@@ -101,7 +101,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -292,7 +292,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -307,6 +307,7 @@ GameObject:
   - component: {fileID: 1183470808330788535}
   - component: {fileID: 2401139678678904732}
   - component: {fileID: 3591682517934417106}
+  - component: {fileID: 9209152342172073131}
   - component: {fileID: 360558683678889349}
   - component: {fileID: 3344705432886441758}
   - component: {fileID: 854075710124024887}
@@ -380,10 +381,31 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!65 &9209152342172073131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4962071458672015274}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.5529156, y: 0.52352333, z: 1}
+  m_Center: {x: -0.1377697, y: 0.9942286, z: 0}
 --- !u!195 &360558683678889349
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -418,15 +440,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85995a923fd2f1145a6bbd6e29317747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 50
   currentHealth: 0
   defense: 0
   movementSpeed: 20
   damage: 10
-  critChance: 5
-  critMultiplier: 2
+  critChance: 0
+  critMultiplier: 0
   attackRange: 10
-  DamageText: {fileID: 5038784662404075132, guid: e8483436a85c2f94b8b55ed998028dca, type: 3}
+  DamageText: {fileID: 2246776743493477051, guid: dc2117b88d6af7e41bc66adb89725982, type: 3}
   spawnRadius: 1
 --- !u!114 &854075710124024887
 MonoBehaviour:
@@ -443,7 +465,6 @@ MonoBehaviour:
   entityStats: {fileID: 3344705432886441758}
   fireParticles: {fileID: 0}
   poisonParticles: {fileID: 0}
-  healthBar: {fileID: 0}
 --- !u!114 &4181876272426243066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,8 +496,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageSlider: {fileID: 6774416287937669176}
   healthSlider: {fileID: 2536667522528692906}
-  healthLerpSpeed: 5
-  delayedLerpSpeed: 2
   entityStats: {fileID: 3344705432886441758}
 --- !u!1 &5721270519688811983
 GameObject:
@@ -611,7 +630,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

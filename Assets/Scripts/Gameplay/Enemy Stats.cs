@@ -25,20 +25,18 @@ public class EnemyStats : StatClass
     }
 
     public override void TakeDamage(float incomingDamage)
-    {
-        Debug.Log("Taking damage");
-        damageHandler.ReceiveDamage(incomingDamage);
+    {   
+        currentHealth -= incomingDamage;
 
         if (DamageText)
         {
             ShowDamageText(incomingDamage);
         }
-       
     }
 
     void ShowDamageText(float damageValue)
     {
-        Debug.Log("TRying to put up a damage text");
+
         Vector3 randomOffset = new Vector3(Random.Range(-spawnRadius, spawnRadius), Random.Range(0.5f, 1.5f), Random.Range(-spawnRadius, spawnRadius));
         Vector3 spawnPosition = transform.position + randomOffset;
 

@@ -22,7 +22,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8659085574277191124
 Transform:
   m_ObjectHideFlags: 0
@@ -127,8 +127,8 @@ MonoBehaviour:
   defense: 0
   movementSpeed: 10
   damage: 10
-  critChance: 5
-  critMultiplier: 2
+  critChance: 0
+  critMultiplier: 0
   attackRange: 2
   DamageText: {fileID: 2246776743493477051, guid: dc2117b88d6af7e41bc66adb89725982, type: 3}
   spawnRadius: 1
@@ -147,7 +147,6 @@ MonoBehaviour:
   entityStats: {fileID: 8405939248027678409}
   fireParticles: {fileID: 0}
   poisonParticles: {fileID: 0}
-  healthBar: {fileID: 0}
 --- !u!114 &736899286226245939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +160,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState: 0
-  attackDamage: 10
   attackCooldown: 1
 --- !u!114 &1449746501336809629
 MonoBehaviour:
@@ -401,11 +399,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1368519661705358835, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.761
       objectReference: {fileID: 0}
     - target: {fileID: 1368519661705358835, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4483782825661243583, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -453,11 +451,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.254
       objectReference: {fileID: 0}
     - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

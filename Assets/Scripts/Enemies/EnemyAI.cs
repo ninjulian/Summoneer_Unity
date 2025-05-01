@@ -1,19 +1,17 @@
 using UnityEngine.AI;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
+using UnityEngine.UIElements;
 
 public enum AIState { Chase, Attack }
 
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private AIState _currentState;
-    private float attackRange = 2f;
 
     private Transform player;
     private NavMeshAgent navAgent;
 
-    
-
-    [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackCooldown = 1f;
     private float lastAttackTime;
 
@@ -28,8 +26,6 @@ public class EnemyAI : MonoBehaviour
         damageHandler = GetComponent<DamageHandler>();
         enemyStats = GetComponent<EnemyStats>();
 
-        attackRange = enemyStats.attackRange;
-
         navAgent.speed = enemyStats.movementSpeed;
 
         SetState(AIState.Chase);
@@ -37,22 +33,28 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        CheckStateTransition();
-        UpdateCurrentState();
+        if (player != null)
+        {
+            CheckStateTransition();
+            UpdateCurrentState();
+        }
     }
 
     void CheckStateTransition()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= attackRange && _currentState != AIState.Attack)
-        {
-            SetState(AIState.Attack);
-        }
-        else if (distanceToPlayer > attackRange && _currentState != AIState.Chase)
-        {
-            SetState(AIState.Chase);
-        }
+
+            if (distanceToPlayer <= enemyStats.attackRange && _currentState != AIState.Attack)
+            {
+                SetState(AIState.Attack);
+            }
+            else if (distanceToPlayer > enemyStats.attackRange && _currentState != AIState.Chase)
+            {
+                SetState(AIState.Chase);
+            }
+        
     }
 
     void SetState(AIState newState)
@@ -85,9 +87,7 @@ public class EnemyAI : MonoBehaviour
 
 
     void AttackPlayer()
-    {
-        // Stop movement while attacking
-        navAgent.isStopped = true;
+    { 
 
         if (Time.time > lastAttackTime + attackCooldown)
         {
@@ -97,14 +97,33 @@ public class EnemyAI : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
 
             // Perform attack
-            if (Vector3.Distance(transform.position, player.position) <= attackRange)
+            if (Vector3.Distance(transform.position, player.position) <= enemyStats.attackRange)
             {
                 Debug.Log("Attacking the player");
                 lastAttackTime = Time.time;
 
-               
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, enemyStats.attackRange);
+
+                // If sphere hits Player it will get the Player's damage handler and apply damage
+                foreach (var hitCollider in hitColliders)
+                {
+                    if (hitCollider.CompareTag("Player"))
+                    {
+                        Debug.Log("Hit player!");
+
+                        DamageHandler playerDamageHandler = hitCollider.GetComponent<DamageHandler>();
+
+                        if (playerDamageHandler != null)
+                        {
+                            playerDamageHandler.ReceiveDamage(enemyStats.damage);
+                        }
+                    }
+                }
+
             }
         }
     }
+
+    
 
 }

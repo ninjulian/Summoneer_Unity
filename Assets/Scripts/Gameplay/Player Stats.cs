@@ -22,7 +22,7 @@ public class PlayerStats : StatClass
 
     public override void TakeDamage(float incomingDamage)
     {
-        damageHandler.ReceiveDamage(incomingDamage);
+        currentHealth -=incomingDamage;
     }
 
     //public float GetDamage()

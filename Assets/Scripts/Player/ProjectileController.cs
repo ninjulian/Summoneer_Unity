@@ -49,7 +49,7 @@ public class ProjectileController : MonoBehaviour
         DamageHandler damageHandler = other.GetComponent<DamageHandler>();
         if (targetStats != null)
         {
-            targetStats.TakeDamage(baseDamage);
+            damageHandler.ReceiveDamage(baseDamage);
             Destroy(gameObject);
 
             // Apply DOT effects

@@ -16,7 +16,7 @@ public class DamageHandler : MonoBehaviour
     [SerializeField] private ParticleSystem poisonParticles;
 
     [Header("UI")]
-    [SerializeField] private HealthBar healthBar;
+    private HealthBar healthBar;
 
     private List<ActiveDOT> activeDOTs = new List<ActiveDOT>();
 
@@ -38,7 +38,7 @@ public class DamageHandler : MonoBehaviour
         healthBar = GetComponent<HealthBar>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         ProcessDOTs();
     }
@@ -46,6 +46,7 @@ public class DamageHandler : MonoBehaviour
     public void ReceiveDamage(float rawDamage)
     {
         float finalDamage = Mathf.Max(rawDamage - entityStats.defense, 1);
+
         entityStats.TakeDamage(finalDamage);
 
         UpdateHPUI(finalDamage);
@@ -89,7 +90,7 @@ public class DamageHandler : MonoBehaviour
             {
                 float damagePerTick = dot.totalDamage;
                 ReceiveDamage(damagePerTick);
-                Debug.Log("DOT dealing " + damagePerTick + "Damage");
+        
                 dot.timeSinceLastTick = 0;
             }
 
@@ -99,7 +100,7 @@ public class DamageHandler : MonoBehaviour
                 if (dot.particles != null)
                 {
                     dot.particles.Stop();
-                    Destroy(dot.particles.gameObject, 2f);
+                    Destroy(dot.particles.gameObject);
                 }
                 activeDOTs.RemoveAt(i);
             }
@@ -124,7 +125,6 @@ public class DamageHandler : MonoBehaviour
 
     private void HandleDeath()
     {
-        Debug.Log($"{gameObject.name} died!");
         // Add death logic (animation, drops, etc)
         Destroy(gameObject);
     }
@@ -140,6 +140,7 @@ public class DamageHandler : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.StartHpUIUpdate(value);
+
         }
     }
 

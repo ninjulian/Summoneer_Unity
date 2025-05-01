@@ -44,12 +44,13 @@ public class EnemyRangeAI : MonoBehaviour
     }
 
     void Update()
-    {   
-
-        CheckLOS();
-        CheckStateTransition();
-        UpdateCurrentState();
-
+    {
+        if (player != null)
+        {
+            CheckLOS();
+            CheckStateTransition();
+            UpdateCurrentState();
+        }
       
     }
 
@@ -70,7 +71,6 @@ public class EnemyRangeAI : MonoBehaviour
     void SetState(AIState newState)
     {
         _currentState = newState;
-        // Add any state entry logic here
     }
 
     void UpdateCurrentState()
@@ -104,7 +104,6 @@ public class EnemyRangeAI : MonoBehaviour
         int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
 
         hasLOS = Physics.Raycast(transform.position, direction, out RaycastHit hit, attackRange, ignoreMask) && hit.collider.CompareTag("Player");
-        Debug.Log("LOS = " + hasLOS);
     }
 
     IEnumerator AttackPlayer()
@@ -122,6 +121,7 @@ public class EnemyRangeAI : MonoBehaviour
             RaycastHit hit;
             GameObject bullet = GameObject.Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+            projectileController.baseDamage = enemyStats.damage;
 
             // Ignore Layer 7 and 9
             int layerToIgnore1 = 7;
@@ -139,28 +139,20 @@ public class EnemyRangeAI : MonoBehaviour
             // Perform attack
             if (Vector3.Distance(transform.position, player.position) <= attackRange)
             {
-                Debug.Log("Range Attack the player");
                 lastAttackTime = Time.time;
 
                 if (Physics.Raycast(transform.position, shotDirection, out hit, maxDistance, ignoreMask))
                 {
-                    
 
-                    Debug.DrawRay(transform.position, shotDirection * hit.distance, Color.green, 1f);
+                    //Debug.DrawRay(transform.position, shotDirection * hit.distance, Color.green, 1f);
                     //projectileController.target = hit.point;
                     projectileController.hit = true;
                     yield return new WaitForSeconds(attackCooldown);
                 }
 
-
-
-
             }
 
-
-
         }
-
 
     }
 

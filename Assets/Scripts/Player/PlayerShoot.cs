@@ -10,18 +10,17 @@ public class PlayerShoot : MonoBehaviour
     public float fireCooldown;
 
     [Header("Bullet Prefabs")]
-    [SerializeField]
-    private GameObject bullet1Prefab;
-    [SerializeField]
-    private GameObject bullet2Prefab;
+    [SerializeField] private GameObject bullet1Prefab;
+    [SerializeField] private GameObject bullet2Prefab;
 
     public float bulletMissDistance = 100f;
 
     // Transforms
-    [SerializeField]
-    private Transform muzzleTransform;
-    [SerializeField]
+    [SerializeField] private Transform muzzleTransform;
     private Transform cameraTransform;
+
+    [SerializeField]
+    private CrosshairManager crosshairManager;
 
     // Player Controller
     private PlayerController playerController;
@@ -65,10 +64,16 @@ public class PlayerShoot : MonoBehaviour
         if (shootAction.IsPressed())
         {
             StartCoroutine(ShootGun(bullet1Prefab));
+            crosshairManager.currentCrosshairType = CrosshairManager.CrosshairType.Shooting1;
         }
         else if (focusAction.IsPressed())
         {
             StartCoroutine(FocusShoot(bullet2Prefab));
+            crosshairManager.currentCrosshairType = CrosshairManager.CrosshairType.Shooting2;
+        }
+        else
+        {
+            crosshairManager.currentCrosshairType = CrosshairManager.CrosshairType.Default;
         }
     }
 
@@ -94,7 +99,7 @@ public class PlayerShoot : MonoBehaviour
 
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
-                Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
+                //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
                 projectileController.target = hit.point;
                 projectileController.hit = true;
                
@@ -104,10 +109,9 @@ public class PlayerShoot : MonoBehaviour
             }
             else
             {
-                Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
+                //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
                 projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
                 projectileController.hit = true;
-                //Debug.Log("nothing");
                 yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;
             }
@@ -115,10 +119,6 @@ public class PlayerShoot : MonoBehaviour
 
 
         }
-
-        // Debug.Log("Tryin to shoot");
-
-
 
     }
 
