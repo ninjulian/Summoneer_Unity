@@ -14,6 +14,10 @@ public class DamageHandler : MonoBehaviour
     [Header("Particle System")]
     [SerializeField] private ParticleSystem fireParticles;
     [SerializeField] private ParticleSystem poisonParticles;
+    
+   // [SerializeField] private Transform DOTLocation;
+
+
 
     [Header("UI")]
     private HealthBar healthBar;
@@ -43,12 +47,10 @@ public class DamageHandler : MonoBehaviour
         ProcessDOTs();
     }
 
-    public void ReceiveDamage(float rawDamage)
+    public void ReceiveDamage(float rawDamage, DOTType? dotType = null) // Modified line
     {
         float finalDamage = Mathf.Max(rawDamage - entityStats.defense, 1);
-
-        entityStats.TakeDamage(finalDamage);
-
+        entityStats.TakeDamage(finalDamage, dotType); // Modified line
         UpdateHPUI(finalDamage);
 
         if (entityStats.currentHealth <= 0)
@@ -59,9 +61,18 @@ public class DamageHandler : MonoBehaviour
 
     private void ApplyDOT(float totalDamage, float duration, float tickInterval, DOTType type, ParticleSystem particles)
     {
-        // Remove existing DOT of same type
+        // Clean up existing DOTs of the same type
+        foreach (var existingDOT in activeDOTs.FindAll(d => d.type == type))
+        {
+            // Stop and clear the particle system to reset it
+            if (particles != null)
+            {
+                particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Stop and clear particles
+            }
+        }
         activeDOTs.RemoveAll(d => d.type == type);
 
+        // Create new DOT (no particle instantiation)
         ActiveDOT newDOT = new ActiveDOT
         {
             type = type,
@@ -70,10 +81,18 @@ public class DamageHandler : MonoBehaviour
             timeRemaining = duration,
             tickInterval = tickInterval,
             timeSinceLastTick = 0,
-            particles = particles != null ? Instantiate(particles, transform) : null
+            particles = particles // Directly reference the pre-attached system
         };
 
-        if (newDOT.particles != null) newDOT.particles.Play();
+        if (newDOT.particles != null)
+        {
+            // Configure particle system to match DOT duration
+            var main = newDOT.particles.main;
+            main.duration = duration; // Set emission duration to match DOT
+            main.loop = false; // Ensure it doesn't loop
+            newDOT.particles.Play(); // Start emitting
+        }
+
         activeDOTs.Add(newDOT);
     }
 
@@ -85,12 +104,10 @@ public class DamageHandler : MonoBehaviour
             dot.timeRemaining -= Time.deltaTime;
             dot.timeSinceLastTick += Time.deltaTime;
 
-            // Apply damage tick by a tick loop
+            // Apply damage tick
             if (dot.timeSinceLastTick >= dot.tickInterval)
             {
-                float damagePerTick = dot.totalDamage;
-                ReceiveDamage(damagePerTick);
-        
+                ReceiveDamage(dot.totalDamage, dot.type);
                 dot.timeSinceLastTick = 0;
             }
 
@@ -99,8 +116,8 @@ public class DamageHandler : MonoBehaviour
             {
                 if (dot.particles != null)
                 {
-                    dot.particles.Stop();
-                    Destroy(dot.particles.gameObject);
+                    // Stop emitting new particles (existing ones will fade out)
+                    dot.particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
                 }
                 activeDOTs.RemoveAt(i);
             }

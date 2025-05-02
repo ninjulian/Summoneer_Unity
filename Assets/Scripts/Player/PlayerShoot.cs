@@ -111,7 +111,7 @@ public class PlayerShoot : MonoBehaviour
             {
                 //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
                 projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
-                projectileController.hit = true;
+                projectileController.hit = false;
                 yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;
             }
@@ -144,7 +144,7 @@ public class PlayerShoot : MonoBehaviour
 
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
-                Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
+                //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
                 projectileController.target = hit.point;
                 projectileController.hit = true;
                 //Debug.Log("hit something");
@@ -153,9 +153,9 @@ public class PlayerShoot : MonoBehaviour
             }
             else
             {
-                Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
+                //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
                 projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
-                projectileController.hit = true;
+                projectileController.hit = false; // Set hit to false on miss
                 //Debug.Log("nothing");
                 yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;

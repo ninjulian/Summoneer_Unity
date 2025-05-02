@@ -24,17 +24,17 @@ public class EnemyStats : StatClass
         damageHandler.Initialize(this);
     }
 
-    public override void TakeDamage(float incomingDamage)
+    public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
     {   
         currentHealth -= incomingDamage;
 
         if (DamageText)
         {
-            ShowDamageText(incomingDamage);
+            ShowDamageText(incomingDamage, dotType);
         }
     }
 
-    void ShowDamageText(float damageValue)
+    void ShowDamageText(float damageValue, DamageHandler.DOTType? dotType)
     {
 
         Vector3 randomOffset = new Vector3(Random.Range(-spawnRadius, spawnRadius), Random.Range(0.5f, 1.5f), Random.Range(-spawnRadius, spawnRadius));
@@ -48,25 +48,22 @@ public class EnemyStats : StatClass
 
         var currentDOT = damageHandler.GetCurrentDOTType();
 
-       
-
-        ////Changes text colour dependent on the DOTType
-        //if (currentDOT.HasValue)
-        //{
-        //    switch (currentDOT.Value)
-        //    {
-        //        case DamageHandler.DOTType.Fire:
-        //            tmp.color = Color.red;
-        //            break;
-        //        case DamageHandler.DOTType.Poison:
-        //            tmp.color = Color.green;
-        //            break;
-        //    }
-        //}
-        //else
-        //{
-        //   tmp.color = Color.white;      
-        //}
-
+        //Changes text colour dependent on the DOTType
+        if (dotType.HasValue)
+        {
+            switch (dotType.Value)
+            {
+                case DamageHandler.DOTType.Fire:
+                    tmp.color = Color.red;
+                    break;
+                case DamageHandler.DOTType.Poison:
+                    tmp.color = new Color(0.5f, 0f, 1f);
+                    break;
+            }
+        }
+        else
+        {
+            tmp.color = Color.white;
+        }
     }
 }

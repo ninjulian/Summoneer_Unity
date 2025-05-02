@@ -32,15 +32,6 @@ public class HealthBar : MonoBehaviour
 
     }
 
-    //public void UpdateHpUI()
-    //{
-    //    // healthSlider.value = entityStats.currentHealth / entityStats.maxHealth;
-
-    //    // Smoothly transition health values
-    //    healthSlider.value = Mathf.MoveTowards(healthSlider.value, entityStats.currentHealth, healthLerpSpeed * Time.deltaTime);
-    //    damageSlider.value = Mathf.MoveTowards(damageSlider.value, healthSlider.value, delayedLerpSpeed * Time.deltaTime);
-    //}
-
 
     public void StartHpUIUpdate(float damageValue)
     {
@@ -55,7 +46,7 @@ public class HealthBar : MonoBehaviour
         while (Mathf.Abs(healthSlider.value - entityStats.currentHealth) > 0.01f ||
                Mathf.Abs(damageSlider.value - healthSlider.value) > 0.01f)
         {
-            healthSlider.value = Mathf.MoveTowards(healthSlider.value, entityStats.currentHealth, (2f * damageValue) * Time.deltaTime);
+            healthSlider.value = Mathf.MoveTowards(healthSlider.value, entityStats.currentHealth, (3f * damageValue) * Time.deltaTime);
             damageSlider.value = Mathf.MoveTowards(damageSlider.value, healthSlider.value, ((damageValue / 2f) + damageValue) * Time.deltaTime);
 
             yield return null; // wait until next frame

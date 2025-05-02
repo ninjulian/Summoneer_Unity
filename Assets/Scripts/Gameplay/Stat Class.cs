@@ -33,6 +33,6 @@ public abstract class StatClass : MonoBehaviour
     }
 
 
-    public abstract void TakeDamage(float incomingDamage);
+    public abstract void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null);
 
 }

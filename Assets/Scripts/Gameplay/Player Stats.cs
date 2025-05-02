@@ -20,7 +20,7 @@ public class PlayerStats : StatClass
 
     }
 
-    public override void TakeDamage(float incomingDamage)
+    public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
     {
         currentHealth -=incomingDamage;
     }

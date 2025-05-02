@@ -125,7 +125,7 @@ MonoBehaviour:
   baseDamage: 10
   sourceTag: Player
   applyFireDOT: 0
-  applyPoisonDOT: 0
+  applyPoisonDOT: 1
   DOTDuration: 3
 --- !u!54 &2813969280978807811
 Rigidbody:
