@@ -14,10 +14,10 @@ public class DamageHandler : MonoBehaviour
     [Header("Particle System")]
     [SerializeField] private ParticleSystem fireParticles;
     [SerializeField] private ParticleSystem poisonParticles;
+
+    [SerializeField] private GameObject healthBarUI;
     
    // [SerializeField] private Transform DOTLocation;
-
-
 
     [Header("UI")]
     private HealthBar healthBar;
@@ -51,6 +51,12 @@ public class DamageHandler : MonoBehaviour
     {
         float finalDamage = Mathf.Max(rawDamage - entityStats.defense, 1);
         entityStats.TakeDamage(finalDamage, dotType); // Modified line
+
+        if (!healthBarUI.activeInHierarchy)
+        {
+            healthBarUI.SetActive(true);
+        }
+
         UpdateHPUI(finalDamage);
 
         if (entityStats.currentHealth <= 0)
@@ -155,7 +161,8 @@ public class DamageHandler : MonoBehaviour
     public void UpdateHPUI(float value)
     {
         if (healthBar != null)
-        {
+        {   
+
             healthBar.StartHpUIUpdate(value);
 
         }

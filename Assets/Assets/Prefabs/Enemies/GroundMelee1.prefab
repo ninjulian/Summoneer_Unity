@@ -181,6 +181,7 @@ MonoBehaviour:
   entityStats: {fileID: 8405939248027678409}
   fireParticles: {fileID: 8215819702803456353}
   poisonParticles: {fileID: 7882061498051287468}
+  healthBarUI: {fileID: 8793743600079588369}
 --- !u!114 &736899286226245939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,11 +434,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1368519661705358835, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.761
       objectReference: {fileID: 0}
     - target: {fileID: 1368519661705358835, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4483782825661243583, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -483,13 +484,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Health Bar
       objectReference: {fileID: 0}
-    - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 7058074180535554613, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.254
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -523,6 +528,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8793743600079588369 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7058074180535554613, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
+  m_PrefabInstance: {fileID: 2016194421467799076}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4313516076051502173
 PrefabInstance:
   m_ObjectHideFlags: 0

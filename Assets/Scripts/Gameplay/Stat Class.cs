@@ -18,8 +18,6 @@ public abstract class StatClass : MonoBehaviour
 
 
 
-   // public float dotDuration;
-
     protected virtual void Start()
     {
         currentHealth = maxHealth;

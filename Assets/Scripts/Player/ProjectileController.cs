@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject bulletDecal;
+
 
     public float speed = 50f;
     public float lifeSpan = 3f;
@@ -14,7 +13,7 @@ public class ProjectileController : MonoBehaviour
     public bool hit { get; set; }
 
     [HideInInspector] public float baseDamage;
-    public string sourceTag; // Who shot this projectile
+    public string sourceTag; 
 
 
     [Header("Damage Over Time")]
@@ -32,15 +31,12 @@ public class ProjectileController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
         // If no target and getting close to target it will destroy itself
-        //if (!hit && Vector3.Distance(transform.position, target) > .01f)
-        //{
-        //    Destroy(gameObject);
-        //}
-
-        if (!hit && Vector3.Distance(transform.position, target) <= 0.01f)
+        if (!hit && Vector3.Distance(transform.position, target) > .01f)
         {
             Destroy(gameObject);
         }
+
+
     }
 
     private void OnTriggerEnter(Collider other)

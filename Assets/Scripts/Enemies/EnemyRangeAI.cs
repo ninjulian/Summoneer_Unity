@@ -13,8 +13,6 @@ public class EnemyRangeAI : MonoBehaviour
     private Transform player;
     private NavMeshAgent navAgent;
 
-
-    [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackCooldown = 1f;
     private float lastAttackTime;
 

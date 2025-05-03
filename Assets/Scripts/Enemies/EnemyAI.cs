@@ -99,7 +99,7 @@ public class EnemyAI : MonoBehaviour
             // Perform attack
             if (Vector3.Distance(transform.position, player.position) <= enemyStats.attackRange)
             {
-                Debug.Log("Attacking the player");
+                //Debug.Log("Attacking the player");
                 lastAttackTime = Time.time;
 
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, enemyStats.attackRange);
@@ -109,7 +109,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (hitCollider.CompareTag("Player"))
                     {
-                        Debug.Log("Hit player!");
+                        //Debug.Log("Hit player!");
 
                         DamageHandler playerDamageHandler = hitCollider.GetComponent<DamageHandler>();
 

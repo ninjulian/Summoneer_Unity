@@ -35,6 +35,7 @@ public class PlayerShoot : MonoBehaviour
     // Player Stats
     private PlayerStats playerStats;
 
+    public static System.Action<Transform> OnEnemyFocused;
 
     private void Awake()
     {
@@ -148,8 +149,15 @@ public class PlayerShoot : MonoBehaviour
                 projectileController.target = hit.point;
                 projectileController.hit = true;
                 //Debug.Log("hit something");
+
+                if (hit.collider.CompareTag("Enemy"))
+                {   
+                    OnEnemyFocused?.Invoke(hit.transform);
+                }
+
                 yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;
+
             }
             else
             {

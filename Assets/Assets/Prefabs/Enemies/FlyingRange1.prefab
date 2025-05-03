@@ -445,6 +445,7 @@ MonoBehaviour:
   entityStats: {fileID: 3344705432886441758}
   fireParticles: {fileID: 130535743412144284}
   poisonParticles: {fileID: 1027579751530234524}
+  healthBarUI: {fileID: 8271277905948488611}
 --- !u!114 &4181876272426243066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,7 +459,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState: 0
-  attackDamage: 10
   attackCooldown: 1
   bulletPrefab: {fileID: 2411828836088549004, guid: 8c276fbbd065f1344ab5d0979d70e1eb, type: 3}
   muzzleTransform: {fileID: 5601026545326896814}
@@ -711,11 +711,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1368519661705358835, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.761
       objectReference: {fileID: 0}
     - target: {fileID: 1368519661705358835, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4483782825661243583, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -761,13 +761,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Health Bar
       objectReference: {fileID: 0}
-    - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 7058074180535554613, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.254
+      objectReference: {fileID: 0}
+    - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -801,6 +805,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8271277905948488611 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7058074180535554613, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
+  m_PrefabInstance: {fileID: 1385466550784696726}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6084025690172207950
 PrefabInstance:
   m_ObjectHideFlags: 0

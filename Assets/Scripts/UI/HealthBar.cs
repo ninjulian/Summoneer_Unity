@@ -19,6 +19,7 @@ public class HealthBar : MonoBehaviour
     {
         entityStats = GetComponent<StatClass>();
         InitializeSliders();
+
     }
 
 
