@@ -58,46 +58,18 @@ public class Summling1 : SummlingStats
         }
     }
 
-    private Vector3 GetValidRoamPosition()
-    {
-        Vector3 validPosition = transform.position;
-        int maxAttempts = 100;
-        int attempts = 0;
-        bool foundValid = false;
-
-        while (!foundValid && attempts < maxAttempts)
-        {
-            // Generate random point in AI's detection range
-            Vector2 randomCircle = Random.insideUnitCircle * detectionRange;
-            validPosition = transform.position + new Vector3(randomCircle.x, 0, randomCircle.y);
-
-            // Ensure it's within player's roam radius
-            if (Vector3.Distance(validPosition, player.transform.position) <= roamRadius)
-            {
-                foundValid = true;
-            }
-            attempts++;
-        }
-
-        // Fallback if all attempts fail (clamp to edge of player's radius)
-        if (!foundValid)
-        {
-            Vector3 directionToPlayer = (player.transform.position - validPosition).normalized;
-            validPosition = player.transform.position + directionToPlayer * roamRadius;
-        }
-
-        return validPosition;
-    }
-
     private void RoamBehavior()
     {
+        // Check if we need new destination or if stuck
         if (ShouldFindNewRoamPosition())
         {
-            roamPosition = GetValidRoamPosition();
+            Vector2 randomPoint = Random.insideUnitCircle * roamRadius;
+            roamPosition = player.transform.position + new Vector3(randomPoint.x, 0, randomPoint.y);
             navAgent.SetDestination(roamPosition);
-            stuckTimer = 0f;
+            stuckTimer = 0f; // Reset stuck timer when setting new destination
         }
 
+        // Additional check for being stuck
         CheckIfStuck();
     }
 
