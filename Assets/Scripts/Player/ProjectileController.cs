@@ -23,7 +23,7 @@ public class ProjectileController : MonoBehaviour
 
     private void OnEnable()
     {
-        Destroy(gameObject, lifeSpan);
+        //Destroy(gameObject, lifeSpan);
     }
 
     void Update()
@@ -31,11 +31,18 @@ public class ProjectileController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
         // If no target and getting close to target it will destroy itself
-        if (!hit && Vector3.Distance(transform.position, target) > .01f)
+        //if (!hit && Vector3.Distance(transform.position, target) > .01f)
+        //{
+        //    Destroy(gameObject);
+        //}
+
+
+        if (!hit && Vector3.Distance(transform.position, target) <= 0.01f)
         {
+            Debug.Log("Tryna destroy bullety");
             Destroy(gameObject);
         }
-
+       
 
     }
 
@@ -66,7 +73,20 @@ public class ProjectileController : MonoBehaviour
 
         }
 
+        int layerToIgnore1 = 6;
+        int ignoreMask = ~(1 << layerToIgnore1);
 
+        if ((ignoreMask & (1 << other.gameObject.layer)) == 0)
+        {
+            StartCoroutine(DelayedDestroy(0.1f));
+            return; // Exit early, don't apply damage
+        }
 
+    }
+
+    private IEnumerator DelayedDestroy(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(gameObject);
     }
 }
