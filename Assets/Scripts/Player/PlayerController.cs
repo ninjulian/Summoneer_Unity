@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
 
         // Only rotate with movement when not shooting
-        if (!shootAction.IsPressed() && move != Vector3.zero)
+        if (!shootAction.IsPressed() && !focusAction.IsPressed() && move != Vector3.zero)
         {
             SmoothRotation(move, rotationSpeed);
         }
@@ -153,7 +153,6 @@ public class PlayerController : MonoBehaviour
             // Get camera's forward direction without vertical component
             Vector3 cameraForward = cameraTransform.forward;
             cameraForward.y = 0;
-
             SmoothRotation(cameraForward, shootingRotationSpeed);
         }
     }
@@ -244,38 +243,38 @@ public class PlayerController : MonoBehaviour
         canDash = true;
     }
 
-    public IEnumerator ShootGun(GameObject bulletChoice)
-    {
-        RaycastHit hit;
-        GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
-        ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+    //public IEnumerator ShootGun(GameObject bulletChoice)
+    //{
+    //    RaycastHit hit;
+    //    GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
+    //    ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
 
-        if (canShoot)
-        {
-            canShoot = false;
+    //    if (canShoot)
+    //    {
+    //        canShoot = false;
 
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
-            {
-                projectileController.target = hit.point;
-                projectileController.hit = true;
-                Debug.Log("hit something");
-            }
-            else
-            {
-                projectileController.target = cameraTransform.position + cameraTransform.forward * 25f;
-                projectileController.hit = false;
-                Debug.Log("nothing");
-            }
+    //        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+    //        {
+    //            projectileController.target = hit.point;
+    //            projectileController.hit = true;
+    //            //Debug.Log("hit something");
+    //        }
+    //        else
+    //        {
+    //            projectileController.target = cameraTransform.position + cameraTransform.forward * 25f;
+    //            projectileController.hit = false;
+    //            //Debug.Log("nothing");
+    //        }
 
-            yield return new WaitForSeconds(FireRate);
+    //        yield return new WaitForSeconds(FireRate);
 
-            canShoot = true;
-        }
+    //        canShoot = true;
+    //    }
 
-        Debug.Log("Tryin to shoot");
+    //    //Debug.Log("Tryin to shoot");
 
        
-    }
+    //}
 
 
 }

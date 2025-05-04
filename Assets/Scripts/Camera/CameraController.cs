@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
-public class SwitchCamera : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     [Header("Inputs")]
     [SerializeField] PlayerInput playerInput;
