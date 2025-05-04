@@ -50,7 +50,7 @@ public class ProjectileController : MonoBehaviour
     {
         //ContactPoint contact = other.GetContact(0);
         //GameObject.Instantiate(bulletDecal, contact.point + contact.normal * .001f, Quaternion.LookRotation(contact.normal));
-
+        Destroy(gameObject);
         if (other.CompareTag(sourceTag)) return; 
 
         StatClass targetStats = other.GetComponent<StatClass>();
@@ -76,11 +76,11 @@ public class ProjectileController : MonoBehaviour
         int layerToIgnore1 = 6;
         int ignoreMask = ~(1 << layerToIgnore1);
 
-        if ((ignoreMask & (1 << other.gameObject.layer)) == 0)
-        {
-            StartCoroutine(DelayedDestroy(0.1f));
-            return; // Exit early, don't apply damage
-        }
+        //if ((ignoreMask & (1 << other.gameObject.layer)) == 0)
+        //{
+        //    StartCoroutine(DelayedDestroy(0.1f));
+        //    return; // Exit early, don't apply damage
+        //}
 
     }
 

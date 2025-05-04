@@ -83,7 +83,9 @@ public class Summling1 : SummlingStats
     }
 
     private void AttackBehavior()
-    {
+    {   
+        
+
         if (currentTarget == null) return;
 
         // Face target

@@ -17,6 +17,11 @@ public class Summling2 : SummlingStats
     private float stuckTimer;
     private bool isMoving;
 
+    [SerializeField]
+    private GameObject bulletPrefab;
+    [SerializeField]
+    private Transform muzzleTransform;
+
     private void Awake()
     {
         navAgent = GetComponent<NavMeshAgent>();
@@ -84,27 +89,25 @@ public class Summling2 : SummlingStats
 
     private void AttackBehavior()
     {
-        if (currentTarget == null) return;
-
         // Face target
-        //Vector3 direction = (currentTarget.position - transform.position).normalized;
+        
+
+        if (currentTarget == null) return;
         transform.LookAt(currentTarget);
+
 
         if (attackCooldownTimer <= 0)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
+            // Shoot projectile
+            GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
+            ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
 
-            foreach (var hitCollider in hitColliders)
-            {
-                if (hitCollider.CompareTag("Enemy"))
-                {
-                    DamageHandler enemyDamageHandler = hitCollider.GetComponent<DamageHandler>();
-                    if (enemyDamageHandler != null)
-                    {
-                        enemyDamageHandler.ReceiveDamage(CalculateDamage());
-                    }
-                }
-            }
+            // Set projectile properties
+            projectileController.baseDamage = CalculateDamage(); 
+            Vector3 shotDirection = (currentTarget.position - muzzleTransform.position).normalized;
+            float maxDistance = 100f; 
+
+            projectileController.target = muzzleTransform.position + shotDirection * maxDistance;
 
             attackCooldownTimer = damageCooldown;
         }
