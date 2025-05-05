@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 53711300657940754}
   - component: {fileID: 736899286226245939}
   - component: {fileID: 1449746501336809629}
+  - component: {fileID: 3974893094858658341}
   m_Layer: 10
   m_Name: GroundMelee1
   m_TagString: Enemy
@@ -93,8 +94,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 2, z: 1.3054389}
+  m_Center: {x: 0, y: 0, z: 0.15271944}
 --- !u!54 &9178860432413175733
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -131,7 +132,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1223382549351762016}
   m_Enabled: 1
   m_AgentTypeID: -334000983
-  m_Radius: 0.50000095
+  m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 10
   avoidancePriority: 50
@@ -159,7 +160,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   defense: 0
-  movementSpeed: 10
+  movementSpeed: 0
   damage: 10
   critChance: 0
   critMultiplier: 0
@@ -211,6 +212,24 @@ MonoBehaviour:
   damageSlider: {fileID: 6251932931760478090}
   healthSlider: {fileID: 3167387284514583832}
   entityStats: {fileID: 8405939248027678409}
+--- !u!114 &3974893094858658341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223382549351762016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.08789876, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &2249185712919840553
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +347,6 @@ GameObject:
   - component: {fileID: 296154677748747874}
   - component: {fileID: 6437379005429320052}
   - component: {fileID: 2480887778711012283}
-  - component: {fileID: 3585828978461746320}
   m_Layer: 10
   m_Name: Capsule
   m_TagString: Enemy
@@ -401,29 +419,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3585828978461746320
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1068124718355197649, guid: fa36bc84e0ac0db4bad51334acb68441, type: 3}
-  m_PrefabInstance: {fileID: 6607180568196320046}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7381471651021456539}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2016194421467799076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -434,11 +429,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1368519661705358835, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.761
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1368519661705358835, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4483782825661243583, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -490,11 +485,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.254
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

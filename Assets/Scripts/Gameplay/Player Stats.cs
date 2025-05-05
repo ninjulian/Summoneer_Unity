@@ -9,7 +9,7 @@ public class PlayerStats : StatClass
 
     public float luck;
     public float affinity;
-
+    public float focusDuration = 5f;
     private DamageHandler damageHandler;
 
     private void Awake()

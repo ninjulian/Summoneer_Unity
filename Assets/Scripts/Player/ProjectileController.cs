@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
-
+    public bool focusBullet;
 
     public float speed = 50f;
     public float lifeSpan = 3f;
@@ -53,7 +53,6 @@ public class ProjectileController : MonoBehaviour
         Destroy(gameObject);
         if (other.CompareTag(sourceTag)) 
         {   
-            Debug.Log("HIT MESELFG" + sourceTag);
             return;
         } 
 
@@ -61,6 +60,7 @@ public class ProjectileController : MonoBehaviour
         DamageHandler damageHandler = other.GetComponent<DamageHandler>();
         if (targetStats != null)
         {
+
 
             Debug.Log(sourceTag + " Shot projectile");
             damageHandler.ReceiveDamage(baseDamage);
@@ -95,4 +95,5 @@ public class ProjectileController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         Destroy(gameObject);
     }
+
 }

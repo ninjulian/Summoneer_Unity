@@ -151,11 +151,6 @@ public class PlayerShoot : MonoBehaviour
                 projectileController.hit = true;
                 //Debug.Log("hit something");
 
-                if (hit.collider.CompareTag("Enemy"))
-                {   
-                    OnEnemyFocused?.Invoke(hit.transform);
-                }
-
                 yield return new WaitForSeconds(fireCooldown);
                 canShoot = true;
 

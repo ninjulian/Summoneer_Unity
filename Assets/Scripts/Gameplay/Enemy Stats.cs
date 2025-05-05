@@ -16,13 +16,32 @@ public class EnemyStats : StatClass
     public float spawnRadius = 1.0f;
 
     private DamageHandler damageHandler;
+    private Outline outline;
 
     private void Awake()
     {
         base.Start();
         damageHandler = gameObject.GetComponent<DamageHandler>();
         damageHandler.Initialize(this);
+        outline = gameObject.GetComponent<Outline>();
+        outline.enabled = false;
+
+        PlayerShoot.OnEnemyFocused += HandleEnemyFocused;
+
     }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe to prevent memory leaks
+        PlayerShoot.OnEnemyFocused -= HandleEnemyFocused;
+    }
+
+    private void HandleEnemyFocused(Transform focusedEnemy)
+    {
+        // Enable outline if this enemy is focused, disable otherwise
+        outline.enabled = (focusedEnemy == transform);
+    }
+
 
     public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
     {   

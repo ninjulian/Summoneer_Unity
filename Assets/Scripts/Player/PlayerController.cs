@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
     private InputAction shootAction;
     private InputAction focusAction;
 
-
+    [Header("UI")]
+    [SerializeField] private GameObject pauseScreen;
 
     //[SerializeField]
     //private Transform bulletParent;
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviour
         dashAction = playerInput.actions["Dash"];
         shootAction = playerInput.actions["Shoot"];
         focusAction = playerInput.actions["Focus"];
+
     }
 
    
