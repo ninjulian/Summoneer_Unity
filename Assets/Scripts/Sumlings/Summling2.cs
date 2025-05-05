@@ -42,9 +42,12 @@ public class Summling2 : SummlingStats
 
     private void Update()
     {
-        UpdateTimers();
-        CheckStateTransitions();
-        UpdateCurrentState();
+        if (player != null)
+        {
+            UpdateTimers();
+            CheckStateTransitions();
+            UpdateCurrentState();
+        }
     }
 
     private void UpdateCurrentState()
@@ -98,6 +101,7 @@ public class Summling2 : SummlingStats
 
         if (attackCooldownTimer <= 0)
         {
+            Debug.Log("Shooting Projectile");
             // Shoot projectile
             GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
@@ -117,7 +121,7 @@ public class Summling2 : SummlingStats
     {
         // Check if we've reached our destination or player moved too far
         return navAgent.remainingDistance <= navAgent.stoppingDistance ||
-               Vector3.Distance(player.transform.position, roamPosition) > roamRadius;
+        Vector3.Distance(player.transform.position, roamPosition) > roamRadius;
     }
 
     private void CheckIfStuck()

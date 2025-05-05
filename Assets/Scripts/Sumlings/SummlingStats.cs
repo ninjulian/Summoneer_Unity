@@ -28,10 +28,12 @@ public abstract class SummlingStats : MonoBehaviour
     protected float attackCooldownTimer;
 
     [Header("Roaming")]
-    public float playerFollowThreshold = 3f; // Distance before updating roam position
+    public float playerFollowThreshold = 1f; // Distance before updating roam position
 
     [Header("References")]
     [HideInInspector]public GameObject player;
+
+
 
     // Start is called before the first frame update
     protected virtual void Start()

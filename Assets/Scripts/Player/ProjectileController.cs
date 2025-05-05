@@ -31,17 +31,17 @@ public class ProjectileController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
         // If no target and getting close to target it will destroy itself
-        if (!hit && Vector3.Distance(transform.position, target) > .01f)
-        {
-            Destroy(gameObject);
-        }
-
-
-        //if (!hit && Vector3.Distance(transform.position, target) <= 0.01f)
+        //if (!hit && Vector3.Distance(transform.position, target) > .01f)
         //{
-        //    Debug.Log("Tryna destroy bullety");
         //    Destroy(gameObject);
         //}
+
+
+        if (!hit && Vector3.Distance(transform.position, target) <= 0.01f)
+        {
+            Debug.Log("Tryna destroy bullety");
+            Destroy(gameObject);
+        }
 
 
     }
@@ -51,12 +51,18 @@ public class ProjectileController : MonoBehaviour
         //ContactPoint contact = other.GetContact(0);
         //GameObject.Instantiate(bulletDecal, contact.point + contact.normal * .001f, Quaternion.LookRotation(contact.normal));
         Destroy(gameObject);
-        if (other.CompareTag(sourceTag)) return; 
+        if (other.CompareTag(sourceTag)) 
+        {   
+            Debug.Log("HIT MESELFG" + sourceTag);
+            return;
+        } 
 
         StatClass targetStats = other.GetComponent<StatClass>();
         DamageHandler damageHandler = other.GetComponent<DamageHandler>();
         if (targetStats != null)
         {
+
+            Debug.Log(sourceTag + " Shot projectile");
             damageHandler.ReceiveDamage(baseDamage);
             Destroy(gameObject);
 

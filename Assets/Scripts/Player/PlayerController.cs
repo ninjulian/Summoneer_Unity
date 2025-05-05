@@ -29,11 +29,11 @@ public class PlayerController : MonoBehaviour
 
 
 
-    [SerializeField]
-    private Transform bulletParent;
-    private bool canShoot = true;
-    private bool isHitScan;
-    public float FireRate;
+    //[SerializeField]
+    //private Transform bulletParent;
+    //private bool canShoot = true;
+    //private bool isHitScan;
+    //public float FireRate;
 
     [SerializeField]
     private Transform muzzleTransform;

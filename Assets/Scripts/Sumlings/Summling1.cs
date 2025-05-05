@@ -37,9 +37,13 @@ public class Summling1 : SummlingStats
 
     private void Update()
     {
-        UpdateTimers();
-        CheckStateTransitions();
-        UpdateCurrentState();
+
+        if (player != null)
+        {
+            UpdateTimers();
+            CheckStateTransitions();
+            UpdateCurrentState();
+        }
     }
 
     private void UpdateCurrentState()

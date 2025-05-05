@@ -112,7 +112,7 @@ public class EnemyRangeAI : MonoBehaviour
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
-
+        transform.LookAt(player.position);
 
         if (Time.time > lastAttackTime + attackCooldown)
         {
