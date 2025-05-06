@@ -6,8 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerShoot : MonoBehaviour
 {
     [Header("Player Shoot Stats")]
-    public float fireRate;
-    public float fireCooldown;
+    private float fireCooldown;
 
     [Header("Bullet Prefabs")]
     [SerializeField] private GameObject bullet1Prefab;
@@ -51,13 +50,15 @@ public class PlayerShoot : MonoBehaviour
     {
         cameraTransform = playerController.cameraTransform;
 
-        fireCooldown = 60f / fireRate;
+        fireCooldown = 60f / playerStats.fireRate;
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleInput();
+        UpdateFireRate();
+
     }
 
     public void HandleInput()
@@ -169,9 +170,17 @@ public class PlayerShoot : MonoBehaviour
 
         }
 
+
+
         // Debug.Log("Tryin to shoot");
 
 
 
+    }
+
+    public void UpdateFireRate()
+    {
+        // Convert bullets-per-second to cooldown between shots
+        fireCooldown = 1f / playerStats.fireRate;
     }
 }

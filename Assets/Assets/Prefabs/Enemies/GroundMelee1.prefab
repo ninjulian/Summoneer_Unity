@@ -43,11 +43,11 @@ GameObject:
   - component: {fileID: 6288703884837483911}
   - component: {fileID: 9178860432413175733}
   - component: {fileID: 8013646089676007293}
+  - component: {fileID: 3974893094858658341}
   - component: {fileID: 8405939248027678409}
   - component: {fileID: 53711300657940754}
   - component: {fileID: 736899286226245939}
   - component: {fileID: 1449746501336809629}
-  - component: {fileID: 3974893094858658341}
   m_Layer: 10
   m_Name: GroundMelee1
   m_TagString: Enemy
@@ -145,6 +145,24 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3974893094858658341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223382549351762016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.08789876, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!114 &8405939248027678409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,24 +230,6 @@ MonoBehaviour:
   damageSlider: {fileID: 6251932931760478090}
   healthSlider: {fileID: 3167387284514583832}
   entityStats: {fileID: 8405939248027678409}
---- !u!114 &3974893094858658341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223382549351762016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0.08789876, b: 0, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!1 &2249185712919840553
 GameObject:
   m_ObjectHideFlags: 0

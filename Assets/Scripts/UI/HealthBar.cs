@@ -18,18 +18,26 @@ public class HealthBar : MonoBehaviour
     void Start()
     {
         entityStats = GetComponent<StatClass>();
+        UpdateMaxHealth();
         InitializeSliders();
 
     }
 
+    private void Update()
+    {
+        UpdateMaxHealth() ;
+    }
 
     public void InitializeSliders()
     {
-        healthSlider.maxValue = entityStats.maxHealth;
-        damageSlider.maxValue = entityStats.maxHealth;
-
         healthSlider.value = entityStats.maxHealth;
         damageSlider.value = entityStats.maxHealth;
+    }
+
+    public void UpdateMaxHealth()
+    {
+        healthSlider.maxValue = entityStats.maxHealth;
+        damageSlider.maxValue = entityStats.maxHealth;
 
     }
 
@@ -47,16 +55,22 @@ public class HealthBar : MonoBehaviour
         while (Mathf.Abs(healthSlider.value - entityStats.currentHealth) > 0.01f ||
                Mathf.Abs(damageSlider.value - healthSlider.value) > 0.01f)
         {
-            healthSlider.value = Mathf.MoveTowards(healthSlider.value, entityStats.currentHealth, (3f * damageValue) * Time.deltaTime);
-            damageSlider.value = Mathf.MoveTowards(damageSlider.value, healthSlider.value, ((damageValue / 2f) + damageValue) * Time.deltaTime);
+            healthSlider.value = Mathf.MoveTowards(healthSlider.value, entityStats.currentHealth, (10f * damageValue) * Time.deltaTime);
+            damageSlider.value = Mathf.MoveTowards(damageSlider.value, healthSlider.value, (5f * damageValue) * Time.deltaTime);
 
             yield return null; // wait until next frame
         }
 
-        // Final snap to precise value (optional cleanup)
-        healthSlider.value = entityStats.currentHealth;
-        damageSlider.value = entityStats.currentHealth;
+        //// Final snap to precise value (optional cleanup)
+        //healthSlider.value = entityStats.currentHealth;
+        //damageSlider.value = entityStats.currentHealth;
 
         hpCoroutine = null; // finished
+    }
+
+    public void HealthIncrease()
+    {
+        healthSlider.value = entityStats.currentHealth;
+        damageSlider.value = entityStats.currentHealth;
     }
 }

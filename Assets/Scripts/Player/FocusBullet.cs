@@ -6,9 +6,6 @@ public class FocusBullet : MonoBehaviour
     // Reference to ProjectileController for stats
     private ProjectileController projectileController;
 
-    // Event to notify about enemy hits
-    public event Action<Transform> OnEnemyHit;
-
     private void Start()
     {
         projectileController = GetComponent<ProjectileController>();

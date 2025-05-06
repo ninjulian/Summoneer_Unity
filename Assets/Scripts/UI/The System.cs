@@ -4,15 +4,41 @@ using UnityEngine;
 
 public class TheSystem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("UI")]
+    [SerializeField] private GameObject systemUI;
+    [SerializeField] private GameObject playerStatUI;
+    [SerializeField] private GameObject upgradeUI;
 
-    // Update is called once per frame
+
     void Update()
     {
-        
+        if (playerStatUI.activeSelf && upgradeUI.activeSelf)
+        {
+            // Prioritize one and disable the other
+            upgradeUI.SetActive(false);
+        }
     }
+
+
+    public void closeSystemUI()
+    {
+        systemUI.SetActive(false);
+    }
+
+    public void openUpgradeUI()
+    {
+        SetExclusiveUI(upgradeUI);
+    }
+
+    public void closeUpgradeUI() 
+    {
+        SetExclusiveUI(playerStatUI);
+    }
+
+    private void SetExclusiveUI(GameObject uiToEnable)
+    {
+        playerStatUI.SetActive(uiToEnable == playerStatUI);
+        upgradeUI.SetActive(uiToEnable == upgradeUI);
+    }
+
 }

@@ -6,10 +6,13 @@ using UnityEngine;
 public class PlayerStats : StatClass 
 {
     [Header("Player Specific")]
-
+    public float jumpHeight;
     public float luck;
     public float affinity;
     public float focusDuration = 5f;
+    public float fireRate;
+    public float coolDown;
+    public float dashStrength = 10f;
     private DamageHandler damageHandler;
 
     private void Awake()

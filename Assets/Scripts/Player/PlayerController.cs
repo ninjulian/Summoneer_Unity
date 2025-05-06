@@ -7,13 +7,13 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public float playerSpeed = 2.0f;
+    public float playerSpeed;
     public float jumpHeight = 1.0f;
     public float gravityValue = -9.81f;
     private Vector3 movementDir; // Movement Direction
 
     [Header("Dash")]
-    public float dashSpeed = 10f;
+    private float dashStrength = 10f;
     public float dashTimer = 0.2f;
     public float dashCooldown = 1f;
     public bool canDash = true;
@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float shootingRotationSpeed = 10f;
     [SerializeField] private TrailRenderer trailRenderer;
+    private PlayerStats playerStats;
 
     private CharacterController controller;
     [HideInInspector]
@@ -56,7 +57,7 @@ public class PlayerController : MonoBehaviour
     {
        
         cameraTransform = Camera.main.transform;
-
+        playerStats = GetComponent<PlayerStats>();
 
         // Initiatlise Trail renderer
         trailRenderer = GetComponent<TrailRenderer>();
@@ -103,6 +104,8 @@ public class PlayerController : MonoBehaviour
 
         movementDir = move;
 
+        //Get movementspeed Stat
+        playerSpeed = playerStats.movementSpeed; 
 
         controller.Move(move * Time.deltaTime * playerSpeed);
 
@@ -126,10 +129,11 @@ public class PlayerController : MonoBehaviour
     }
 
     private void HandleJump()
-    {
+    {   
         // Makes the player jump
         if (jumpAction.triggered && groundedPlayer)
-        {
+        {   
+            jumpHeight = playerStats.jumpHeight;
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
         }
     }
@@ -198,7 +202,7 @@ public class PlayerController : MonoBehaviour
         //float originalGravity = gravityValue;
 
         //// Set dash parameters
-        //playerSpeed = dashSpeed;
+        //playerSpeed = dashStrength;
         ////gravityValue = 0;
         //playerVelocity.y = 0f;
 
@@ -217,7 +221,7 @@ public class PlayerController : MonoBehaviour
             if (movementDir != Vector3.zero)
             {
 
-                controller.Move(movementDir * dashSpeed * Time.deltaTime);
+                controller.Move(movementDir * dashStrength * Time.deltaTime);
                 //SmoothRotation(movementDir, rotationSpeed);
 
                 yield return null;
