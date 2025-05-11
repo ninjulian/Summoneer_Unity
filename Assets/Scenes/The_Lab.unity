@@ -13458,6 +13458,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2129524557150380524, guid: bbaaf698b80a37b4d903ae281bb797ee, type: 3}
+      propertyPath: damageCooldown
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2129524557150380524, guid: bbaaf698b80a37b4d903ae281bb797ee, type: 3}
       propertyPath: alwaysShowGizmos
       value: 0
       objectReference: {fileID: 0}

@@ -13,6 +13,7 @@ public class PlayerStats : StatClass
     public float fireRate;
     public float coolDown;
     public float dashStrength = 10f;
+    public int playerLevel { get; private set; } = 1;
     private DamageHandler damageHandler;
 
     private void Awake()

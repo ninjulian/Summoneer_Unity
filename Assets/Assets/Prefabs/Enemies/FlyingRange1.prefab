@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 854075710124024887}
   - component: {fileID: 4181876272426243066}
   - component: {fileID: 3521689646999123066}
+  - component: {fileID: 2066070154250972694}
   m_Layer: 10
   m_Name: FlyingRange1
   m_TagString: Enemy
@@ -384,8 +385,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5, y: 0.5, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.5693216, y: 0.5, z: 1.078866}
+  m_Center: {x: -0.034660816, y: 0, z: 0.039433002}
 --- !u!195 &360558683678889349
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -430,6 +431,9 @@ MonoBehaviour:
   attackRange: 10
   DamageText: {fileID: 2246776743493477051, guid: dc2117b88d6af7e41bc66adb89725982, type: 3}
   spawnRadius: 1
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &854075710124024887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,6 +481,24 @@ MonoBehaviour:
   damageSlider: {fileID: 6774416287937669176}
   healthSlider: {fileID: 2536667522528692906}
   entityStats: {fileID: 3344705432886441758}
+--- !u!114 &2066070154250972694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4962071458672015274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0.8242984, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &5721270519688811983
 GameObject:
   m_ObjectHideFlags: 0

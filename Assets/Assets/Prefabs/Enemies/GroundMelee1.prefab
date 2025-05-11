@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 0.08789876, b: 0, a: 1}
+  outlineColor: {r: 0, g: 0.9176161, b: 1, a: 1}
   outlineWidth: 2
   precomputeOutline: 0
   bakeKeys: []
@@ -185,6 +185,9 @@ MonoBehaviour:
   attackRange: 2
   DamageText: {fileID: 2246776743493477051, guid: dc2117b88d6af7e41bc66adb89725982, type: 3}
   spawnRadius: 1
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &53711300657940754
 MonoBehaviour:
   m_ObjectHideFlags: 0

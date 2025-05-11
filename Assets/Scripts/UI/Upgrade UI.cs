@@ -1,88 +1,131 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UpgradeUI : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject player;
-    private HealthBar playerHealthBar;
-     private PlayerStats playerStats;
     [SerializeField] private TMP_Text descriptionText;
+    [SerializeField] private Button confirmButton;
+
+    private HealthBar playerHealthBar;
+    private PlayerStats playerStats;
+
+    public enum UpgradeType
+    {
+        None,
+        FireRate,
+        MaxHealth,
+        MovementSpeed,
+        JumpHeight,
+        Damage
+    }
+
+    private UpgradeType selectedUpgrade = UpgradeType.None;
 
     void OnEnable()
     {
         playerStats = player.GetComponent<PlayerStats>();
-        playerHealthBar = GetComponent<HealthBar>();
+        playerHealthBar = player.GetComponent<HealthBar>();
+        confirmButton.interactable = false;
     }
 
-    // Button click functions
-    public void FireRateButton()
+    // Selection buttons
+    public void SelectFireRate() => SetUpgrade(UpgradeType.FireRate);
+    public void SelectMaxHealth() => SetUpgrade(UpgradeType.MaxHealth);
+    public void SelectMovementSpeed() => SetUpgrade(UpgradeType.MovementSpeed);
+    public void SelectJumpHeight() => SetUpgrade(UpgradeType.JumpHeight);
+    public void SelectDamage() => SetUpgrade(UpgradeType.Damage);
+
+    private void SetUpgrade(UpgradeType type)
     {
-        playerStats.fireRate += 1f;
+        selectedUpgrade = type;
+        confirmButton.interactable = true;
+        UpdateDescription();
     }
 
-    public void MaxHealthButton()
+    public void ConfirmSelection()
     {
-        playerStats.maxHealth += 10f;
-        playerStats.currentHealth += 10f;
-       // playerHealthBar.HealthIncrease();
+        if (selectedUpgrade == UpgradeType.None) return;
+
+        switch (selectedUpgrade)
+        {
+            case UpgradeType.FireRate:
+                playerStats.fireRate += 1f;
+                break;
+            case UpgradeType.MaxHealth:
+                playerStats.maxHealth += 10f;
+                playerStats.currentHealth = Mathf.Min(playerStats.currentHealth + 10f, playerStats.maxHealth);
+                if (playerHealthBar != null) playerHealthBar.HealthIncrease();
+                break;
+            case UpgradeType.MovementSpeed:
+                playerStats.movementSpeed += 1f;
+                break;
+            case UpgradeType.JumpHeight:
+                playerStats.jumpHeight += 1f;
+                break;
+            case UpgradeType.Damage:
+                playerStats.damage += 2f;
+                break;
+        }
+
+        ResetSelection();
     }
 
-    public void MovementSpeedButton()
+    private void ResetSelection()
     {
-        playerStats.movementSpeed += 1f;
+        selectedUpgrade = UpgradeType.None;
+        confirmButton.interactable = false;
+        ClearDescription();
     }
 
-    public void JumpHeightButton()
+    // Description updates
+    private void UpdateDescription()
     {
-        playerStats.jumpHeight += 1f;
+        switch (selectedUpgrade)
+        {
+            case UpgradeType.FireRate:
+                ShowFireRateDescription();
+                break;
+            case UpgradeType.MaxHealth:
+                ShowMaxHealthDescription();
+                break;
+            case UpgradeType.MovementSpeed:
+                ShowMovementSpeedDescription();
+                break;
+            case UpgradeType.JumpHeight:
+                ShowJumpHeightDescription();
+                break;
+            case UpgradeType.Damage:
+                ShowDamageDescription();
+                break;
+        }
     }
 
-    public void DamageButton()
+    private void ShowFireRateDescription()
     {
-        playerStats.damage += 2f;
+        descriptionText.text = $"Fire Rate\nShoot faster\nCurrent: {playerStats.fireRate}\nAfter Upgrade: {playerStats.fireRate + 1f}";
     }
 
-    // Hover description functions
-    public void ShowFireRateDescription()
+    private void ShowMaxHealthDescription()
     {
-        descriptionText.text = "Fire Rate\n" +
-                              "Shoot faster\n" +
-                              "Current: " + playerStats.fireRate + "\n" +
-                              "After Upgrade: " + (playerStats.fireRate + 1f);
+        descriptionText.text = $"Max Health\nIncrease health capacity\nCurrent: {playerStats.maxHealth}\nAfter Upgrade: {playerStats.maxHealth + 10f}";
     }
 
-    public void ShowMaxHealthDescription()
+    private void ShowMovementSpeedDescription()
     {
-        descriptionText.text = "Max Health\n" +
-                              "Increase health capacity\n" +
-                              "Current: " + playerStats.maxHealth + "\n" +
-                              "After Upgrade: " + (playerStats.maxHealth + 10f);
+        descriptionText.text = $"Movement Speed\nMove faster\nCurrent: {playerStats.movementSpeed}\nAfter Upgrade: {playerStats.movementSpeed + 1f}";
     }
 
-    public void ShowMovementSpeedDescription()
+    private void ShowJumpHeightDescription()
     {
-        descriptionText.text = "Movement Speed\n" +
-                              "Move faster\n" +
-                              "Current: " + playerStats.movementSpeed + "\n" +
-                              "After Upgrade: " + (playerStats.movementSpeed + 1f);
+        descriptionText.text = $"Jump Height\nJump higher\nCurrent: {playerStats.jumpHeight}\nAfter Upgrade: {playerStats.jumpHeight + 1f}";
     }
 
-    public void ShowJumpHeightDescription()
+    private void ShowDamageDescription()
     {
-        descriptionText.text = "Jump Height\n" +
-                              "Jump higher\n" +
-                              "Current: " + playerStats.jumpHeight + "\n" +
-                              "After Upgrade: " + (playerStats.jumpHeight + 1f);
-    }
-
-    public void ShowDamageDescription()
-    {
-        descriptionText.text = "Damage\n" +
-                              "Deal more damage\n" +
-                              "Current: " + playerStats.damage + "\n" +
-                              "After Upgrade: " + (playerStats.damage + 2f);
+        descriptionText.text = $"Damage\nDeal more damage\nCurrent: {playerStats.damage}\nAfter Upgrade: {playerStats.damage + 2f}";
     }
 
     public void ClearDescription()

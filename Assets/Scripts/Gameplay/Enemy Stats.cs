@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine.Events;
 
 public class EnemyStats : StatClass
 {
@@ -17,6 +18,8 @@ public class EnemyStats : StatClass
 
     private DamageHandler damageHandler;
     private Outline outline;
+
+    public UnityEvent onDeath;
 
     private void Awake()
     {
@@ -32,6 +35,9 @@ public class EnemyStats : StatClass
 
     private void OnDestroy()
     {
+        
+        onDeath?.Invoke();
+        //Destroy(gameObject);
         // Unsubscribe to prevent memory leaks
         PlayerShoot.OnEnemyFocused -= HandleEnemyFocused;
     }
