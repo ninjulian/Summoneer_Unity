@@ -26,16 +26,17 @@ public class WaveManager : MonoBehaviour
     public bool IsCountingDown { get; private set; }
 
 
-    private PlayerStats level;
+    private PlayerStats playerStats;
 
     private void Awake()
     {
-        level = FindObjectOfType<PlayerStats>();
+        playerStats = FindObjectOfType<PlayerStats>();
         StartNextWave();
     }
 
     public void Update()
     {
+        Debug.Log("Enemies count will be " + targetEnemies);
         if (IsCountingDown)
         {
             CountdownTimer -= Time.deltaTime;
@@ -59,7 +60,7 @@ public class WaveManager : MonoBehaviour
     {
         targetEnemies = Mathf.RoundToInt(
             (currentWave * waveFactor) +
-            (level.playerLevel * levelFactor)
+            (playerStats.playerLevel * levelFactor)
         );
     }
 
@@ -74,7 +75,7 @@ public class WaveManager : MonoBehaviour
     {
         enemiesAlive--;
 
-        if (enemiesAlive <= 0 && targetEnemies <= 0)
+        if (enemiesAlive <= 0)/* && targetEnemies <= 0)*/
         {
             CompleteWave();
         }

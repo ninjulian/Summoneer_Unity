@@ -78,7 +78,7 @@ public class EnemyAI : MonoBehaviour
 
     void ChasePlayer()
     {
-        if (navAgent.isStopped) navAgent.isStopped = false;
+        //if (navAgent.isStopped) navAgent.isStopped = false;
         navAgent.SetDestination(player.position);
 
         // Optional: Add acceleration when starting to chase

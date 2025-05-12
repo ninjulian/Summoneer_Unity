@@ -14,6 +14,8 @@ public class WaveSpawner : MonoBehaviour
 
     private WaveManager waveManager;
     private bool isSpawning = false;
+    private Vector3 lastSpawnAttemptPosition;
+    private bool lastAttemptValid;
 
     private void Awake()
     {
@@ -34,7 +36,7 @@ public class WaveSpawner : MonoBehaviour
         isSpawning = true;
         int enemiesToSpawn = waveManager.GetTargetEnemies();
 
-        while (enemiesToSpawn > 0)
+        while (enemiesToSpawn >= 0)
         {
             SpawnEnemy();
             enemiesToSpawn--;
@@ -65,10 +67,19 @@ public class WaveSpawner : MonoBehaviour
         Vector2 randomCircle = Random.insideUnitCircle.normalized * spawnRadius;
         Vector3 spawnPos = player.position + new Vector3(randomCircle.x, 0, randomCircle.y);
 
-        if (!Physics.CheckSphere(spawnPos, 1f, spawnCheckMask))
+        // Record spawn attempt for debugging
+        lastSpawnAttemptPosition = spawnPos;
+        lastAttemptValid = !Physics.CheckSphere(spawnPos, 1f, spawnCheckMask);
+
+        return lastAttemptValid ? spawnPos : Vector3.zero;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (lastSpawnAttemptPosition != Vector3.zero)
         {
-            return spawnPos;
+            Gizmos.color = lastAttemptValid ? Color.green : Color.red;
+            Gizmos.DrawWireSphere(lastSpawnAttemptPosition, 1f);
         }
-        return Vector3.zero;
     }
 }
