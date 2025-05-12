@@ -62,7 +62,7 @@ public class ProjectileController : MonoBehaviour
         {
 
 
-            Debug.Log(sourceTag + " Shot projectile");
+            //Debug.Log(sourceTag + " Shot projectile");
             damageHandler.ReceiveDamage(baseDamage);
             Destroy(gameObject);
 

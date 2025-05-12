@@ -7,16 +7,11 @@ public class TheSystem : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject systemUI;
     [SerializeField] private GameObject playerStatUI;
-    [SerializeField] private GameObject upgradeUI;
 
 
     void Update()
     {
-        if (playerStatUI.activeSelf && upgradeUI.activeSelf)
-        {
-            // Prioritize one and disable the other
-            upgradeUI.SetActive(false);
-        }
+        
     }
 
 
@@ -25,20 +20,20 @@ public class TheSystem : MonoBehaviour
         systemUI.SetActive(false);
     }
 
-    public void openUpgradeUI()
-    {
-        SetExclusiveUI(upgradeUI);
-    }
+    //public void openUpgradeUI()
+    //{
+    //    SetExclusiveUI(upgradeUI);
+    //}
 
-    public void closeUpgradeUI() 
-    {
-        SetExclusiveUI(playerStatUI);
-    }
+    //public void closeUpgradeUI() 
+    //{
+    //    SetExclusiveUI(playerStatUI);
+    //}
 
     private void SetExclusiveUI(GameObject uiToEnable)
     {
         playerStatUI.SetActive(uiToEnable == playerStatUI);
-        upgradeUI.SetActive(uiToEnable == upgradeUI);
+        //upgradeUI.SetActive(uiToEnable == upgradeUI);
     }
 
 }

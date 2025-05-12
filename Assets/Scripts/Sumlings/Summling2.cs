@@ -101,7 +101,7 @@ public class Summling2 : SummlingStats
 
         if (attackCooldownTimer <= 0)
         {
-            Debug.Log("Shooting Projectile");
+            //Debug.Log("Shooting Projectile");
             // Shoot projectile
             GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();

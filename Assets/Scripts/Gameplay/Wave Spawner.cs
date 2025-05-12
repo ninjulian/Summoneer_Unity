@@ -18,10 +18,12 @@ public class WaveSpawner : MonoBehaviour
     private Vector3 lastSpawnAttemptPosition;
     private bool lastAttemptValid;
 
+    //private int enemiesSpawned = 0;
 
     private void Awake()
     {
         waveManager = GetComponent<WaveManager>();
+        // Adds a listener for the onWaveStarted unity Event, when invoked will run Start Spawning
         waveManager.onWaveStarted.AddListener(StartSpawning);
     }
 
@@ -37,27 +39,40 @@ public class WaveSpawner : MonoBehaviour
     {
         isSpawning = true;
         int enemiesToSpawn = waveManager.GetTargetEnemies();
+        int enemiesSpawned = 0;
 
-        while (enemiesToSpawn >= 0) 
+        while (enemiesSpawned < enemiesToSpawn)
         {
-            SpawnEnemy();
-            enemiesToSpawn--;
+            if (SpawnEnemy()) // Only increment if spawning succeeded
+            {
+                enemiesSpawned++;
+            }
             yield return new WaitForSeconds(spawnDelay);
         }
 
         isSpawning = false;
     }
 
-    private void SpawnEnemy()
+    private bool SpawnEnemy()
     {
-        Vector3 spawnPosition = GetValidSpawnPosition();
-        if (spawnPosition != Vector3.zero)
+        Vector3 spawnPosition;
+        int attempts = 0;
+        const int maxAttempts = 10; // Prevent infinite loops
+
+        do
         {
-            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity);
-            waveManager.RegisterEnemy();
-            enemy.GetComponent<EnemyStats>().onDeath.AddListener(waveManager.EnemyDefeated);
+            spawnPosition = GetValidSpawnPosition();
+            attempts++;
+            if (attempts >= maxAttempts) return false;
         }
+        while (spawnPosition == Vector3.zero);
+
+        GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity);
+        waveManager.RegisterEnemy();
+        enemy.GetComponent<EnemyStats>().onDeath.AddListener(waveManager.EnemyDefeated);
+        return true;
     }
+
 
     private Vector3 GetValidSpawnPosition()
     {

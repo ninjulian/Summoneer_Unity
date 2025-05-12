@@ -87,8 +87,10 @@ public class EnemyStats : StatClass
             }
         }
         else
-        {
-            tmp.color = Color.white;
+        {    if (gameObject != null)
+            {
+                tmp.color = Color.white;
+            }
         }
     }
 }
