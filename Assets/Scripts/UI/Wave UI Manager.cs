@@ -26,7 +26,7 @@ public class WaveUIManager : MonoBehaviour
 
     private void UpdateWaveCounter()
     {
-        waveCounterText.text = $"WAVE: {waveManager.CurrentWave}";
+        waveCounterText.text = "Wave : " + waveManager.currentWave;
     }
 
     private void UpdateCountdown()
@@ -38,6 +38,6 @@ public class WaveUIManager : MonoBehaviour
 
     private void UpdateEnemyCounter()
     {
-        enemyCounter.text = $"ENEMIES: {waveManager.EnemiesAlive}/{waveManager.TargetEnemies}";
+        enemyCounter.text = $"Enemies left to Spawn: {waveManager.enemiesSpawned}/{waveManager.TargetEnemies}";
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -13,9 +14,10 @@ public class WaveSpawner : MonoBehaviour
     public GameObject[] enemyPrefabs;
 
     private WaveManager waveManager;
-    private bool isSpawning = false;
+    [HideInInspector] public bool isSpawning = false;
     private Vector3 lastSpawnAttemptPosition;
     private bool lastAttemptValid;
+
 
     private void Awake()
     {
@@ -36,7 +38,7 @@ public class WaveSpawner : MonoBehaviour
         isSpawning = true;
         int enemiesToSpawn = waveManager.GetTargetEnemies();
 
-        while (enemiesToSpawn >= 0)
+        while (enemiesToSpawn >= 0) 
         {
             SpawnEnemy();
             enemiesToSpawn--;
@@ -51,12 +53,7 @@ public class WaveSpawner : MonoBehaviour
         Vector3 spawnPosition = GetValidSpawnPosition();
         if (spawnPosition != Vector3.zero)
         {
-            GameObject enemy = Instantiate(
-                enemyPrefabs[Random.Range(0, enemyPrefabs.Length)],
-                spawnPosition,
-                Quaternion.identity
-            );
-
+            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity);
             waveManager.RegisterEnemy();
             enemy.GetComponent<EnemyStats>().onDeath.AddListener(waveManager.EnemyDefeated);
         }

@@ -27,10 +27,15 @@ public class WaveManager : MonoBehaviour
 
 
     private PlayerStats playerStats;
+    private WaveSpawner waveSpawner;
+
+
+    [HideInInspector]public int enemiesSpawned = 0;
 
     private void Awake()
     {
         playerStats = FindObjectOfType<PlayerStats>();
+        waveSpawner = GetComponent<WaveSpawner>();
         StartNextWave();
     }
 
@@ -69,20 +74,23 @@ public class WaveManager : MonoBehaviour
     public void RegisterEnemy()
     {
         enemiesAlive++;
+        enemiesSpawned++;
+
     }
 
     public void EnemyDefeated()
     {
         enemiesAlive--;
 
-        if (enemiesAlive <= 0)/* && targetEnemies <= 0)*/
+        if (enemiesAlive <= 0 && enemiesSpawned >= targetEnemies)
         {
             CompleteWave();
         }
     }
 
     private void CompleteWave()
-    {   
+    {  
+        enemiesSpawned = 0;
         StartCountdown();
         onWaveCompleted?.Invoke();
     }
