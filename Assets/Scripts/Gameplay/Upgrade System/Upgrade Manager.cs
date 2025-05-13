@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using static UpgradeData;
 using UnityEngine.UI;
+using TMPro;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -22,9 +23,18 @@ public class UpgradeManager : MonoBehaviour
     public GameObject upgradeButtonPrefab;
     public PlayerStats playerStats;
 
+    [SerializeField] private TMP_Text upgradeDescriptionText;
+    private WaveManager waveManager;
+    [SerializeField] private UpgradeUI upgradeUI;
+
     private List<UpgradeButton> _currentButtons = new();
 
     void Awake() => Instance = this;
+
+    public void Start()
+    {
+        waveManager = GetComponent<WaveManager>();
+    }
 
     public void GenerateUpgrades(int currentWave)
     {
@@ -119,10 +129,14 @@ public class UpgradeManager : MonoBehaviour
 
         GameObject buttonObj = Instantiate(upgradeButtonPrefab, upgradeSlots[_currentButtons.Count]);
 
+
+
         Button buttonComponent = buttonObj.GetComponentInChildren<Button>();
         buttonComponent.onClick.AddListener(() => ClearButton(buttonObj));
         
+
         var button = buttonObj.GetComponent<UpgradeButton>();
+        button.GetDescriptionTextBox(upgradeDescriptionText);
         button.Initialize(data, CalculatePrice(data, wave));
         _currentButtons.Add(button);
     }
@@ -165,4 +179,10 @@ public class UpgradeManager : MonoBehaviour
             stat = Mathf.Floor(stat + effect.value);
         }
     }
+
+    public void RerollButton()
+    {
+        GenerateUpgrades(waveManager.currentWave);
+    }
+
 }

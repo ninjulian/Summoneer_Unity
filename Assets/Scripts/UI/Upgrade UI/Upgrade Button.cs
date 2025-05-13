@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class UpgradeButton : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class UpgradeButton : MonoBehaviour
     public Image icon;
     public TMP_Text nameText;
     public TMP_Text priceText;
-    public TMP_Text descriptionText;
+    private TMP_Text descriptionText;
     public Image tierBorder;
 
     private UpgradeData upgradeData;
@@ -34,8 +35,9 @@ public class UpgradeButton : MonoBehaviour
         icon.sprite = data.icon;
         //tierBorder.color = GetTierColor(data.tier);
 
-        // Get the Button component and add the click listener
+        // Finds the Button component and add the click listener
         Button button = GetComponentInChildren<Button>();
+
         if (button != null)
         {
             button.onClick.AddListener(OnClick);
@@ -44,6 +46,49 @@ public class UpgradeButton : MonoBehaviour
         {
             Debug.LogWarning("UpgradeButton script is missing a Button component!");
         }
+        
+    }
+
+    public void GetDescriptionTextBox(TMP_Text text)
+    {
+        descriptionText = text;
+    }
+
+    public void HighlightUpgrade()
+    {
+        string description = "";
+        foreach (var effect in upgradeData.effects)
+        {
+            string statName = GetStatDisplayName(effect.statType);
+            string valueText = effect.isPercentage
+                ? $"{effect.value * 100:0.#}%"
+                : $"{effect.value:0.#}";
+
+            description += $"+{valueText} {statName}\n";
+        }
+        descriptionText.text = description;
+    }
+
+    private string GetStatDisplayName(StatType statType)
+    {
+        switch (statType)
+        {
+            case StatType.Health: return "Health";
+            case StatType.Damage: return "Damage";
+            case StatType.MoveSpeed: return "Move Speed";
+            case StatType.JumpHeight: return "Jump Height";
+            case StatType.FireRate: return "Fire Rate";
+            case StatType.Defense: return "Defense";
+            case StatType.Luck: return "Luck";
+            case StatType.Affinity: return "Affinity";
+            default: return statType.ToString();
+        }
+    }
+
+
+    public void HighlightBuyButton()
+    {
+        descriptionText.text = "Buy " + upgradeData.upgradeName + "?";
     }
 
     public void OnClick()
@@ -52,6 +97,7 @@ public class UpgradeButton : MonoBehaviour
         {
             playerStats.soulEssence -= upgradePrice;
             UpgradeManager.Instance.ApplyUpgradeEffects(upgradeData.effects);
+            UpgradeUI.Instance.UpdateCurrencyText();
             Destroy(gameObject);
         }
         else

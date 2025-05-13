@@ -31,7 +31,7 @@ public class WaveManager : MonoBehaviour
     private WaveSpawner waveSpawner;
 
     public UIManager uiManager;
-    public UpgradeManager upgradeManager;
+    private UpgradeManager upgradeManager;
 
     [HideInInspector]public int enemiesSpawned = 0;
 
@@ -39,6 +39,7 @@ public class WaveManager : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStats>();
         waveSpawner = GetComponent<WaveSpawner>();
+        upgradeManager = GetComponent<UpgradeManager>();
         StartNextWave();
     }
 

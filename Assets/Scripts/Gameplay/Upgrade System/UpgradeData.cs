@@ -20,7 +20,7 @@ public class UpgradeData : ScriptableObject
     [Tooltip("Tier of the Upgrade")] public Tier tier;
     [Tooltip("Base Upgrade cost")] public int baseCost;
     [Tooltip("Upgrade Modifiers")] public List<StatModifier> effects;
-    [Tooltip("Descrition of the Upgrade")] public string descriptionText;
+    [Tooltip("Descrition of the Upgrade effects")] public string descriptionText;
 
     [System.Serializable]public struct StatModifier
     {

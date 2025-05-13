@@ -228,7 +228,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates: []
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3215036765022631831}
+          m_TargetAssemblyTypeName: UpgradeButton, Assembly-CSharp
+          m_MethodName: HighlightUpgrade
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &3215036765022631831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,7 +260,6 @@ MonoBehaviour:
   icon: {fileID: 285922179816273399}
   nameText: {fileID: 2177241882362661172}
   priceText: {fileID: 971441554534074354}
-  descriptionText: {fileID: 0}
   tierBorder: {fileID: 0}
 --- !u!1 &4475528670638699865
 GameObject:
@@ -394,6 +409,7 @@ GameObject:
   - component: {fileID: 8383047086432882451}
   - component: {fileID: 5275563471911260271}
   - component: {fileID: 998964582647022145}
+  - component: {fileID: 3352941227078342163}
   m_Layer: 0
   m_Name: Price Button
   m_TagString: Untagged
@@ -502,7 +518,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5275563471911260271}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3215036765022631831}
+        m_TargetAssemblyTypeName: UpgradeButton, Assembly-CSharp
+        m_MethodName: HighlightBuyButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3352941227078342163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800254073969581324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &8322153609618821035
 GameObject:
   m_ObjectHideFlags: 0
