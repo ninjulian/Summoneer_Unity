@@ -31,6 +31,7 @@ public class WaveManager : MonoBehaviour
     private WaveSpawner waveSpawner;
 
     public UIManager uiManager;
+    public UpgradeManager upgradeManager;
 
     [HideInInspector]public int enemiesSpawned = 0;
 
@@ -99,6 +100,7 @@ public class WaveManager : MonoBehaviour
     private IEnumerator ShowUpgradeUICoroutine()
     {
         yield return new WaitForSeconds(1f); // Wait for 1 second
+        UpgradeManager.Instance.GenerateUpgrades(CurrentWave);
         uiManager.ToggleUpgradeUI();
     }
 

@@ -7,7 +7,7 @@ public class UpgradeUI : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject player;
     [SerializeField] private TMP_Text descriptionText;
-    [SerializeField] private Button confirmButton;
+    //[SerializeField] private Button confirmButton;
 
     private HealthBar playerHealthBar;
     private PlayerStats playerStats;
@@ -28,7 +28,7 @@ public class UpgradeUI : MonoBehaviour
     {
         playerStats = player.GetComponent<PlayerStats>();
         playerHealthBar = player.GetComponent<HealthBar>();
-        confirmButton.interactable = false;
+        //confirmButton.interactable = false;
     }
 
     // Selection buttons
@@ -41,7 +41,7 @@ public class UpgradeUI : MonoBehaviour
     private void SetUpgrade(UpgradeType type)
     {
         selectedUpgrade = type;
-        confirmButton.interactable = true;
+        //confirmButton.interactable = true;
         UpdateDescription();
     }
 
@@ -76,7 +76,7 @@ public class UpgradeUI : MonoBehaviour
     private void ResetSelection()
     {
         selectedUpgrade = UpgradeType.None;
-        confirmButton.interactable = false;
+        //confirmButton.interactable = false;
         ClearDescription();
     }
 
