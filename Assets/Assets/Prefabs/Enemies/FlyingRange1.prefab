@@ -434,7 +434,19 @@ MonoBehaviour:
   spawnRadius: 1
   onDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -160565027357747663}
+        m_TargetAssemblyTypeName: ItemDrops, Assembly-CSharp
+        m_MethodName: DropItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   hpFactor: 0
   dmgFactor: 0
 --- !u!114 &854075710124024887
@@ -515,6 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soulEssencePrefab: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
+  statClass: {fileID: 3344705432886441758}
   xpValue: 0
   soulEssenceValue: 100
 --- !u!1 &5721270519688811983

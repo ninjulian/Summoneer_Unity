@@ -9,25 +9,21 @@ public class ItemDrops : MonoBehaviour
 
     public StatClass statClass;
 
-     public float xpValue;
-     public float soulEssenceValue;
+    public float xpValue;
+    public float soulEssenceValue;
 
     private void Awake()
     {
-      
-            Debug.Log("Found the thing I think");
-        
-        
-        soulEssence = GetComponent<SoulEssencePickup>();
-
 
     }
 
-    private void OnDestroy()
+    public void DropItems()
     {
+
+        GameObject soulEssencePickup = Instantiate(soulEssencePrefab, transform.position, transform.rotation);
+        soulEssence = soulEssencePickup.GetComponent<SoulEssencePickup>();
         soulEssence.xpValue = xpValue;
         soulEssence.soulEssenceValue = soulEssenceValue;
-        Instantiate(soulEssencePrefab, transform);
     }
 
 }

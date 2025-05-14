@@ -42,9 +42,6 @@ public class EnemyStats : StatClass
 
     private void OnDestroy()
     {
-        
-        onDeath?.Invoke();
-        //Destroy(gameObject);
         // Unsubscribe to prevent memory leaks
         PlayerShoot.OnEnemyFocused -= HandleEnemyFocused;
     }
@@ -57,12 +54,18 @@ public class EnemyStats : StatClass
 
 
     public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
-    {   
+    {
         currentHealth -= incomingDamage;
 
         if (DamageText)
         {
             ShowDamageText(incomingDamage, dotType);
+        }
+
+        if (currentHealth <= 0)
+        {
+            onDeath?.Invoke();
+
         }
     }
 

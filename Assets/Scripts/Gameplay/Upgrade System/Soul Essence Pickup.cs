@@ -17,11 +17,17 @@ public class SoulEssencePickup : MonoBehaviour
     [HideInInspector] public float soulEssenceValue;
     [HideInInspector] public float xpValue;
 
+    private SphereCollider sphereCollider;
+
     private void Awake()
     {
         cachedTransform = transform;
         rb = GetComponent<Rigidbody>();
         timeOffset = Random.Range(0f, 2f * Mathf.PI); // Vary start time for instancing efficiency
+
+        sphereCollider = GetComponent<SphereCollider>();
+        sphereCollider.isTrigger = false;
+
     }
 
     private void Start()
@@ -44,6 +50,7 @@ public class SoulEssencePickup : MonoBehaviour
     {
         if (!isFloating && (groundLayer.value & (1 << collision.gameObject.layer)) != 0)
         {
+            sphereCollider.isTrigger = true;
             StartCoroutine(StartFloatingRoutine());
         }
     }
