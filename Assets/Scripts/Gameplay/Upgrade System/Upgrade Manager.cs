@@ -20,8 +20,11 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("References")]
     public Transform[] upgradeSlots;
-    public GameObject upgradeButtonPrefab;
-    public PlayerStats playerStats;
+    [SerializeField] private GameObject upgradeButtonPrefab;
+    
+    //Stat Components
+    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private PlayerShoot playerShoot;
 
     [SerializeField] private TMP_Text upgradeDescriptionText;
     private WaveManager waveManager;
@@ -51,9 +54,13 @@ public class UpgradeManager : MonoBehaviour
     {
         var weightedList = new List<UpgradeData>();
 
-        // Create weighted list from all upgrades
+        // Create weighted list from all upgrades that haven't reached their stack limit
         foreach (var upgrade in allUpgrades)
         {
+            // Skip upgrades that have reached their stack limit
+            if (upgrade.stackLimit > 0 && upgrade.currentStackCount >= upgrade.stackLimit)
+                continue;
+
             int weight = upgrade.tier switch
             {
                 Tier.Common => commonWeight,
@@ -72,14 +79,16 @@ public class UpgradeManager : MonoBehaviour
         {
             Debug.LogWarning("Weighted list empty, using fallback!");
 
-            // First try common upgrades
-            var commonUpgrades = allUpgrades.FindAll(u => u.tier == Tier.Common);
+            // First try common upgrades that haven't reached their limit
+            var commonUpgrades = allUpgrades.FindAll(u => u.tier == Tier.Common &&
+                                                        (u.stackLimit == 0 || u.currentStackCount < u.stackLimit));
             if (commonUpgrades.Count > 0)
                 return commonUpgrades[Random.Range(0, commonUpgrades.Count)];
 
-            // Then try any upgrade
-            if (allUpgrades.Count > 0)
-                return allUpgrades[Random.Range(0, allUpgrades.Count)];
+            // Then try any upgrade that hasn't reached its limit
+            var availableUpgrades = allUpgrades.FindAll(u => u.stackLimit == 0 || u.currentStackCount < u.stackLimit);
+            if (availableUpgrades.Count > 0)
+                return availableUpgrades[Random.Range(0, availableUpgrades.Count)];
 
             // Final error if completely empty
             Debug.LogError("No upgrades available in the system!");
@@ -145,14 +154,19 @@ public class UpgradeManager : MonoBehaviour
         foreach (var effect in effects)
         {
             switch (effect.statType)
-            {
+            {   
+
+                //Player Modifiers
                 case StatType.Health:
                     ApplyEffect(effect, ref playerStats.currentHealth);
+                    break;
+                case StatType.MaxHealth:
+                    ApplyEffect(effect, ref playerStats.maxHealth);
                     break;
                 case StatType.Damage:
                     ApplyEffect(effect, ref playerStats.damage);
                     break;
-                case StatType.MoveSpeed:
+                case StatType.MovementSpeed:
                     ApplyEffect(effect, ref playerStats.movementSpeed);
                     break;
                 case StatType.FireRate:
@@ -161,7 +175,20 @@ public class UpgradeManager : MonoBehaviour
                 case StatType.Defense:
                     ApplyEffect(effect, ref playerStats.defense);
                     break;
-                    // Add other cases as needed
+                //Summling Modifiers
+                case StatType.SummlingDamage:
+                    ApplyEffect(effect, ref playerStats.defense);
+                    break;
+
+                case StatType.SummlingRange:
+                    ApplyEffect(effect, ref playerStats.defense);
+                    break;
+                case StatType.SummlingCC:
+                    ApplyEffect(effect, ref playerStats.defense);
+                    break;
+                case StatType.SummlingCM:
+                    ApplyEffect(effect, ref playerStats.defense);
+                    break;
             }
         }
     }

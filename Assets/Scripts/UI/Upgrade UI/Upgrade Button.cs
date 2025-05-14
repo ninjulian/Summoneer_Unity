@@ -1,5 +1,3 @@
-// UpgradeButton.cs
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -33,7 +31,7 @@ public class UpgradeButton : MonoBehaviour
         //descriptionText.text = data.descriptionText;
         priceText.text = upgradePrice.ToString();
         icon.sprite = data.icon;
-        //tierBorder.color = GetTierColor(data.tier);
+        tierBorder.color = GetTierColor(data.tier);
 
         // Finds the Button component and add the click listener
         Button button = GetComponentInChildren<Button>();
@@ -72,15 +70,22 @@ public class UpgradeButton : MonoBehaviour
     private string GetStatDisplayName(StatType statType)
     {
         switch (statType)
-        {
+        {   
+            //Player Modifiers
             case StatType.Health: return "Health";
             case StatType.Damage: return "Damage";
-            case StatType.MoveSpeed: return "Move Speed";
+            case StatType.MovementSpeed: return "Move Speed";
             case StatType.JumpHeight: return "Jump Height";
             case StatType.FireRate: return "Fire Rate";
             case StatType.Defense: return "Defense";
             case StatType.Luck: return "Luck";
             case StatType.Affinity: return "Affinity";
+
+            //Summling Modifiers
+            case StatType.SummlingDamage: return "Summling Damage";
+            case StatType.SummlingRange: return "Summling Range";
+            case StatType.SummlingCC: return "Summling CC";
+            case StatType.SummlingCM: return "Summling CM";
             default: return statType.ToString();
         }
     }
@@ -96,13 +101,15 @@ public class UpgradeButton : MonoBehaviour
         if (playerStats.soulEssence >= upgradePrice)
         {
             playerStats.soulEssence -= upgradePrice;
+            upgradeData.currentStackCount += 1;
             UpgradeManager.Instance.ApplyUpgradeEffects(upgradeData.effects);
             UpgradeUI.Instance.UpdateCurrencyText();
             Destroy(gameObject);
         }
         else
         {
-            // Add visual/audio feedback for insufficient funds
+            descriptionText.text = "Insufficient Soul Essence";
+            descriptionText.color = Color.red;
         }
     }
 
@@ -110,13 +117,27 @@ public class UpgradeButton : MonoBehaviour
     {
         return tier switch
         {
-            Tier.Common => Color.gray,
-            Tier.Uncommon => Color.green,
+            Tier.Common => Color.grey,
+            Tier.Uncommon => Color.blue,
             Tier.Epic => Color.magenta,
-            Tier.Legendary => Color.yellow,
+            Tier.Legendary => Color.red,
             _ => Color.white
         };
     }
+
+    public bool HitItemLimit()
+    {
+        if (upgradeData.stackLimit > 0)
+        {
+            upgradeData.currentStackCount += 1;
+
+            return upgradeData.currentStackCount <= upgradeData.stackLimit;
+
+        }
+
+        return false;
+    }
+
 
     //private void OnDestroy()
     //{

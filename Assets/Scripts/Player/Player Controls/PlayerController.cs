@@ -7,8 +7,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public float playerSpeed;
-    public float jumpHeight = 1.0f;
+    private float playerSpeed;
+    private float jumpHeight;
     public float gravityValue = -9.81f;
     private Vector3 movementDir; // Movement Direction
 

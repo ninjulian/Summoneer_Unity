@@ -39,6 +39,8 @@ public class DamageHandler : MonoBehaviour
 
     private void Awake()
     {
+        poisonParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Stop and clear particles
+        fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Stop and clear particles
         healthBar = GetComponent<HealthBar>();
     }
 

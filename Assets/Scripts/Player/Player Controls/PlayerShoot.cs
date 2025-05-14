@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -34,7 +35,10 @@ public class PlayerShoot : MonoBehaviour
     // Player Stats
     private PlayerStats playerStats;
 
+    //Gameplay Variables
     public static System.Action<Transform> OnEnemyFocused;
+    public bool applyFireDOT;
+    public bool applyPoisonDOT;
 
     private void Awake()
     {
@@ -92,6 +96,9 @@ public class PlayerShoot : MonoBehaviour
             projectileController.baseDamage = playerStats.CalculateDamage();
             projectileController.sourceTag = "Player";
 
+            // Checks if DOT should be applied
+            CheckDOT(projectileController);
+
             canShoot = false;
 
             // Ignore Layer 7 and 9
@@ -138,6 +145,9 @@ public class PlayerShoot : MonoBehaviour
             projectileController.baseDamage = playerStats.CalculateDamage();
             projectileController.sourceTag = "Player";
 
+            // Checks if DOT should be applied
+            CheckDOT(projectileController);
+
             canShoot = false;
 
             // Ignore Layer 7 and 9
@@ -183,4 +193,31 @@ public class PlayerShoot : MonoBehaviour
         // Convert bullets-per-second to cooldown between shots
         fireCooldown = 1f / playerStats.fireRate;
     }
+
+    private bool CheckAffinity(float affinity)
+    {
+        // Ensure affinity is within valid range (0-100)
+        float clampedAffinity = Mathf.Clamp(affinity, 0f, 100f);
+
+        // Generate random number between 0-100
+        float randomValue = Random.Range(0f, 100f);
+
+        // Return true if random number is less than or equal to affinity
+        return randomValue <= clampedAffinity;
+    }
+
+    private void CheckDOT(ProjectileController projectileController)
+    {
+        // Checks if DOT should be applied
+        if (applyFireDOT && CheckAffinity(playerStats.affinity))
+        {
+            projectileController.applyFireDOT = true;
+        }
+
+        if (applyPoisonDOT && CheckAffinity(playerStats.affinity))
+        {
+            projectileController.applyPoisonDOT = true;
+        }
+    }
+
 }
