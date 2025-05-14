@@ -96,6 +96,7 @@ public class UpgradeButton : MonoBehaviour
         descriptionText.text = "Buy " + upgradeData.upgradeName + "?";
     }
 
+    // Buying the Upgrade
     public void OnClick()
     {
         if (playerStats.soulEssence >= upgradePrice)

@@ -23,7 +23,7 @@ public class UpgradeData : ScriptableObject
     public string upgradeName;
     [Tooltip("Upgrade Category")] public UpgradeCategory category;
     [Tooltip("Stack limit count. 0 means no limit")] public int stackLimit = 0;
-    [HideInInspector] public int currentStackCount;
+    [HideInInspector]   public int currentStackCount;
     [Tooltip("Tier of the Upgrade")] public Tier tier;
     [Tooltip("Base Upgrade cost")] public int baseCost;
     [Tooltip("Upgrade Modifiers")] public List<StatModifier> effects;

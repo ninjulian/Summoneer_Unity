@@ -13,8 +13,10 @@ public class PlayerStats : StatClass
     public float fireRate;
     public float coolDown;
     public float dashStrength = 10f;
-    public int soulEssence = 0;
+    public float soulEssence = 0f;
     public int sePickUpRate;
+    public float xpCap;
+    public float currentXP;
     public int playerLevel { get; private set; } = 1;
     private DamageHandler damageHandler;
 
@@ -39,6 +41,16 @@ public class PlayerStats : StatClass
     public void spendSoulEssence(int cost)
     {
         soulEssence -= cost;   
+    }
+
+    public void gainXP(float incomingXP)
+    {
+        currentXP += incomingXP;
+
+        if (currentXP >= xpCap)
+        {
+            playerLevel++;
+        }
     }
 
     //public float GetDamage()

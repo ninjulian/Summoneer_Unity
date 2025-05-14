@@ -9,7 +9,7 @@ public class UpgradeManager : MonoBehaviour
     public static UpgradeManager Instance;
 
     [Header("Settings")]
-    public int waveCostFactor = 10;
+    public float waveCostFactor = 1.2f;
     public List<UpgradeData> allUpgrades;
 
     [Header("Tier Weights")]
@@ -32,6 +32,11 @@ public class UpgradeManager : MonoBehaviour
 
     private List<UpgradeButton> _currentButtons = new();
 
+    //Reroll variables
+    [SerializeField] private TMP_Text rerollText;
+    private float rerollCost = 1f;
+    public bool hasRerolled = false;
+
     void Awake() => Instance = this;
 
     public void Start()
@@ -41,7 +46,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void GenerateUpgrades(int currentWave)
     {
+        CalculateRerollCost();
         ClearExisting();
+       
+
 
         for (int i = 0; i < 5; i++)
         {
@@ -139,7 +147,6 @@ public class UpgradeManager : MonoBehaviour
         GameObject buttonObj = Instantiate(upgradeButtonPrefab, upgradeSlots[_currentButtons.Count]);
 
 
-
         Button buttonComponent = buttonObj.GetComponentInChildren<Button>();
         buttonComponent.onClick.AddListener(() => ClearButton(buttonObj));
         
@@ -208,8 +215,38 @@ public class UpgradeManager : MonoBehaviour
     }
 
     public void RerollButton()
+    {   
+        if (playerStats.soulEssence >= rerollCost)
+        {
+            hasRerolled = true;
+
+            playerStats.soulEssence -= rerollCost;
+
+            GenerateUpgrades(waveManager.currentWave);
+
+            UpgradeUI.Instance.UpdateCurrencyText();
+        
+        }
+
+    }
+
+    public void CalculateRerollCost()
     {
-        GenerateUpgrades(waveManager.currentWave);
+
+        //Base cost determined by wave
+        if (!hasRerolled)
+        {
+            rerollCost = Mathf.Ceil(0.40f * waveManager.currentWave);
+            rerollText.text = rerollCost.ToString();
+        }
+        else
+        {   
+            rerollCost = Mathf.Ceil(0.70f * waveManager.currentWave) + rerollCost;
+            rerollText.text = rerollCost.ToString();
+        }
+
+       
+
     }
 
 }

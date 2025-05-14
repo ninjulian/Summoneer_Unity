@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -102,6 +103,7 @@ public class WaveManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); // Wait for 1 second
         UpgradeManager.Instance.GenerateUpgrades(CurrentWave);
+        upgradeManager.hasRerolled = false;
         uiManager.ToggleUpgradeUI();
     }
 
@@ -117,7 +119,10 @@ public class WaveManager : MonoBehaviour
     public void StartCountdown()
     {
         if (enemiesAlive <= 0 && enemiesSpawned >= targetEnemies && !IsCountingDown)
-        {
+        {   
+            //Resets reroll boolean
+            upgradeManager.hasRerolled = false;
+
             enemiesSpawned = 0;
             enemiesAlive = 0;
             IsCountingDown = true;
