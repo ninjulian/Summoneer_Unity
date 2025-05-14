@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Summling
+  - Soul Essence
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - EnemyProjectile
   - Enemy
   - Summling
-  - 
+  - Item
   - 
   - 
   - 

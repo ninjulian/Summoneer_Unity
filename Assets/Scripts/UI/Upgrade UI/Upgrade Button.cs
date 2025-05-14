@@ -101,7 +101,7 @@ public class UpgradeButton : MonoBehaviour
     {
         if (playerStats.soulEssence >= upgradePrice)
         {
-            playerStats.soulEssence -= upgradePrice;
+            playerStats.SpendSoulEssence(upgradePrice);
             upgradeData.currentStackCount += 1;
             UpgradeManager.Instance.ApplyUpgradeEffects(upgradeData.effects);
             UpgradeUI.Instance.UpdateCurrencyText();

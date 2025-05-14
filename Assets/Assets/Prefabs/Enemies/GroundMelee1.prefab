@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 53711300657940754}
   - component: {fileID: 736899286226245939}
   - component: {fileID: 1449746501336809629}
+  - component: {fileID: 7383668562575475977}
   m_Layer: 10
   m_Name: GroundMelee1
   m_TagString: Enemy
@@ -188,6 +189,8 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  hpFactor: 0
+  dmgFactor: 0
 --- !u!114 &53711300657940754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +236,21 @@ MonoBehaviour:
   damageSlider: {fileID: 6251932931760478090}
   healthSlider: {fileID: 3167387284514583832}
   entityStats: {fileID: 8405939248027678409}
+--- !u!114 &7383668562575475977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223382549351762016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001fe89f468aa7340b2a1d521e063029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soulEssencePrefab: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
+  xpValue: 0
+  soulEssenceValue: 10
 --- !u!1 &2249185712919840553
 GameObject:
   m_ObjectHideFlags: 0

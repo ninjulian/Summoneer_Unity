@@ -12,6 +12,7 @@ public class EnemyStats : StatClass
     [Header("Enemy Specific")]
     public float attackRange = 2f;
 
+
     //Damage text prefab
     public GameObject DamageText;
     public float spawnRadius = 1.0f;
@@ -20,6 +21,12 @@ public class EnemyStats : StatClass
     private Outline outline;
 
     public UnityEvent onDeath;
+
+    [Tooltip("Incrementing health increase from the Wave count")]
+    public float hpFactor;
+
+    [Tooltip("Incrementing damage icrease from the Wave count")]
+    public float dmgFactor;
 
     private void Awake()
     {

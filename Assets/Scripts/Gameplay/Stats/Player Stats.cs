@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class PlayerStats : StatClass 
 {
@@ -13,10 +14,16 @@ public class PlayerStats : StatClass
     public float fireRate;
     public float coolDown;
     public float dashStrength = 10f;
+
+
+    //Currency
     public float soulEssence = 0f;
-    public int sePickUpRate;
-    public float xpCap;
-    public float currentXP;
+    [HideInInspector]public int sePickUpRate;
+
+    //XP
+    [HideInInspector]public float xpRequired;
+    [HideInInspector]public float currentXP;
+    [HideInInspector]public float xpGainRate;
     public int playerLevel { get; private set; } = 1;
     private DamageHandler damageHandler;
 
@@ -25,7 +32,9 @@ public class PlayerStats : StatClass
         base.Start();
         damageHandler = GetComponent<DamageHandler>();
         damageHandler.Initialize(this);
+        
 
+        //Start working on the Player XP system
     }
 
     public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
@@ -33,21 +42,36 @@ public class PlayerStats : StatClass
         currentHealth -=incomingDamage;
     }
 
-    public void gainSoulEssence(int soulEssenceGained)
+    public void GainSoulEssence(float soulEssenceGained)
     {
-        soulEssence += soulEssenceGained;
+        soulEssence += soulEssenceGained * sePickUpRate;
     }
 
-    public void spendSoulEssence(int cost)
+    public void SpendSoulEssence(float cost)
     {
-        soulEssence -= cost;   
+        float newCost = Mathf.Clamp(cost, 0f, float.PositiveInfinity);
+
+        // Check if player has enough essence
+        if (soulEssence >= newCost)
+        {
+            soulEssence -= newCost;
+
+        }
+
+
     }
 
-    public void gainXP(float incomingXP)
+    public void CalculateXPCap()
+    {
+        xpRequired = Mathf.Clamp((playerLevel + 3f) * (playerLevel), 0f, float.PositiveInfinity);
+    }
+    
+
+    public void GainXP(float incomingXP)
     {
         currentXP += incomingXP;
 
-        if (currentXP >= xpCap)
+        if (currentXP >= xpRequired)
         {
             playerLevel++;
         }

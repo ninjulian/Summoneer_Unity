@@ -313,6 +313,7 @@ GameObject:
   - component: {fileID: 4181876272426243066}
   - component: {fileID: 3521689646999123066}
   - component: {fileID: 2066070154250972694}
+  - component: {fileID: -160565027357747663}
   m_Layer: 10
   m_Name: FlyingRange1
   m_TagString: Enemy
@@ -434,6 +435,8 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  hpFactor: 0
+  dmgFactor: 0
 --- !u!114 &854075710124024887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +502,21 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-160565027357747663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4962071458672015274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001fe89f468aa7340b2a1d521e063029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soulEssencePrefab: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
+  xpValue: 0
+  soulEssenceValue: 100
 --- !u!1 &5721270519688811983
 GameObject:
   m_ObjectHideFlags: 0

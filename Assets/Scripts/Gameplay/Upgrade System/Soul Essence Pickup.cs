@@ -1,36 +1,93 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoulEssencePickup : MonoBehaviour
 {
-    public float amplitude = 0.5f;     // How high the object moves
-    public float frequency = 1f;       // Speed of the movement
+    public float amplitude = 0.5f;
+    public float frequency = 1f;
+    public LayerMask groundLayer;
+    public float floatLerpDuration = 0.5f;
 
+    private Rigidbody rb;
+    private Transform cachedTransform;
     private Vector3 startPos;
+    private float timeOffset;
+    private bool isFloating;
 
-    void Start()
+    [HideInInspector] public float soulEssenceValue;
+    [HideInInspector] public float xpValue;
+
+    private void Awake()
     {
-        // Force the start position to Y = 1
-        startPos = new Vector3(transform.position.x, 1f, transform.position.z);
-        transform.position = startPos; // Move object to Y = 1 at start
+        cachedTransform = transform;
+        rb = GetComponent<Rigidbody>();
+        timeOffset = Random.Range(0f, 2f * Mathf.PI); // Vary start time for instancing efficiency
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        // Calculate new Y position
-        float newY = startPos.y + Mathf.Sin(Time.time * frequency) * amplitude;
+        rb.isKinematic = false;
+        rb.useGravity = true;
+    }
 
-        // Apply new position
-        transform.position = new Vector3(startPos.x, newY, startPos.z);
+    private void Update()
+    {
+        if (isFloating)
+        {
+            // Calculate position once per frame using precomputed values
+            float newY = startPos.y + Mathf.Sin((Time.time * frequency) + timeOffset) * amplitude;
+            cachedTransform.position = new Vector3(startPos.x, newY, startPos.z);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isFloating && (groundLayer.value & (1 << collision.gameObject.layer)) != 0)
+        {
+            StartCoroutine(StartFloatingRoutine());
+        }
+    }
+
+    private System.Collections.IEnumerator StartFloatingRoutine()
+    {
+        isFloating = true;
+        rb.isKinematic = true;
+        rb.useGravity = false;
+
+        Vector3 floatStartPos = cachedTransform.position;
+        startPos = floatStartPos + Vector3.up * 0.5f;
+        float elapsed = 0f;
+
+        while (elapsed < floatLerpDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / floatLerpDuration);
+            cachedTransform.position = Vector3.Lerp(floatStartPos, startPos, t);
+            yield return null;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            Debug.Log("Hit player");
+
+            PlayerStats playerStats = other.GetComponent<PlayerStats>();
+
+            if (playerStats != null)
+            {
+                playerStats.GainSoulEssence(soulEssenceValue);
+                playerStats.GainXP(xpValue);
+            }
+            
+
+            // Consider object pooling instead of Destroy for better performance
+            Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 }

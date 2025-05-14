@@ -220,7 +220,7 @@ public class UpgradeManager : MonoBehaviour
         {
             hasRerolled = true;
 
-            playerStats.soulEssence -= rerollCost;
+            playerStats.SpendSoulEssence(rerollCost);
 
             GenerateUpgrades(waveManager.currentWave);
 
