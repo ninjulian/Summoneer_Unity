@@ -12,11 +12,6 @@ public class ItemDrops : MonoBehaviour
     public float xpValue;
     public float soulEssenceValue;
 
-    private void Awake()
-    {
-
-    }
-
     public void DropItems()
     {
 

@@ -99,7 +99,8 @@ public class EnemyRangeAI : MonoBehaviour
         Vector3 direction = (player.position - transform.position).normalized;
         int layerToIgnore1 = 7;
         int layerToIgnore2 = 9;
-        int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
+        int layerToIgnore3 = 13;
+        int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3);
 
         hasLOS = Physics.Raycast(transform.position, direction, out RaycastHit hit, attackRange, ignoreMask) && hit.collider.CompareTag("Player");
     }

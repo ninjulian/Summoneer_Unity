@@ -110,7 +110,7 @@ public class UpgradeButton : MonoBehaviour
         else
         {
             descriptionText.text = "Insufficient Soul Essence";
-            descriptionText.color = Color.red;
+            //descriptionText.color = Color.red;
         }
     }
 

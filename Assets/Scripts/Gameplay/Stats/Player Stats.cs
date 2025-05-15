@@ -18,7 +18,7 @@ public class PlayerStats : StatClass
 
     //Currency
     public float soulEssence = 0f;
-    [HideInInspector]public int sePickUpRate;
+    [HideInInspector]public float sePickUpRate = 1f;
 
     //XP
     [HideInInspector]public float xpRequired;

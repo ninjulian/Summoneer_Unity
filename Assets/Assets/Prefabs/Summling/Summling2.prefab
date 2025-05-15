@@ -435,6 +435,7 @@ GameObject:
   - component: {fileID: 3642453460996073295}
   - component: {fileID: 130003704925893184}
   - component: {fileID: 2129524557150380524}
+  - component: {fileID: 1918834013110903137}
   m_Layer: 11
   m_Name: Summling2
   m_TagString: Summling
@@ -512,6 +513,22 @@ MonoBehaviour:
   stuckTimeThreshold: 2
   bulletPrefab: {fileID: 2411828836088549004, guid: 55a4d7fb84a8b4441972cc4a6aca10db, type: 3}
   muzzleTransform: {fileID: 3488604490350832402}
+--- !u!114 &1918834013110903137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765607229103353656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001fe89f468aa7340b2a1d521e063029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soulEssencePrefab: {fileID: 0}
+  statClass: {fileID: 0}
+  xpValue: 0
+  soulEssenceValue: 0
 --- !u!1 &8417039025252913923
 GameObject:
   m_ObjectHideFlags: 0

@@ -56,13 +56,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cceb67cbf0cb36f46beaaeab5b9faae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0.3
-  frequency: 2
+  amplitude: 0.5
+  frequency: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   floatLerpDuration: 0.5
-  soulEssenceValue: 0
+  soulEssenceValue: 100
   xpValue: 0
 --- !u!23 &2935857431797208034
 MeshRenderer:

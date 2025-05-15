@@ -26,6 +26,8 @@ public class SoulEssencePickup : MonoBehaviour
         timeOffset = Random.Range(0f, 2f * Mathf.PI); // Vary start time for instancing efficiency
 
         sphereCollider = GetComponent<SphereCollider>();
+
+        //Turn off the trigger so it can hit the ground
         sphereCollider.isTrigger = false;
 
     }
@@ -49,7 +51,8 @@ public class SoulEssencePickup : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (!isFloating && (groundLayer.value & (1 << collision.gameObject.layer)) != 0)
-        {
+        {   
+            //Once it hits the ground trigger will be true to allow Pickup functions
             sphereCollider.isTrigger = true;
             StartCoroutine(StartFloatingRoutine());
         }
@@ -74,24 +77,28 @@ public class SoulEssencePickup : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
 
-            PlayerStats playerStats = other.GetComponent<PlayerStats>();
+    //        PlayerStats playerStats = other.GetComponent<PlayerStats>();
 
-            if (playerStats != null)
-            {
-                playerStats.GainSoulEssence(soulEssenceValue);
-                playerStats.GainXP(xpValue);
-            }
+           
+    //            playerStats.GainSoulEssence(soulEssenceValue);
+    //            playerStats.GainXP(xpValue);
+
+    //            //Currency Update
+               
+
+    //            Debug.Log("Picked UP SE");
+            
             
 
-            // Consider object pooling instead of Destroy for better performance
-            Destroy(gameObject);
-        }
-    }
+    //        // Consider object pooling instead of Destroy for better performance
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     private void OnDestroy()
     {

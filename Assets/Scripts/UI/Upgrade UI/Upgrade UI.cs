@@ -8,17 +8,25 @@ public class UpgradeUI : MonoBehaviour
     public static UpgradeUI Instance { get; private set; }
 
     [Header("Reference")]
+    [SerializeField] private PlayerStats playerStats;
     [SerializeField] private GameObject player;
     [SerializeField] private Button rerollButton;
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private TMP_Text soulEssenceText;
     
-    [SerializeField] private PlayerStats playerStats;
+   
 
     public UnityEvent onCurrencyUpdate;
 
+    private void Start()
+    {
+        UpdateCurrencyText();
+    }
+
     private void Awake()
     {
+
+        
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -27,7 +35,7 @@ public class UpgradeUI : MonoBehaviour
         {
             Instance = this;
         }
-        UpdateCurrencyText();
+       
     }
 
     public void UpdateCurrencyText()

@@ -9253,11 +9253,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03141a3ba56437c4584b81462e2337cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 1962802153}
   player: {fileID: 1848508814}
   rerollButton: {fileID: 385047472}
   descriptionText: {fileID: 294373091}
   soulEssenceText: {fileID: 32533589}
-  playerStats: {fileID: 1962802153}
   onCurrencyUpdate:
     m_PersistentCalls:
       m_Calls: []
@@ -12064,75 +12064,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246272143}
   m_CullTransparentMesh: 1
---- !u!1001 &1248769893
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -6336136132070280508, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6336136132070280508, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -7.405163
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.0192897
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630320027010709779, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_Name
-      value: Soul Essence
-      objectReference: {fileID: 0}
-    - target: {fileID: 6559943407825012822, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
-      propertyPath: m_ProvidesContacts
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
 --- !u!1 &1256427926
 GameObject:
   m_ObjectHideFlags: 0
@@ -16870,7 +16801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bf5be8414aed444b4c24ccbd837d16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveCostFactor: 0
+  waveCostFactor: 1.2
   allUpgrades:
   - {fileID: 11400000, guid: c8bc9643bde15bc469b5a5da1b643396, type: 2}
   - {fileID: 11400000, guid: 995f81908e6bf204ebcabcebe4ff6355, type: 2}
@@ -20386,6 +20317,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6193c53d8817e9b43ae3a257d60604f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1962802164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848508814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea8620f56b0c53b4fa94d22ed374c4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickUpRadius: 0
+  playerStats: {fileID: 0}
 --- !u!1 &1964774807
 GameObject:
   m_ObjectHideFlags: 0
@@ -22774,7 +22719,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: soulEssence
-      value: 10000
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: movementSpeed
@@ -22819,6 +22764,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 93829624309051640, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1962802159}
+    - targetCorrespondingSourceObject: {fileID: 93829624309051640, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1962802164}
   m_SourcePrefab: {fileID: 100100000, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
 --- !u!1001 &4847672753764393092
 PrefabInstance:
@@ -23336,4 +23284,3 @@ SceneRoots:
   - {fileID: 1008647333}
   - {fileID: 134957724}
   - {fileID: 154109618}
-  - {fileID: 1248769893}

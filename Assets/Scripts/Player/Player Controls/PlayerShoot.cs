@@ -105,7 +105,8 @@ public class PlayerShoot : MonoBehaviour
             int layerToIgnore1 = 7;
             int layerToIgnore2 = 9;
             int layerToIgnore3 = 11;
-            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3);
+            int layerToIgnore4 = 13;
+            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4);
 
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
@@ -153,7 +154,9 @@ public class PlayerShoot : MonoBehaviour
             // Ignore Layer 7 and 9
             int layerToIgnore1 = 7;
             int layerToIgnore2 = 9;
-            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
+            int layerToIgnore3 = 11;
+            int layerToIgnore4 = 13;
+            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4);
 
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {

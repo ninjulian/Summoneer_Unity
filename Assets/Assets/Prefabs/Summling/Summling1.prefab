@@ -221,6 +221,7 @@ GameObject:
   - component: {fileID: 5222860414828037866}
   - component: {fileID: 6814192048623453886}
   - component: {fileID: 4253830314261136575}
+  - component: {fileID: 6156394858966400118}
   m_Layer: 11
   m_Name: Summling1
   m_TagString: Summling
@@ -298,6 +299,22 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6156394858966400118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840779663832544055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001fe89f468aa7340b2a1d521e063029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soulEssencePrefab: {fileID: 0}
+  statClass: {fileID: 0}
+  xpValue: 0
+  soulEssenceValue: 0
 --- !u!1 &5253155922157785390
 GameObject:
   m_ObjectHideFlags: 0

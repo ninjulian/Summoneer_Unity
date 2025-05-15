@@ -148,7 +148,9 @@ public class UpgradeManager : MonoBehaviour
 
 
         Button buttonComponent = buttonObj.GetComponentInChildren<Button>();
-        buttonComponent.onClick.AddListener(() => ClearButton(buttonObj));
+
+        //Gets rid of button no matter what. Moved to OnClick() in Upgrade Button
+       // buttonComponent.onClick.AddListener(() => ClearButton(buttonObj));
         
 
         var button = buttonObj.GetComponent<UpgradeButton>();
