@@ -62,7 +62,7 @@ public class UpgradeButton : MonoBehaviour
                 ? $"{effect.value * 100:0.#}%"
                 : $"{effect.value:0.#}";
 
-            description += $"+{valueText} {statName}\n";
+            description += valueText + statName;
         }
         descriptionText.text = description;
     }

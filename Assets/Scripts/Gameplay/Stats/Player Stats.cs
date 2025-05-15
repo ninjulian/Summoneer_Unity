@@ -6,26 +6,31 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 public class PlayerStats : StatClass 
 {
-    [Header("Player Specific")]
-    public float jumpHeight;
-    public float luck;
-    public float affinity;
     public float focusDuration = 5f;
     public float fireRate;
-    public float coolDown;
+
+    [Header("Movement")]
+    public float jumpHeight;
     public float dashStrength = 10f;
+    public float dashCooldown = 0.2f;
+
+    [Header("Quality of Life (QOL)")]
+    public float luck;
+    public float affinity;
+   // public float coolDown;
     public float pickUpRadius;
 
-
-    //Currency
+    [Header("Soul Essence")]
     public float soulEssence = 0f;
     [HideInInspector]public float sePickUpRate = 1f;
 
-    //XP
-    [HideInInspector]public float xpRequired;
-    [HideInInspector]public float currentXP;
-    [HideInInspector]public float xpGainRate;
+    [Header("XP")]
+    public XpBar xpBar;
+    [HideInInspector] public float xpRequired;
+    [HideInInspector] public float currentXP;
+    [HideInInspector] public float xpGainRate;
     public int playerLevel { get; private set; } = 1;
+
     private DamageHandler damageHandler;
 
     private void Awake()
@@ -62,37 +67,45 @@ public class PlayerStats : StatClass
 
     }
 
+    // In PlayerStats.cs
     public void CalculateXPCap()
     {
-        xpRequired = Mathf.Clamp((playerLevel + 3f) * (playerLevel), 0f, float.PositiveInfinity);
+        xpRequired = (playerLevel + 3f) * playerLevel;
+        xpBar.xpSlider.maxValue = xpRequired; // Force UI update
     }
-    
+
 
     public void GainXP(float incomingXP)
     {
         currentXP += incomingXP;
 
-        if (currentXP >= xpRequired)
+        // Handle potential multiple level-ups
+        while (currentXP >= xpRequired)
         {
             playerLevel++;
+            currentXP -= xpRequired;
+            xpBar.xpSlider.value = currentXP;
+            CalculateXPCap(); // Update requirement for next level
         }
+
+        xpBar.UpdateXPBar();
     }
 
-    //public float GetDamage()
-    //{
-    //    float damageDealt;
-    //    bool isCritical = Random.Range(0f, 100f) <= critChance;
+        //public float GetDamage()
+        //{
+        //    float damageDealt;
+        //    bool isCritical = Random.Range(0f, 100f) <= critChance;
 
-    //    if (!isCritical)
-    //    {
-    //        return damage;
-    //    }
-    //    else
-    //    {
-    //        damageDealt = critMultiplier * damage;
-    //        return damageDealt;
-    //    }
-    //}
+        //    if (!isCritical)
+        //    {
+        //        return damage;
+        //    }
+        //    else
+        //    {
+        //        damageDealt = critMultiplier * damage;
+        //        return damageDealt;
+        //    }
+        //}
 
 
-}
+    }

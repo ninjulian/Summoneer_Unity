@@ -4,6 +4,7 @@ using static UpgradeData;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -165,29 +166,62 @@ public class UpgradeManager : MonoBehaviour
             {   
 
                 //Player Modifiers
+                //Survival
                 case StatType.Health:
                     ApplyEffect(effect, ref playerStats.currentHealth);
                     break;
                 case StatType.MaxHealth:
                     ApplyEffect(effect, ref playerStats.maxHealth);
                     break;
+                case StatType.Defense:
+                    ApplyEffect(effect, ref playerStats.defense);
+                    break;
+
+                //Damage
                 case StatType.Damage:
                     ApplyEffect(effect, ref playerStats.damage);
-                    break;
-                case StatType.MovementSpeed:
-                    ApplyEffect(effect, ref playerStats.movementSpeed);
                     break;
                 case StatType.FireRate:
                     ApplyEffect(effect, ref playerStats.fireRate);
                     break;
-                case StatType.Defense:
-                    ApplyEffect(effect, ref playerStats.defense);
+                case StatType.CritChance:
+                    ApplyEffect(effect, ref playerStats.critChance);
                     break;
+                case StatType.CritMultiplier:
+                    ApplyEffect(effect, ref playerStats.critMultiplier);
+                    break;
+
+
+                //Movement
+                case StatType.MovementSpeed:
+                    ApplyEffect(effect, ref playerStats.movementSpeed);
+                    break;
+                case StatType.JumpHeight:
+                    ApplyEffect(effect, ref playerStats.jumpHeight);
+                    break;
+                case StatType.DashStrength:
+                    ApplyEffect(effect, ref playerStats.dashStrength);
+                    break;
+                case StatType.DashCooldown:
+                    ApplyEffect(effect, ref playerStats.dashCooldown);
+                    break;
+
+                //Quality of Life (QOL)
+                case StatType.Luck:
+                    ApplyEffect(effect, ref playerStats.luck);
+                    break;
+                case StatType.Affinity:
+                    ApplyEffect(effect, ref playerStats.affinity);
+                    break;
+                case StatType.PickUpRadius:
+                    ApplyEffect(effect, ref playerStats.pickUpRadius);
+                    break;
+
+
                 //Summling Modifiers
                 case StatType.SummlingDamage:
                     ApplyEffect(effect, ref playerStats.defense);
                     break;
-
                 case StatType.SummlingRange:
                     ApplyEffect(effect, ref playerStats.defense);
                     break;

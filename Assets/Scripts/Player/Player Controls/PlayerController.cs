@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 movementDir; // Movement Direction
 
     [Header("Dash")]
-    private float dashStrength = 10f;
     public float dashTimer = 0.2f;
     public float dashCooldown = 1f;
     public bool canDash = true;
@@ -27,20 +26,14 @@ public class PlayerController : MonoBehaviour
     private InputAction shootAction;
     private InputAction focusAction;
 
-    [Header("UI")]
-    [SerializeField] private GameObject pauseScreen;
-
     //[SerializeField]
     //private Transform bulletParent;
     //private bool canShoot = true;
     //private bool isHitScan;
     //public float FireRate;
 
-    [SerializeField]
-    private Transform muzzleTransform;
-
     [Header("Other")]
-    [SerializeField] private float rotationSpeed;
+    [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float shootingRotationSpeed = 10f;
     [SerializeField] private TrailRenderer trailRenderer;
     private PlayerStats playerStats;
@@ -78,7 +71,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleGrounding();
-
         HandleMovement();
         HandleJump();
         HandleShootingRotation();
@@ -221,7 +213,7 @@ public class PlayerController : MonoBehaviour
             if (movementDir != Vector3.zero)
             {
 
-                controller.Move(movementDir * dashStrength * Time.deltaTime);
+                controller.Move(movementDir * playerStats.dashStrength * Time.deltaTime);
                 //SmoothRotation(movementDir, rotationSpeed);
 
                 yield return null;
@@ -245,42 +237,10 @@ public class PlayerController : MonoBehaviour
         isDashing = false;
 
         // Cooldown
-        yield return new WaitForSeconds(dashCooldown);
+        yield return new WaitForSeconds(playerStats.dashCooldown);
         canDash = true;
     }
 
-    //public IEnumerator ShootGun(GameObject bulletChoice)
-    //{
-    //    RaycastHit hit;
-    //    GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
-    //    ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
-
-    //    if (canShoot)
-    //    {
-    //        canShoot = false;
-
-    //        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
-    //        {
-    //            projectileController.target = hit.point;
-    //            projectileController.hit = true;
-    //            //Debug.Log("hit something");
-    //        }
-    //        else
-    //        {
-    //            projectileController.target = cameraTransform.position + cameraTransform.forward * 25f;
-    //            projectileController.hit = false;
-    //            //Debug.Log("nothing");
-    //        }
-
-    //        yield return new WaitForSeconds(FireRate);
-
-    //        canShoot = true;
-    //    }
-
-    //    //Debug.Log("Tryin to shoot");
-
-       
-    //}
 
 
 }

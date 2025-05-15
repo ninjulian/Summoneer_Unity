@@ -1,18 +1,61 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class XpBar : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] public Slider xpSlider;
+    [SerializeField] private float fillSpeed = 0.5f; // Speed of the animation
+
+    private PlayerStats playerStats;
+    private Coroutine currentAnimation;
+
+    private void Awake()
     {
-        
+        playerStats = GetComponent<PlayerStats>();
+        xpSlider.minValue = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateXPBar()
     {
-        
+        xpSlider.maxValue = playerStats.xpRequired;
+
+        // Stop any existing animation
+        if (currentAnimation != null)
+        {
+            StopCoroutine(currentAnimation);
+        }
+
+        // Start new animation
+        currentAnimation = StartCoroutine(AnimateXPBar(playerStats.currentXP));
+    }
+
+    private IEnumerator AnimateXPBar(float targetXP)
+    {
+        float startValue = xpSlider.value;
+        float duration = Mathf.Abs(targetXP - startValue) / fillSpeed;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            xpSlider.value = Mathf.Lerp(startValue, targetXP, t);
+
+            // Update max value dynamically
+            xpSlider.maxValue = playerStats.xpRequired;
+
+            // Clamp value to prevent overshooting
+            if (xpSlider.value > xpSlider.maxValue)
+            {
+                xpSlider.value = xpSlider.maxValue;
+                break;
+            }
+
+            yield return null;
+        }
+
+        xpSlider.value = targetXP;
+        currentAnimation = null;
     }
 }

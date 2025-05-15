@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
-///  MaxHealth, Health, Damage, MovementSpeed, JumpHeight, FireRate, Defense, Luck, Affinity, 
-///  SummlingDamage, SummlingRange, SummlingCC, SummlingCM, SummlingMovementSpeed
+///  MaxHealth, Health, Defense,
+/// Damage, CritChance, CritMultiplier, FireRate,
+/// MovementSpeed, JumpHeight, DashStrenght, 
+/// Luck, Affinity, PickUpRadius,
+/// SummlingDamage, SummlingRange, SummlingCC, SummlingCM, SummlingMovementSpeed
 /// </summary>
-public enum StatType { MaxHealth, Health, Damage, MovementSpeed, JumpHeight, FireRate, Defense, Luck, Affinity, 
-    SummlingDamage, SummlingRange, SummlingCC, SummlingCM, SummlingMovementSpeed}
+public enum StatType { 
+    MaxHealth, Health, Defense,
+    Damage, CritChance, CritMultiplier, FireRate,
+    MovementSpeed, JumpHeight, DashStrength, DashCooldown,
+    Luck, Affinity, PickUpRadius, 
+    SummlingDamage, SummlingRange, SummlingCC, SummlingCM, SummlingMovementSpeed
+    }
 //Need to add projectile variants
 //Makes sure to have a variety
 public enum UpgradeCategory { Survival, Movement, Damage, QOL, Summling }
