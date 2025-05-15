@@ -95,13 +95,12 @@ public class WaveManager : MonoBehaviour
         {
             // Show upgrade UI instead of completing wave immediately
             StartCoroutine(ShowUpgradeUICoroutine());
-            Debug.Log("Killed all enemies");
         }
     }
 
     private IEnumerator ShowUpgradeUICoroutine()
     {
-        yield return new WaitForSeconds(1f); // Wait for 1 second
+        yield return new WaitForSeconds(3f); // Wait for 1 second
         UpgradeManager.Instance.GenerateUpgrades(CurrentWave);
         upgradeManager.hasRerolled = false;
         uiManager.ToggleUpgradeUI();

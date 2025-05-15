@@ -29,7 +29,7 @@ public class WaveSpawner : MonoBehaviour
 
     private void StartSpawning()
     {
-        if (!isSpawning)
+        if (!isSpawning && player != null)
         {
             StartCoroutine(SpawnWave());
         }
@@ -55,22 +55,31 @@ public class WaveSpawner : MonoBehaviour
 
     private bool SpawnEnemy()
     {
-        Vector3 spawnPosition;
-        int attempts = 0;
-        const int maxAttempts = 10; // Prevent infinite loops
-
-        do
+        if (player != null)
         {
-            spawnPosition = GetValidSpawnPosition();
-            attempts++;
-            if (attempts >= maxAttempts) return false;
-        }
-        while (spawnPosition == Vector3.zero);
+            Vector3 spawnPosition;
 
-        GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity);
-        waveManager.RegisterEnemy();
-        enemy.GetComponent<EnemyStats>().onDeath.AddListener(waveManager.EnemyDefeated);
-        return true;
+            int attempts = 0;
+            const int maxAttempts = 10; // Prevent infinite loops
+
+            do
+            {
+
+                spawnPosition = GetValidSpawnPosition();
+                attempts++;
+                if (attempts >= maxAttempts && player != null) return false;
+            }
+            while (spawnPosition == Vector3.zero);
+
+            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity);
+            waveManager.RegisterEnemy();
+            enemy.GetComponent<EnemyStats>().onDeath.AddListener(waveManager.EnemyDefeated);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 

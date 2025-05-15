@@ -38,6 +38,6 @@ public class WaveUIManager : MonoBehaviour
 
     private void UpdateEnemyCounter()
     {
-        enemyCounter.text = $"Enemies left to Spawn: {waveManager.enemiesSpawned}/{waveManager.TargetEnemies}";
+        enemyCounter.text = $"Spawning: {waveManager.enemiesSpawned}/{waveManager.TargetEnemies}";
     }
 }

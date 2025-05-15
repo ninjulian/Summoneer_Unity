@@ -14,6 +14,7 @@ public class PlayerStats : StatClass
     public float fireRate;
     public float coolDown;
     public float dashStrength = 10f;
+    public float pickUpRadius;
 
 
     //Currency

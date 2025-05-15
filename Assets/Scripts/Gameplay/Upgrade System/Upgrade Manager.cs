@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using static UpgradeData;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -48,8 +49,6 @@ public class UpgradeManager : MonoBehaviour
     {
         CalculateRerollCost();
         ClearExisting();
-       
-
 
         for (int i = 0; i < 5; i++)
         {
@@ -122,12 +121,12 @@ public class UpgradeManager : MonoBehaviour
 
     public void ClearExisting()
     {
-        if (gameObject != null)
-        { 
-            foreach (var button in _currentButtons)
+        // Create a list of buttons that are not null to avoid destroying already destroyed objects
+        foreach (var button in _currentButtons.Where(b => b != null).ToList())
+        {
             Destroy(button.gameObject);
-            _currentButtons.Clear();
         }
+        _currentButtons.Clear();
     }
 
     public void ClearButton(GameObject buttonObj)
@@ -226,7 +225,7 @@ public class UpgradeManager : MonoBehaviour
 
             GenerateUpgrades(waveManager.currentWave);
 
-            UpgradeUI.Instance.UpdateCurrencyText();
+            //UpgradeUI.Instance.UpdateCurrencyText();
         
         }
 

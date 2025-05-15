@@ -23,6 +23,11 @@ public class UpgradeUI : MonoBehaviour
         UpdateCurrencyText();
     }
 
+    private void FixedUpdate()
+    {
+        UpdateCurrencyText();
+    }
+
     private void Awake()
     {
 

@@ -77,7 +77,6 @@ public class UIManager : MonoBehaviour
         //    return;
 
         upgradeUI.SetActive(!upgradeUI.activeInHierarchy);
-        Debug.Log("OPening UPgrade UI");
 
         UpdateCursorState();
     }
