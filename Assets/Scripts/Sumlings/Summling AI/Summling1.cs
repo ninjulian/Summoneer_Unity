@@ -120,7 +120,7 @@ public class Summling1 : SummlingStats
     {
         // Check if we've reached our destination or player moved too far
         return navAgent.remainingDistance <= navAgent.stoppingDistance ||
-               Vector3.Distance(player.transform.position, roamPosition) > roamRadius;
+               Vector3.Distance(player.transform.position, roamPosition) > leashRadius;
     }
 
     private void CheckIfStuck()
@@ -220,20 +220,5 @@ public class Summling1 : SummlingStats
 
         DrawGizmosContent();
     }
-
-    // Common gizmo drawing logic
-    private void DrawGizmosContent()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-
-        // Draw target destination wire cube
-        Gizmos.color = Color.green;
-        Vector3 targetPosition = currentTarget != null ? currentTarget.position : roamPosition;
-        Gizmos.DrawWireCube(targetPosition, Vector3.one);
-    }
-
 
 }

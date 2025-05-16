@@ -221,7 +221,6 @@ GameObject:
   - component: {fileID: 5222860414828037866}
   - component: {fileID: 6814192048623453886}
   - component: {fileID: 4253830314261136575}
-  - component: {fileID: 6156394858966400118}
   m_Layer: 11
   m_Name: Summling1
   m_TagString: Summling
@@ -260,23 +259,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef3cc83fde99554c82eeff8c70feff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  summlingName: Summling1
+  specie: 2
+  mark: 0
+  description: Tis a smole
+  icon: {fileID: 21300000, guid: 55c86d46d8dea8549b04f16126520906, type: 3}
+  affectedStatsByMark: 03000000
+  effects:
+  - statType: 7
+    value: 10
+    isPercentage: 0
+  damage: 1
   damageCooldown: 1
-  critChance: 5
+  critChance: 0
   critMultiplier: 2
-  attackRange: 1
   movementSpeed: 10
+  attackRange: 2
+  detectionRange: 8
   roamRadius: 10
-  detectionRange: 10
   focusTime: 5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
-  playerFollowThreshold: 3
+  leashRadius: 5
+  returnToPlayerSpeedMultiplier: 1.2
   player: {fileID: 0}
   currentState: 0
   alwaysShowGizmos: 0
-  stuckTimeThreshold: 2
+  stuckTimeThreshold: 5
 --- !u!195 &4253830314261136575
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -285,36 +295,20 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1840779663832544055}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: 1479372276
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
+  m_Height: 1
+  m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6156394858966400118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1840779663832544055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 001fe89f468aa7340b2a1d521e063029, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soulEssencePrefab: {fileID: 0}
-  statClass: {fileID: 0}
-  xpValue: 0
-  soulEssenceValue: 0
 --- !u!1 &5253155922157785390
 GameObject:
   m_ObjectHideFlags: 0

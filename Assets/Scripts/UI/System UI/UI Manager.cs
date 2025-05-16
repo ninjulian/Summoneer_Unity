@@ -7,7 +7,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject systemUI;
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private GameObject upgradeUI;
+    [SerializeField] private GameObject summlingManagerUI;
     [SerializeField] private GameObject crosshair;
+    [SerializeField] private GameObject soulEssenceText;
 
     [Header("Input")]
     [SerializeField] private PlayerInput playerInput;
@@ -88,11 +90,21 @@ public class UIManager : MonoBehaviour
         //waveManager.StartCountdown(); // Start the next wave countdown
     }
 
-
+    public void ToggleSummlingManagerUI()
+    {
+        summlingManagerUI.SetActive(!summlingManagerUI.activeInHierarchy);
+        UpdateCursorState();
+    }
 
     private void UpdateCursorState()
     {
-        bool anyUIActive = systemUI.activeInHierarchy || pauseUI.activeInHierarchy || upgradeUI.activeInHierarchy;
+        bool anyUIActive = systemUI.activeInHierarchy || pauseUI.activeInHierarchy || upgradeUI.activeInHierarchy ||
+            summlingManagerUI.activeInHierarchy;
+
+        bool anyUIwSE = upgradeUI.activeInHierarchy || summlingManagerUI.activeInHierarchy;
+       
+        soulEssenceText.SetActive(anyUIwSE); 
+        
 
         // Set cursor lock state and visibility
         if (anyUIActive)

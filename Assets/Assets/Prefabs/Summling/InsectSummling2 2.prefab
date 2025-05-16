@@ -171,7 +171,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22f7efeafa83364e8f11cd893044c49, type: 2}
+  - {fileID: 2100000, guid: b409695160bf93747826bfc5a60a4ab1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 130003704925893184}
   - component: {fileID: 2129524557150380524}
   m_Layer: 11
-  m_Name: Summling2
+  m_Name: InsectSummling2 2
   m_TagString: Summling
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   summlingName: Flying Fish
-  specie: 2
+  specie: 1
   mark: 0
   description: Fish that flies
   icon: {fileID: 21300000, guid: c339cd694fd9db64c9e7919a4de2903c, type: 3}

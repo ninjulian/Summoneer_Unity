@@ -223,18 +223,18 @@ public class Summling2 : SummlingStats
     }
 
     // Common gizmo drawing logic
-    private void DrawGizmosContent()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+    //private void DrawGizmosContent()
+    //{
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawWireSphere(transform.position, detectionRange);
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        // Draw target destination wire cube
-        Gizmos.color = Color.green;
-        Vector3 targetPosition = currentTarget != null ? currentTarget.position : roamPosition;
-        Gizmos.DrawWireCube(targetPosition, Vector3.one);
-    }
+    //    // Draw target destination wire cube
+    //    Gizmos.color = Color.green;
+    //    Vector3 targetPosition = currentTarget != null ? currentTarget.position : roamPosition;
+    //    Gizmos.DrawWireCube(targetPosition, Vector3.one);
+    //}
 
 
 }
