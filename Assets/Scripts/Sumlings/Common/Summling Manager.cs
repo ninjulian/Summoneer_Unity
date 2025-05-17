@@ -48,21 +48,38 @@ public class SummlingManager : MonoBehaviour
 
     [Header("UI References")]
     public Image previewImage;
+    public Image previewBorder;
     public TMP_Text previewStats;
     public Image[] icons;
     public Image[] iconBorder;
+    public Button[] iconButtons; 
     private Dictionary<Specie, int> ownedSpeciesCount = new();
+
+    //Replacement Methods
+    public int pendingReplacementIndex = -1;
+    public bool isReplacing = false;
 
     private GameObject currentPendingSummon;
     private int summonCountInWave = 0;
 
     //Summongin Functions
+
+    public void Start()
+    {
+        UpdateButtonInteractivity();
+    }
+
     public void GenerateSummling()
     {
         if (player.soulEssence >= GetSummonCost())
-        {   
+        {
             canSummon = true;
-            
+            if (summlingsOwned.Count >= maxSlots)
+            {
+                isReplacing = true;
+                UpdateButtonInteractivity();
+            }
+
             player.SpendSoulEssence(GetSummonCost());
 
             // Calculate species weights
@@ -95,6 +112,7 @@ public class SummlingManager : MonoBehaviour
             stats.ApplyMarkMultiplier(markMultiplier);
             UpdatePreviewUI(stats);
 
+            
 
         }
         else
@@ -173,7 +191,6 @@ public class SummlingManager : MonoBehaviour
     //Confirm Decline Functions
     public void ConfirmSummon()
     {
-        // Add this check
         if (currentPendingSummon == null)
         {
             Debug.LogError("Cannot confirm summon: No pending summon!");
@@ -181,18 +198,25 @@ public class SummlingManager : MonoBehaviour
         }
 
         if (summlingsOwned.Count >= maxSlots)
-        {   
-            DeclineSummon();
-            return;
+        {
+            // Only set replacing state, don't decline
+            isReplacing = true;
+
+            UpdateButtonInteractivity();
+
+            return; // Don't destroy the pending summon!
         }
 
+        // Normal confirmation logic
         summlingsOwned.Add(currentPendingSummon);
         UpdateSpeciesCount();
         ApplySummlingEffects(currentPendingSummon.GetComponent<SummlingStats>());
         UpdatePartyUI();
         currentPendingSummon = null;
+
     }
 
+    // Modified DeclineSummon to handle replacement cancellation
     public void DeclineSummon()
     {
         if (currentPendingSummon != null)
@@ -200,6 +224,13 @@ public class SummlingManager : MonoBehaviour
             Destroy(currentPendingSummon);
             currentPendingSummon = null;
         }
+
+        // Reset replacement state
+        isReplacing = false;
+
+        UpdateButtonInteractivity();
+
+        pendingReplacementIndex = -1;
     }
 
     //Merging Functions
@@ -260,12 +291,15 @@ public class SummlingManager : MonoBehaviour
     }
 
     //Replacment Function
+    // Modified ReplaceSummling method
     public void ReplaceSummling(int slotIndex)
     {
         if (currentPendingSummon == null) return;
+        if (slotIndex < 0 || slotIndex >= summlingsOwned.Count) return;
 
         // Remove old effects
         RemoveSummlingEffects(summlingsOwned[slotIndex].GetComponent<SummlingStats>());
+        Destroy(summlingsOwned[slotIndex]);
 
         // Replace with new
         summlingsOwned[slotIndex] = currentPendingSummon;
@@ -273,7 +307,12 @@ public class SummlingManager : MonoBehaviour
 
         UpdateSpeciesCount();
         UpdatePartyUI();
+
+        // Clear pending summon
         currentPendingSummon = null;
+        isReplacing = false;
+
+        UpdateButtonInteractivity();
     }
 
     // Add to SummlingManager.cs
@@ -323,6 +362,48 @@ public class SummlingManager : MonoBehaviour
 
                 field.SetValue(player, Mathf.Floor(originalValue));
             }
+        }
+    }
+
+    public void SelectReplacementSlot(int slotIndex)
+    {
+        if (!isReplacing) return;
+
+        pendingReplacementIndex = slotIndex;
+        Debug.Log($"Selected slot {slotIndex} for replacement");
+    }
+
+    // New method to confirm replacement
+    public void ConfirmReplacement()
+    {
+        if (!isReplacing || pendingReplacementIndex == -1)
+        {
+            Debug.LogError("No replacement pending");
+            return;
+        }
+
+        if (currentPendingSummon == null)
+        {
+            Debug.LogError("No summon to replace with");
+            return;
+        }
+
+        // Perform replacement
+        ReplaceSummling(pendingReplacementIndex);
+
+        // Reset state
+        isReplacing = false;
+        pendingReplacementIndex = -1;
+
+        UpdateButtonInteractivity();
+
+    }
+
+    public void UpdateButtonInteractivity()
+    {
+        foreach (Button button in iconButtons)
+        {
+            button.interactable = isReplacing;
         }
     }
 }
