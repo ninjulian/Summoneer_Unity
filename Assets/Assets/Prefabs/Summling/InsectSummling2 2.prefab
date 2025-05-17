@@ -497,7 +497,7 @@ MonoBehaviour:
   specie: 1
   mark: 0
   description: Fish that flies
-  icon: {fileID: 21300000, guid: c339cd694fd9db64c9e7919a4de2903c, type: 3}
+  icon: {fileID: 21300000, guid: d0e0d3e5f7cc1114ab160795d179a838, type: 3}
   affectedStatsByMark: 
   effects:
   - statType: 6

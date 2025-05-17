@@ -19,6 +19,11 @@ public class SummlingManagerUI : MonoBehaviour
 
     public void Awake()
     {
+       UpdateCost();
+    }
+
+    private void UpdateCost()
+    {
         float cost = manager.GetSummonCost();
         summonCost.text = cost.ToString();
     }
@@ -27,7 +32,8 @@ public class SummlingManagerUI : MonoBehaviour
     {
         if (manager.canSummon)
         {
-           Debug.Log("OPening confirmation page");
+            UpdateCost();
+            Debug.Log("OPening confirmation page");
            summonConfirmationTab.SetActive(!summonConfirmationTab.activeInHierarchy);
            manager.GenerateSummling();
 
@@ -44,8 +50,8 @@ public class SummlingManagerUI : MonoBehaviour
     public void CancelSummon()
     {
         //Close YesNo, take away SE
-        summonConfirmationTab.SetActive(!summonConfirmationTab.activeInHierarchy);
         manager.DeclineSummon();
+        summonConfirmationTab.SetActive(!summonConfirmationTab.activeInHierarchy);
     }
 
     public void SelectSummling()

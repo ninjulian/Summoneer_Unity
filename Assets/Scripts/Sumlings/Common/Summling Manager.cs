@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.ProBuilder.MeshOperations;
 
+
+
 public class SummlingManager : MonoBehaviour
 {
     [Header("Configuration")]
@@ -14,6 +16,18 @@ public class SummlingManager : MonoBehaviour
     public float waveCostFactor = 10f;
     public float summonCountFactor = 5f;
     public int currentWave = 1;
+
+    //NEw additions
+
+    [System.Serializable]
+    public class SummlignList
+    {
+        public Specie specie;
+        public List<GameObject> prefabs;
+    }
+
+    [Header("Species Prefabs")]
+    public List<SummlignList> summlingPrefabList = new List<SummlignList>();
 
     [Header("References")]
     public PlayerStats player;
@@ -24,7 +38,7 @@ public class SummlingManager : MonoBehaviour
     public bool canSummon;
     public bool keepSummon;
 
-    public List<GameObject> summlingPrefabs;
+    //public List<GameObject> summlingPrefabs;
     public List<GameObject> summlingsOwned = new List<GameObject>();
 
     // In SummlingManager.cs
@@ -35,7 +49,8 @@ public class SummlingManager : MonoBehaviour
     [Header("UI References")]
     public Image previewImage;
     public TMP_Text previewStats;
-    public Image[] partySlots;
+    public Image[] icons;
+    public Image[] iconBorder;
     private Dictionary<Specie, int> ownedSpeciesCount = new();
 
     private GameObject currentPendingSummon;
@@ -136,9 +151,7 @@ public class SummlingManager : MonoBehaviour
     }
 
     private void UpdatePartyUI()
-    {
-        // Debug current state
-        Debug.Log($"Updating Party UI. Summlings: {summlingsOwned.Count}, Max Slots: {maxSlots}");
+    { 
 
         for (int i = 0; i < maxSlots; i++)
         {
@@ -150,25 +163,11 @@ public class SummlingManager : MonoBehaviour
                 SummlingStats stats = summlingsOwned[i].GetComponent<SummlingStats>();
                 if (stats == null)
                 {
-                    Debug.LogError($"Slot {i}: Missing SummlingStats component");
                     continue;
                 }
-
-                partySlots[i].sprite = stats.icon;
-                Debug.Log($"Slot {i} updated with {stats.specie} icon");
+                icons[i].sprite = stats.icon;
             }
-            else
-            {
-                Debug.Log($"Slot {i}: No summling (intentional empty slot)");
-            }
-
-            // Force immediate UI update
-            partySlots[i].SetAllDirty();
-        }
-
-        // Final UI refresh
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(partySlots[0].transform.parent as RectTransform);
+        } 
     }
 
     //Confirm Decline Functions
@@ -181,15 +180,13 @@ public class SummlingManager : MonoBehaviour
             return;
         }
 
-        if (summlingsOwned.Count > maxSlots)
+        if (summlingsOwned.Count >= maxSlots)
         {   
-            Debug.Log("Party full - must replace");
             DeclineSummon();
             return;
         }
 
         summlingsOwned.Add(currentPendingSummon);
-        Debug.Log($"Added Summling. Total: {summlingsOwned.Count}"); //  Add this
         UpdateSpeciesCount();
         ApplySummlingEffects(currentPendingSummon.GetComponent<SummlingStats>());
         UpdatePartyUI();
@@ -242,7 +239,6 @@ public class SummlingManager : MonoBehaviour
     }
 
     //Effect application System
-
     private void ApplySummlingEffects(SummlingStats stats)
     {
         foreach (var mod in stats.effects)
@@ -283,15 +279,15 @@ public class SummlingManager : MonoBehaviour
     // Add to SummlingManager.cs
     private GameObject GetPrefabBySpecies(Specie species)
     {
-        foreach (GameObject prefab in summlingPrefabs)
+        // Find the matching specie list
+        var specieList = summlingPrefabList.FirstOrDefault(s => s.specie == species);
+
+        if (specieList != null && specieList.prefabs.Count > 0)
         {
-            SummlingStats stats = prefab.GetComponent<SummlingStats>();
-            if (stats != null && stats.specie == species)
-            {
-                return prefab;
-            }
+            // Return random prefab from the specie's list
+            int randomIndex = UnityEngine.Random.Range(0, specieList.prefabs.Count);
+            return specieList.prefabs[randomIndex];
         }
-        Debug.LogError($"No prefab found for species: {species}");
         return null;
     }
 
