@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Xml.Serialization;
+
 
 public class SummlingManagerUI : MonoBehaviour
-{
+{   
+
+
     [Header("UI References")]
     public GameObject summlingUI;
     public GameObject replaceSummling;
@@ -20,6 +22,7 @@ public class SummlingManagerUI : MonoBehaviour
     [Header("Summling Party")]
     [Tooltip("The Panel that shows your Summling Party")]
     public GameObject summlingPartyPanel;
+    public GameObject[] selectBorder;
 
     [Header("Summling Party Locations")]
     [Tooltip("The parents and location of where the Party will be")]
@@ -32,6 +35,18 @@ public class SummlingManagerUI : MonoBehaviour
     [Header("Page Management")]
     public List<GameObject> pages = new List<GameObject>();
     public int currentPageIndex = 0;
+
+    [Header("Manager UI")]
+    public Button mergeButton;
+    public Button transmuteButton;
+    public GameObject confirmMTButton;
+    public TMP_Text confirmMTText;
+    public TMP_Text managerDescriptionText;
+
+    private List<int> selectedIndices = new List<int>();
+    private bool isMergeMode = false;
+    private bool isTransmuteMode = false;
+
 
     public void Awake()
     {
@@ -120,7 +135,6 @@ public class SummlingManagerUI : MonoBehaviour
 
     public void ConfirmSummon()
     {
-        
 
         // Prevent confirmation if in replacement mode but no slot selected
         if (manager.isReplacing && !selectedReplacement)
@@ -152,7 +166,12 @@ public class SummlingManagerUI : MonoBehaviour
            // replaceSummling.SetActive(manager.isReplacing);
         }
 
-        
+        foreach (GameObject border in selectBorder)
+        {
+            border.SetActive(false);
+        }
+
+
     }
 
     public void CancelSummon()
@@ -162,6 +181,11 @@ public class SummlingManagerUI : MonoBehaviour
         summonConfirmationTab.SetActive(!summonConfirmationTab.activeInHierarchy);
         summonButton.SetActive(!manager.isReplacing);
         selectedReplacement = false;
+
+        foreach (GameObject border in selectBorder)
+        {
+            border.SetActive(false);
+        }
     }
 
     public void SelectSummling()
@@ -169,37 +193,96 @@ public class SummlingManagerUI : MonoBehaviour
         //Get Summling Data
     }
 
+    public void ConfirmMTButton()
+    {
+        if (isMergeMode)
+        {
+            PerformMerge();
+        }
+        else if (isTransmuteMode)
+        {
+            PerformTransmute();
+        }
+
+        // Clear selections
+        foreach (var index in selectedIndices)
+        {
+            selectBorder[index].SetActive(false);
+        }
+        selectedIndices.Clear();
+        confirmMTButton.SetActive(false);
+        manager.UpdatePartyUI();
+    }
+
+
     public void TransmuteButton()
     {
-        //Gain SE delete effects and delete Summling
-        //transmute selected true
+        manager.isTransmuting = true;
+        isTransmuteMode = true;
+        manager.UpdateButtonInteractivity();
+        isMergeMode = false;
+        selectedIndices.Clear();
+        
+        manager.isMerging = false;
+        confirmMTButton.SetActive(true);
+        managerDescriptionText.text = "Select a Summling to transmute";
     }
 
     public void MergeButton()
     {
-        //Combine both Summlings
-        //Merge selected true
-    }
-
-    public void HoverIcon()
-    {
-        //Show description of Summling
+        isMergeMode = true;
+        manager.isMerging = true;
+        manager.UpdateButtonInteractivity();
+        isTransmuteMode = false;
+        selectedIndices.Clear();
+        
+        manager.isTransmuting = false;
+        confirmMTButton.SetActive(true);
+        managerDescriptionText.text = "Select two identical Summlings to merge";
     }
 
     public void HoverTransmute()
     {
         //Explain how to transmute
+        managerDescriptionText.text = "Sell your Summling for Soul Essence and XP";
+    }
+
+    public void ManagerHover()
+    {
+        managerDescriptionText.text = "Merge or Transmute your Summlings";
     }
 
     public void HoverMerge()
     {
         //Explain how to merge
+        managerDescriptionText.text = "Choose two of the same Summlings and merge them to increase";
     }
 
     public void IconButtons(int slotIndex)
     {
-        manager.SelectReplacementSlot(slotIndex);
-        selectedReplacement = true;
+        if (manager.isMerging)
+        {
+            HandleMergeSelection(slotIndex);
+            selectBorder[slotIndex].SetActive(true);
+        }
+        else if (manager.isTransmuting)
+        {
+            HandleTransmuteSelection(slotIndex);
+            selectBorder[slotIndex].SetActive(true);
+        }
+        else if (manager.isReplacing)
+        {
+            // Deactivate all borders first
+            foreach (GameObject border in selectBorder)
+            {
+                border.SetActive(false);
+            }
+
+            // Activate only the selected border
+            selectBorder[slotIndex].SetActive(true);
+            manager.SelectReplacementSlot(slotIndex);
+            selectedReplacement = true;
+        }
     }
 
     // Modified navigation methods
@@ -244,6 +327,10 @@ public class SummlingManagerUI : MonoBehaviour
         summonConfirmationTab.SetActive(false);
         manager.DeclineSummon();
         selectedReplacement = false;
+
+        //Manager reset
+        manager.isMerging = false;
+        manager.isTransmuting = false;
     }
 
     // Initialization (call in Start/Awake)
@@ -257,6 +344,88 @@ public class SummlingManagerUI : MonoBehaviour
         CheckPage();
         // Activate starting page
         SetPageActive(currentPageIndex, true);
+    }
+
+    private void HandleMergeSelection(int slotIndex)
+    {
+        if (selectedIndices.Contains(slotIndex))
+        {
+            // Deselect
+            selectedIndices.Remove(slotIndex);
+            selectBorder[slotIndex].SetActive(false);
+        }
+        else
+        {
+            if (selectedIndices.Count >= 2) return;
+            selectedIndices.Add(slotIndex);
+            selectBorder[slotIndex].SetActive(true);
+        }
+
+        UpdateMergeConfirmation();
+    }
+
+    private void HandleTransmuteSelection(int slotIndex)
+    {
+        // Clear previous selection
+        foreach (var index in selectedIndices)
+        {
+            selectBorder[index].SetActive(false);
+        }
+        selectedIndices.Clear();
+
+        // Set new selection
+        selectedIndices.Add(slotIndex);
+        selectBorder[slotIndex].SetActive(true);
+        UpdateTransmuteConfirmation();
+    }
+
+    private void UpdateMergeConfirmation()
+    {
+        if (selectedIndices.Count == 2)
+        {
+            GameObject s1 = manager.summlingsOwned[selectedIndices[0]];
+            GameObject s2 = manager.summlingsOwned[selectedIndices[1]];
+
+            SummlingStats stats1 = s1.GetComponent<SummlingStats>();
+            SummlingStats stats2 = s2.GetComponent<SummlingStats>();
+
+            if (stats1.specie == stats2.specie && stats1.mark == stats2.mark)
+            {
+                confirmMTButton.SetActive(true);
+                confirmMTText.text = $"Merge {stats1.summlingName} and {stats2.summlingName}?";
+                return;
+            }
+        }
+        confirmMTButton.SetActive(false);
+    }
+
+    private void UpdateTransmuteConfirmation()
+    {
+        if (selectedIndices.Count == 1)
+        {
+            GameObject s = manager.summlingsOwned[selectedIndices[0]];
+            SummlingStats stats = s.GetComponent<SummlingStats>();
+            confirmMTButton.SetActive(true);
+            confirmMTText.text = $"Transmute {stats.summlingName} for {stats.GetTransmuteValue()} SE?";
+        }
+        else
+        {
+            confirmMTButton.SetActive(false);
+        }
+    }
+
+
+    // Replace PerformMerge and PerformTransmute in SummlingManagerUI.cs
+    private void PerformMerge()
+    {
+        if (selectedIndices.Count != 2) return;
+        manager.MergeSummlings(selectedIndices[0], selectedIndices[1]);
+    }
+
+    private void PerformTransmute()
+    {
+        if (selectedIndices.Count != 1) return;
+        manager.TransmuteSummling(selectedIndices[0]);
     }
 
 }

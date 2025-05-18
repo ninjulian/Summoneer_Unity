@@ -17,6 +17,7 @@ public class SummlingManager : MonoBehaviour
     public float summonCountFactor = 5f;
     public int currentWave = 1;
 
+
     //NEw additions
 
     [System.Serializable]
@@ -52,12 +53,20 @@ public class SummlingManager : MonoBehaviour
     public TMP_Text previewStats;
     public Image[] icons;
     public Image[] iconBorder;
-    public Button[] iconButtons; 
+    public Button[] iconButtons;
+    public Sprite defaultIcon;
+
+    //Information UI
+    public GameObject[] highlightPreview;
+    public TMP_Text[] highlightText;
+
     private Dictionary<Specie, int> ownedSpeciesCount = new();
 
     //Replacement Methods
     public int pendingReplacementIndex = -1;
     public bool isReplacing = false;
+    public bool isMerging = false;
+    public bool isTransmuting = false;
 
     private GameObject currentPendingSummon;
     private int summonCountInWave = 0;
@@ -160,6 +169,21 @@ public class SummlingManager : MonoBehaviour
     private void UpdatePreviewUI(SummlingStats stats)
     {
         previewImage.sprite = stats.icon;
+
+        switch (stats.mark)
+        {
+            case Mark.Newborn:
+                previewBorder.color = Color.grey;
+                break;
+
+            case Mark.Child:
+                previewBorder.color = Color.blue;
+                break;
+
+            case Mark.Pre:
+                previewBorder.color = Color.red;
+                break;
+        }
         previewStats.text = $"Species: {stats.specie}\nMark: {stats.mark}\n";
 
         foreach (var mod in stats.effects)
@@ -168,13 +192,15 @@ public class SummlingManager : MonoBehaviour
         }
     }
 
-    private void UpdatePartyUI()
+    public void UpdatePartyUI()
     { 
 
         for (int i = 0; i < maxSlots; i++)
         {
             // Always process all 5 slots
             bool hasSummling = i < summlingsOwned.Count;
+
+            highlightPreview[i].SetActive(false); // Reset highlight state
 
             if (hasSummling)
             {
@@ -184,8 +210,44 @@ public class SummlingManager : MonoBehaviour
                     continue;
                 }
                 icons[i].sprite = stats.icon;
+
+                switch (stats.mark)
+                {
+                    case Mark.Newborn:
+                        iconBorder[i].color = Color.grey;
+                        break;
+
+                    case Mark.Child:
+                        iconBorder[i].color = Color.blue;
+                        break;
+
+                    case Mark.Pre:
+                        iconBorder[i].color = Color.red;
+                        break;
+                }
+
             }
-        } 
+        }
+        
+    }
+
+    public void UpdateEmptySlots()
+    {
+        for (int i = 0; i < maxSlots; i++)
+        {
+            bool isSlotEmpty = i >= summlingsOwned.Count || summlingsOwned[i] == null;
+
+            // Update icon and appearance
+            if (isSlotEmpty)
+            {
+                icons[i].sprite = defaultIcon;
+                iconBorder[i].color = Color.grey;
+                highlightPreview[i].SetActive(false);
+            }
+
+            // Always disable buttons for empty slots
+            iconButtons[i].interactable = !isSlotEmpty && ShouldButtonBeInteractable();
+        }
     }
 
     //Confirm Decline Functions
@@ -270,7 +332,7 @@ public class SummlingManager : MonoBehaviour
     }
 
     //Effect application System
-    private void ApplySummlingEffects(SummlingStats stats)
+    public void ApplySummlingEffects(SummlingStats stats)
     {
         foreach (var mod in stats.effects)
         {
@@ -307,6 +369,8 @@ public class SummlingManager : MonoBehaviour
 
         UpdateSpeciesCount();
         UpdatePartyUI();
+
+        UpdateEmptySlots();
 
         // Clear pending summon
         currentPendingSummon = null;
@@ -348,7 +412,7 @@ public class SummlingManager : MonoBehaviour
         }
     }
 
-    private void RemoveSummlingEffects(SummlingStats stats)
+    public void RemoveSummlingEffects(SummlingStats stats)
     {
         foreach (var mod in stats.effects)
         {
@@ -370,6 +434,7 @@ public class SummlingManager : MonoBehaviour
         if (!isReplacing) return;
 
         pendingReplacementIndex = slotIndex;
+
         Debug.Log($"Selected slot {slotIndex} for replacement");
     }
 
@@ -399,11 +464,118 @@ public class SummlingManager : MonoBehaviour
 
     }
 
+    public void MergeSummlings(int index1, int index2)
+    {
+        if (index1 < 0 || index1 >= summlingsOwned.Count) return;
+        if (index2 < 0 || index2 >= summlingsOwned.Count) return;
+        if (index1 == index2) return;
+
+        GameObject s1 = summlingsOwned[index1];
+        GameObject s2 = summlingsOwned[index2];
+        SummlingStats stats1 = s1.GetComponent<SummlingStats>();
+        SummlingStats stats2 = s2.GetComponent<SummlingStats>();
+
+        if (stats1.specie != stats2.specie || stats1.mark != stats2.mark) return;
+        if (stats1.mark == Mark.Pre) return;
+
+        // Proceed with merge
+        int targetIndex = Mathf.Min(index1, index2);
+        GameObject newSummling = Instantiate(s1);
+        SummlingStats newStats = newSummling.GetComponent<SummlingStats>();
+        newStats.mark = stats1.mark + 1;
+
+        // Remove old
+        RemoveSummlingEffects(stats1);
+        RemoveSummlingEffects(stats2);
+        summlingsOwned.Remove(s1);
+        summlingsOwned.Remove(s2);
+        Destroy(s1);
+        Destroy(s2);
+        icons[index2].sprite = defaultIcon;
+
+        // Insert new
+        summlingsOwned.Insert(targetIndex, newSummling);
+        ApplySummlingEffects(newStats);
+
+        UpdateSpeciesCount();
+        UpdatePartyUI();
+
+        UpdateEmptySlots();
+    }
+
+    public void TransmuteSummling(int index)
+    {
+        if (index < 0 || index >= summlingsOwned.Count) return;
+
+        GameObject summling = summlingsOwned[index];
+        SummlingStats stats = summling.GetComponent<SummlingStats>();
+        if (stats == null) return;
+
+        player.GainSoulEssence(stats.GetTransmuteValue());
+        RemoveSummlingEffects(stats);
+        summlingsOwned.RemoveAt(index);
+        Destroy(summling);
+
+        UpdateSpeciesCount();
+        UpdatePartyUI();
+
+        UpdateEmptySlots() ;
+
+    }
+
+
+    //public void UpdateButtonInteractivity()
+    //{
+    //    foreach (Button button in iconButtons)
+    //    {
+    //        if (isReplacing || isTransmuting || isMerging)
+    //        {
+    //            button.interactable = true;
+    //        }
+    //        else
+    //        {
+    //            button.interactable = false;
+    //        }
+    //    }
+    //}
+
+    private bool ShouldButtonBeInteractable()
+    {
+        // Add any additional conditions for interactivity here
+        return isReplacing || isMerging || isTransmuting;
+    }
+
     public void UpdateButtonInteractivity()
     {
-        foreach (Button button in iconButtons)
+        // This will now be handled in UpdateEmptySlots
+        UpdateEmptySlots(); // Ensure UI consistency
+    }
+
+    // Add these methods to handle hover states
+    public void ShowHighlight(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= highlightPreview.Length) return;
+        if (slotIndex >= summlingsOwned.Count) return;
+
+        GameObject summling = summlingsOwned[slotIndex];
+        if (summling == null) return;
+
+        SummlingStats stats = summling.GetComponent<SummlingStats>();
+        if (stats == null) return;
+
+        // Update highlight information
+        highlightPreview[slotIndex].SetActive(true);
+        highlightText[slotIndex].text = $"Species: {stats.specie}\nMark: {stats.mark}\n";
+
+        foreach (var mod in stats.effects)
         {
-            button.interactable = isReplacing;
+            highlightText[slotIndex].text += $"{mod.statType}: {mod.value} {(mod.isPercentage ? "%" : "")}\n";
         }
+    }
+
+    public void HideHighlight(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= highlightPreview.Length) return;
+        highlightPreview[slotIndex].SetActive(false);
     }
 }

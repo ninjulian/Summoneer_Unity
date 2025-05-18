@@ -113,4 +113,9 @@ public abstract class SummlingStats : MonoBehaviour
             }
         }
     }
+
+    public float GetTransmuteValue()
+    {
+        return 10f;
+    }
 }
