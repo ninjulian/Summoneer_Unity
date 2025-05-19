@@ -23,7 +23,9 @@ public class UpgradeManager : MonoBehaviour
     [Header("References")]
     public Transform[] upgradeSlots;
     [SerializeField] private GameObject upgradeButtonPrefab;
-    
+    private SummlingManager summlingManager;
+    private List<StatModifier> summlingModifiers = new List<StatModifier>();
+
     //Stat Components
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private PlayerShoot playerShoot;
@@ -44,6 +46,7 @@ public class UpgradeManager : MonoBehaviour
     public void Start()
     {
         waveManager = GetComponent<WaveManager>();
+        summlingManager = GetComponent<SummlingManager>();
     }
 
     public void GenerateUpgrades(int currentWave)
@@ -220,16 +223,20 @@ public class UpgradeManager : MonoBehaviour
 
                 //Summling Modifiers
                 case StatType.SummlingDamage:
-                    ApplyEffect(effect, ref playerStats.defense);
+                    ApplySummlingEffectToAll(effect, s => s.damage);
+                    summlingModifiers.Add(effect);
                     break;
                 case StatType.SummlingRange:
-                    ApplyEffect(effect, ref playerStats.defense);
+                    ApplySummlingEffectToAll(effect, s => s.attackRange);
+                    summlingModifiers.Add(effect);
                     break;
                 case StatType.SummlingCC:
-                    ApplyEffect(effect, ref playerStats.defense);
+                    ApplySummlingEffectToAll(effect, s => s.critChance);
+                    summlingModifiers.Add(effect);
                     break;
                 case StatType.SummlingCM:
-                    ApplyEffect(effect, ref playerStats.defense);
+                    ApplySummlingEffectToAll(effect, s => s.critMultiplier);
+                    summlingModifiers.Add(effect);
                     break;
             }
         }
@@ -246,6 +253,58 @@ public class UpgradeManager : MonoBehaviour
         {
             // Apply flat value and round down
             stat = Mathf.Floor(stat + effect.value);
+        }
+    }
+
+    // In UpgradeManager.cs
+    private void ApplySummlingEffectToAll(StatModifier effect, System.Func<SummlingStats, float> statSelector)
+    {
+        foreach (var summling in summlingManager.summlingsOwned)
+        {
+            var stats = summling.GetComponent<SummlingStats>();
+            if (stats != null)
+            {
+                float currentValue = statSelector(stats);
+                ApplyEffect(effect, ref currentValue);
+                // Update the stat (e.g., stats.damage = currentValue)
+                // You'll need a way to set the value back, like:
+                SetSummlingStat(stats, effect.statType, currentValue);
+            }
+        }
+    }
+
+    // Example setter method
+    private void SetSummlingStat(SummlingStats stats, StatType type, float value)
+    {
+        switch (type)
+        {
+            case StatType.SummlingDamage: stats.damage = value; break;
+            case StatType.SummlingRange: stats.attackRange = value; break;
+            case StatType.SummlingCC: stats.critChance = value; break;
+            case StatType.SummlingCM: stats.critMultiplier = value; break;
+        }
+    }
+
+    // In UpgradeManager.cs
+    public void ApplyExistingModifiersToSummling(SummlingStats stats)
+    {
+        foreach (var modifier in summlingModifiers)
+        {
+            switch (modifier.statType)
+            {
+                case StatType.SummlingDamage:
+                    ApplyEffect(modifier, ref stats.damage);
+                    break;
+                case StatType.SummlingRange:
+                    ApplyEffect(modifier, ref stats.attackRange);
+                    break;
+                case StatType.SummlingCC:
+                    ApplyEffect(modifier, ref stats.critChance);
+                    break;
+                case StatType.SummlingCM:
+                    ApplyEffect(modifier, ref stats.critMultiplier);
+                    break;
+            }
         }
     }
 

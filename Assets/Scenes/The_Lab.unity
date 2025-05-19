@@ -3319,7 +3319,6 @@ MonoBehaviour:
   currentWave: 1
   summlingPrefabList: []
   player: {fileID: 0}
-  waveManager: {fileID: 0}
   summlingSpawnPoint: {fileID: 0}
   canSummon: 1
   keepSummon: 0
@@ -20799,7 +20798,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1317179965
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26307,6 +26306,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7ecd23579768bd0458db760094d4ae7c, type: 2}
   - {fileID: 11400000, guid: ca0b3d0dcf2242a4da06676282dbeaa2, type: 2}
   - {fileID: 11400000, guid: 6a8042c8a47a4b0419f6544b3a446d0a, type: 2}
+  - {fileID: 11400000, guid: 2d8d6862bdf22de4aa980791059a2c31, type: 2}
   commonWeight: 50
   uncommonWeight: 30
   epicWeight: 15
@@ -26354,7 +26354,6 @@ MonoBehaviour:
     - {fileID: 1840779663832544055, guid: 93bf2dd08cc5bda41b6f14b68b835b9f, type: 3}
     - {fileID: 7765607229103353656, guid: bbaaf698b80a37b4d903ae281bb797ee, type: 3}
   player: {fileID: 1962802153}
-  waveManager: {fileID: 1649958849}
   summlingSpawnPoint: {fileID: 1894635690}
   canSummon: 1
   keepSummon: 0
@@ -33094,7 +33093,7 @@ MonoBehaviour:
   mergeButton: {fileID: 2076216459}
   transmuteButton: {fileID: 930123294}
   confirmMTButton: {fileID: 1317179964}
-  confirmMTText: {fileID: 1746914844}
+  confirmMTText: {fileID: 1191260240}
   managerDescriptionText: {fileID: 1191260240}
 --- !u!1 &2075760169
 GameObject:
@@ -35410,6 +35409,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5222860414828037866, guid: 93bf2dd08cc5bda41b6f14b68b835b9f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6814192048623453886, guid: 93bf2dd08cc5bda41b6f14b68b835b9f, type: 3}
+      propertyPath: archetype
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

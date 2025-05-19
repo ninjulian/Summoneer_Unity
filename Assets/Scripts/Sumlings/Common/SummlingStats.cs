@@ -9,6 +9,7 @@ public enum Specie { Aquatic, Insect, Plushie}
 public enum Mark { Newborn, Child, Pre}
 
 public enum DOTType { None, Poison, Fire}
+public enum Archetype { Melee, Range, Mix}
 public enum SummlingAIState { Chase, Attack, Roam, Idle, ReturnToPlayer, PersonalObj}
 public abstract class SummlingStats : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public abstract class SummlingStats : MonoBehaviour
     public Mark mark;
     public string description;
     public Sprite icon;
+
+    [Header("Archetype")]
+    public Archetype archetype;
 
     // In SummlingStats.cs
     [Header("Mark Affected Stats")]
@@ -35,6 +39,8 @@ public abstract class SummlingStats : MonoBehaviour
         [Tooltip("Value of effect. Example: 10 if you want +10 Damage")] public float value;
         [Tooltip("Use decimal equivalents if Percentage.")] public bool isPercentage;
     }
+
+    
 
     [Header("Damage Stats")]
     public float damage;

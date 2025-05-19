@@ -32,7 +32,10 @@ public class SummlingManager : MonoBehaviour
 
     [Header("References")]
     public PlayerStats player;
-    public WaveManager waveManager;
+    private WaveManager waveManager;
+    private UpgradeManager upgradeManager;
+
+
     [Header("Spawning")]
     public Transform summlingSpawnPoint;
     private bool isPartyFull = false;
@@ -76,6 +79,8 @@ public class SummlingManager : MonoBehaviour
     public void Start()
     {
         UpdateButtonInteractivity();
+        waveManager = GetComponent<WaveManager>();
+        upgradeManager = GetComponent<UpgradeManager>();
     }
 
     public void GenerateSummling()
@@ -148,7 +153,7 @@ public class SummlingManager : MonoBehaviour
 
     private Mark GetRandomMark()
     {
-        float[] weights = { 50f, 30f, 20f }; // Newborn, Child, Pre
+        float[] weights = { 75f, 20f, 5f }; // Newborn, Child, Pre
         float total = weights.Sum();
         float random = UnityEngine.Random.Range(0, total);
 
@@ -273,8 +278,17 @@ public class SummlingManager : MonoBehaviour
         summlingsOwned.Add(currentPendingSummon);
         UpdateSpeciesCount();
         ApplySummlingEffects(currentPendingSummon.GetComponent<SummlingStats>());
+
+
+        //Adds stat modifiers
+        SummlingStats stats = currentPendingSummon.GetComponent<SummlingStats>(); // Changed here
+        ApplySummlingEffects(stats);
+        UpgradeManager.Instance.ApplyExistingModifiersToSummling(stats); // Add this
+
         UpdatePartyUI();
         currentPendingSummon = null;
+
+       
 
     }
 
@@ -367,7 +381,12 @@ public class SummlingManager : MonoBehaviour
         summlingsOwned[slotIndex] = currentPendingSummon;
         ApplySummlingEffects(currentPendingSummon.GetComponent<SummlingStats>());
 
-        UpdateSpeciesCount();
+        //Apply modifier effects
+        SummlingStats newStats = currentPendingSummon.GetComponent<SummlingStats>();
+        ApplySummlingEffects(newStats);
+        UpgradeManager.Instance.ApplyExistingModifiersToSummling(newStats); 
+
+                UpdateSpeciesCount();
         UpdatePartyUI();
 
         UpdateEmptySlots();
@@ -475,7 +494,7 @@ public class SummlingManager : MonoBehaviour
         SummlingStats stats1 = s1.GetComponent<SummlingStats>();
         SummlingStats stats2 = s2.GetComponent<SummlingStats>();
 
-        if (stats1.specie != stats2.specie || stats1.mark != stats2.mark) return;
+        if (stats1.summlingName != stats2.summlingName || stats1.mark != stats2.mark) return;
         if (stats1.mark == Mark.Pre) return;
 
         // Proceed with merge
@@ -483,6 +502,10 @@ public class SummlingManager : MonoBehaviour
         GameObject newSummling = Instantiate(s1);
         SummlingStats newStats = newSummling.GetComponent<SummlingStats>();
         newStats.mark = stats1.mark + 1;
+
+        //Apply summling stat modifiers
+        ApplySummlingEffects(newStats);
+        UpgradeManager.Instance.ApplyExistingModifiersToSummling(newStats); // Add this
 
         // Remove old
         RemoveSummlingEffects(stats1);
@@ -524,31 +547,27 @@ public class SummlingManager : MonoBehaviour
     }
 
 
-    //public void UpdateButtonInteractivity()
-    //{
-    //    foreach (Button button in iconButtons)
-    //    {
-    //        if (isReplacing || isTransmuting || isMerging)
-    //        {
-    //            button.interactable = true;
-    //        }
-    //        else
-    //        {
-    //            button.interactable = false;
-    //        }
-    //    }
-    //}
+    public void UpdateButtonInteractivity()
+    {
+        foreach (Button button in iconButtons)
+        {
+            if (isReplacing || isTransmuting || isMerging)
+            {
+                button.interactable = true;
+            }
+            else
+            {
+                button.interactable = false;
+            }
+        }
+
+        UpdateEmptySlots(); // Ensure UI consistency
+    }
 
     private bool ShouldButtonBeInteractable()
     {
         // Add any additional conditions for interactivity here
         return isReplacing || isMerging || isTransmuting;
-    }
-
-    public void UpdateButtonInteractivity()
-    {
-        // This will now be handled in UpdateEmptySlots
-        UpdateEmptySlots(); // Ensure UI consistency
     }
 
     // Add these methods to handle hover states
