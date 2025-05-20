@@ -12,7 +12,7 @@ public class SummlingManager : MonoBehaviour
 {
     [Header("Configuration")]
     private int maxSlots = 5;
-    public int baseSummonCost = 100;
+    public int baseSummonCost = 20;
     public float waveCostFactor = 10f;
     public float summonCountFactor = 5f;
     public int currentWave = 1;
@@ -48,7 +48,7 @@ public class SummlingManager : MonoBehaviour
     // In SummlingManager.cs
     [Header("Species Weights")]
     public int perSpecieWeight = 20;
-    public float summonCostMultiplier = 5f;
+    public float summonCostMultiplier = 1f;
 
     [Header("UI References")]
     public Image previewImage;
@@ -72,7 +72,9 @@ public class SummlingManager : MonoBehaviour
     public bool isTransmuting = false;
 
     private GameObject currentPendingSummon;
-    private int summonCountInWave = 0;
+
+    //Number times Summoned in a Wave, scales the price more you Summon
+    public int summonCountInWave;
 
     //Summongin Functions
 
@@ -167,7 +169,12 @@ public class SummlingManager : MonoBehaviour
 
     public float GetSummonCost()
     {
-        return Mathf.Floor(baseSummonCost + (currentWave * summonCostMultiplier));
+        return Mathf.Floor(baseSummonCost + (currentWave * summonCostMultiplier) * summonCountInWave);
+    }
+
+    public void ResetCost()
+    {
+        summonCountInWave = 0;
     }
 
     //UI Update Functions

@@ -3338,6 +3338,7 @@ MonoBehaviour:
   isReplacing: 0
   isMerging: 0
   isTransmuting: 0
+  summonCountInWave: 0
 --- !u!4 &143467247 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5222860414828037866, guid: 93bf2dd08cc5bda41b6f14b68b835b9f, type: 3}
@@ -23461,6 +23462,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1649958852}
+        m_TargetAssemblyTypeName: SummlingManager, Assembly-CSharp
+        m_MethodName: ResetCost
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1492422439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26295,7 +26308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bf5be8414aed444b4c24ccbd837d16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveCostFactor: 1.2
+  waveCostFactor: 5
   allUpgrades:
   - {fileID: 11400000, guid: c8bc9643bde15bc469b5a5da1b643396, type: 2}
   - {fileID: 11400000, guid: 995f81908e6bf204ebcabcebe4ff6355, type: 2}
@@ -26336,8 +26349,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9916acc8f5211e47b38567821c7604d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSummonCost: 1
-  waveCostFactor: 10
+  baseSummonCost: 20
+  waveCostFactor: 20
   summonCountFactor: 5
   currentWave: 1
   summlingPrefabList:
@@ -26398,6 +26411,7 @@ MonoBehaviour:
   isReplacing: 0
   isMerging: 0
   isTransmuting: 0
+  summonCountInWave: 0
 --- !u!1 &1655483905
 GameObject:
   m_ObjectHideFlags: 0
@@ -35181,7 +35195,7 @@ PrefabInstance:
       objectReference: {fileID: 1962802159}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: damage
-      value: 100
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: defense
@@ -35189,7 +35203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: affinity
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: fireRate
@@ -35201,7 +35215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: soulEssence
-      value: 1000
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: pickUpRadius

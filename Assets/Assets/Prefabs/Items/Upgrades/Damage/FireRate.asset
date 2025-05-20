@@ -16,9 +16,9 @@ MonoBehaviour:
   upgradeName: Trigger Finger
   category: 2
   stackLimit: 0
-  currentStackCount: 0
+  currentStackCount: 6
   tier: 0
-  baseCost: 1
+  baseCost: 10
   effects:
   - statType: 6
     value: 0.25

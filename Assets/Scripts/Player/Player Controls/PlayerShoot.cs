@@ -143,7 +143,7 @@ public class PlayerShoot : MonoBehaviour
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
 
             // Gets bullet base damage from player stats
-            projectileController.baseDamage = playerStats.CalculateDamage();
+            projectileController.baseDamage = playerStats.CalculateDamage() * 0.1f;
             projectileController.sourceTag = "Player";
 
             // Checks if DOT should be applied

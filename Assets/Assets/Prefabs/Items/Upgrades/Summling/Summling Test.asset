@@ -13,26 +13,14 @@ MonoBehaviour:
   m_Name: Summling Test
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 9170ccad386e76f42a6f2ddedeb48b8e, type: 3}
-  upgradeName: Summling test
+  upgradeName: Summling Rock
   category: 4
   stackLimit: 0
-  currentStackCount: 0
+  currentStackCount: 1
   tier: 0
-  baseCost: 10
+  baseCost: 20
   effects:
   - statType: 14
     value: 5
     isPercentage: 0
-  - statType: 15
-    value: 5
-    isPercentage: 0
-  - statType: 16
-    value: 5
-    isPercentage: 0
-  - statType: 17
-    value: 5
-    isPercentage: 0
-  - statType: 18
-    value: 5
-    isPercentage: 0
-  descriptionText: Increase Summling Overal stat
+  descriptionText: Increase Summling Damage

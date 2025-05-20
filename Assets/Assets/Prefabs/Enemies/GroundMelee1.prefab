@@ -262,8 +262,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soulEssencePrefab: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
   statClass: {fileID: 8405939248027678409}
-  xpValue: 1
-  soulEssenceValue: 2
+  xpValue: 5
+  soulEssenceValue: 10
 --- !u!1 &2249185712919840553
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,8 +15,10 @@ MonoBehaviour:
   icon: {fileID: 0}
   upgradeName: Energy Drink
   category: 0
+  stackLimit: 0
+  currentStackCount: 3
   tier: 0
-  baseCost: 1
+  baseCost: 10
   effects:
   - statType: 5
     value: 10

@@ -16,14 +16,14 @@ MonoBehaviour:
   upgradeName: Slime Boots
   category: 1
   stackLimit: 0
-  currentStackCount: 2
+  currentStackCount: 5
   tier: 0
   baseCost: 1
   effects:
-  - statType: 2
+  - statType: 7
     value: 1
     isPercentage: 0
   - statType: 8
-    value: 1000
+    value: 2
     isPercentage: 1
   descriptionText: You jump higher and run faster

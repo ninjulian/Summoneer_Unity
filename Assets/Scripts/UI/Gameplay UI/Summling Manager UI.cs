@@ -53,11 +53,16 @@ public class SummlingManagerUI : MonoBehaviour
 
     public void Awake()
     {
-        UpdateCost();
-        UpdatePartyPanelLocation(SummonPos);
+
 
         mergeText = mergeButton.GetComponentInChildren<TMP_Text>();
         transmuteText = transmuteButton.GetComponentInChildren<TMP_Text>();
+    }
+
+    private void OnEnable()
+    {
+        UpdateCost();
+        UpdatePartyPanelLocation(SummonPos);
     }
 
     //Changes the location and parent of the Party Panel UI so ease of use and referencing
@@ -103,10 +108,18 @@ public class SummlingManagerUI : MonoBehaviour
 
     // Summon Button 
     public void SummonButton()
-    {   
+    {
+        if (manager.player.soulEssence < manager.GetSummonCost())
+        {
+            Debug.Log("Not enough Soul Essence!");
+            // You could add visual feedback here (like shaking the button or showing a message)
+            return;
+        }
+
         manager.UpdateButtonInteractivity();
         if (manager.canSummon)
         {
+            manager.summonCountInWave += 1;
             UpdateCost();
             Debug.Log("OPening confirmation page");
 

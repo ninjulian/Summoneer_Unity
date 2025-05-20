@@ -15,10 +15,12 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 1f9e5c9181b40bd49ab63aa0e878e377, type: 3}
   upgradeName: Speed force
   category: 1
+  stackLimit: 0
+  currentStackCount: 5
   tier: 0
   baseCost: 1
   effects:
-  - statType: 2
+  - statType: 7
     value: 2
     isPercentage: 0
   descriptionText: Move faster

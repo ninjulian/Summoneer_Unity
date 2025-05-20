@@ -15,8 +15,10 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 04f33277626bfb04c94a5042f47239f1, type: 3}
   upgradeName: Spray Bottle
   category: 0
+  stackLimit: 0
+  currentStackCount: 1
   tier: 0
-  baseCost: 20
+  baseCost: 10
   effects:
   - statType: 0
     value: 20
