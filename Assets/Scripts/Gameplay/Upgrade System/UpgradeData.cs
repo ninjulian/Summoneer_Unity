@@ -5,19 +5,20 @@ using UnityEngine.UI;
 /// <summary>
 ///  MaxHealth, Health, Defense,
 /// Damage, CritChance, CritMultiplier, FireRate,
-/// MovementSpeed, JumpHeight, DashStrenght, 
+/// MovementSpeed, DashStrenght, 
 /// Luck, Affinity, PickUpRadius,
 /// SummlingDamage, SummlingRange, SummlingCC, SummlingCM, SummlingMovementSpeed
 /// </summary>
 public enum StatType { 
     MaxHealth, Health, Defense,
     Damage, CritChance, CritMultiplier, FireRate,
-    MovementSpeed, JumpHeight, DashStrength, DashCooldown,
+    MovementSpeed, DashStrength, DashCooldown,
     Luck, Affinity, PickUpRadius, 
     SummlingDamage, SummlingRange, SummlingCC, SummlingCM, SummlingMovementSpeed
     }
 //Need to add projectile variants
 //Makes sure to have a variety
+
 public enum UpgradeCategory { Survival, Movement, Damage, QOL, Summling }
 
 public enum Tier { Common, Uncommon, Epic, Legendary }
@@ -43,5 +44,6 @@ public class UpgradeData : ScriptableObject
         "Example: If you want Damage to increase use Damage")] public StatType statType;
         [Tooltip("Value of effect. Example: 10 if you want +10 Damage")] public float value;
         [Tooltip("Use decimal equivalents if Percentage.")] public bool isPercentage;
+        [Tooltip("Damage overtime Type")] public DOTType DOTType;
     }
 }

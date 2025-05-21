@@ -510,8 +510,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 0
   outlineColor: {r: 0, g: 0.8242984, b: 1, a: 1}
-  outlineWidth: 2
+  outlineWidth: 3
   precomputeOutline: 0
+  excludedObjects:
+  - {fileID: 8662918930901106559}
+  - {fileID: 8625990985368171903}
   bakeKeys: []
   bakeValues: []
 --- !u!114 &-160565027357747663
@@ -752,6 +755,11 @@ ParticleSystem:
 --- !u!4 &8396276824249650788 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7226504569508669081, guid: 2f9364954fcf23147b16216466eabf5d, type: 3}
+  m_PrefabInstance: {fileID: 1210380706676730109}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8625990985368171903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7456148774203989378, guid: 2f9364954fcf23147b16216466eabf5d, type: 3}
   m_PrefabInstance: {fileID: 1210380706676730109}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1385466550784696726
@@ -1148,6 +1156,11 @@ PrefabInstance:
 --- !u!198 &1027579751530234524 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 6250439034621775345, guid: c0db6cba6eeb3cf4abddd97d43ac60ec, type: 3}
+  m_PrefabInstance: {fileID: 6412201701809704813}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8662918930901106559 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2361128274435256338, guid: c0db6cba6eeb3cf4abddd97d43ac60ec, type: 3}
   m_PrefabInstance: {fileID: 6412201701809704813}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8865584968507868260 stripped

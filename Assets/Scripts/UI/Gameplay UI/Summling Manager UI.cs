@@ -53,8 +53,6 @@ public class SummlingManagerUI : MonoBehaviour
 
     public void Awake()
     {
-
-
         mergeText = mergeButton.GetComponentInChildren<TMP_Text>();
         transmuteText = transmuteButton.GetComponentInChildren<TMP_Text>();
     }
@@ -109,25 +107,29 @@ public class SummlingManagerUI : MonoBehaviour
     // Summon Button 
     public void SummonButton()
     {
-        if (manager.player.soulEssence < manager.GetSummonCost())
-        {
-            Debug.Log("Not enough Soul Essence!");
-            // You could add visual feedback here (like shaking the button or showing a message)
-            return;
-        }
-
+        manager.GenerateSummling();
+        
         manager.UpdateButtonInteractivity();
         if (manager.canSummon)
         {
+           
             manager.summonCountInWave += 1;
             UpdateCost();
             Debug.Log("OPening confirmation page");
 
-            summonConfirmationTab.SetActive(!summonConfirmationTab.activeInHierarchy);
+            summonConfirmationTab.SetActive(true); //Awlays shows confirmation tab
+
             replaceSummling.SetActive(manager.isReplacing);
 
 
-            manager.GenerateSummling();
+        }
+        else
+        {
+            
+            Debug.Log("Not enough Soul Essence!");
+                // You could add visual feedback here (like shaking the button or showing a message)
+                
+            
         }
 
     }
@@ -137,7 +139,7 @@ public class SummlingManagerUI : MonoBehaviour
     {
         if (manager.isReplacing)
         {
-            replaceSummling.SetActive(!replaceSummling.activeInHierarchy);
+            replaceSummling.SetActive(true);
             summonButton.SetActive(summonButton.activeInHierarchy);
         }
 
@@ -160,45 +162,30 @@ public class SummlingManagerUI : MonoBehaviour
     // Confirmation Button with the Summon Button
     public void ConfirmSummon()
     {
-
-        // Prevent confirmation if in replacement mode but no Summling slot was selected
         if (manager.isReplacing && !selectedReplacement)
         {
-            
-           // Debug.LogError("Cannot confirm - Please select a slot to replace first!");
-            //return;
+            return; // Require slot selection
         }
-        else if (manager.isReplacing && selectedReplacement)
-        {
-            // Always close confirmation tab first
-            summonConfirmationTab.SetActive(false);
 
-            // Handles the Summling Replacement flow
+        // Close confirmation tab
+        summonConfirmationTab.SetActive(false);
+
+        if (manager.isReplacing)
+        {
             manager.ConfirmReplacement();
-            summonButton.SetActive(true);
-            selectedReplacement = false;
-            // Update UI elements
-            replaceSummling.SetActive(manager.isReplacing);
+            replaceSummling.SetActive(false); // Explicitly hide replacement UI
         }
         else
         {
-
-            summonConfirmationTab.SetActive(false);
-
-            // Handle normal confirmation
             manager.ConfirmSummon();
-
-            // Update UI elements
-            //replaceSummling.SetActive(manager.isReplacing);
         }
 
-        // Turns off the select Border
+        // Reset UI
         foreach (GameObject border in selectBorder)
         {
             border.SetActive(false);
         }
-
-
+        selectedReplacement = false;
     }
 
     // If the Player decides to not accept the Summoned Summling

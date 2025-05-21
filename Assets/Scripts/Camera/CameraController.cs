@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {   
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
-        aimAction = playerInput.actions["Focus"];
+        aimAction = playerInput.actions["Shoot"];
     }
 
     private void Start()

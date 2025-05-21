@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Unity.VisualScripting;
+using System.Collections;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -198,9 +199,7 @@ public class UpgradeManager : MonoBehaviour
                 //Movement
                 case StatType.MovementSpeed:
                     ApplyEffect(effect, ref playerStats.movementSpeed);
-                    break;
-                case StatType.JumpHeight:
-                    ApplyEffect(effect, ref playerStats.jumpHeight);
+
                     break;
                 case StatType.DashStrength:
                     ApplyEffect(effect, ref playerStats.dashStrength);
@@ -221,6 +220,7 @@ public class UpgradeManager : MonoBehaviour
                     break;
 
 
+
                 //Summling Modifiers
                 case StatType.SummlingDamage:
                     ApplySummlingEffectToAll(effect, s => s.damage);
@@ -239,6 +239,12 @@ public class UpgradeManager : MonoBehaviour
                     summlingModifiers.Add(effect);
                     break;
             }
+
+            // ADD THIS: Check if the effect has a DOT type
+            if (effect.DOTType != DOTType.None)
+            {
+                ApplyDOTEffect(effect, effect.DOTType);
+            }
         }
     }
 
@@ -255,6 +261,23 @@ public class UpgradeManager : MonoBehaviour
             stat = Mathf.Floor(stat + effect.value);
         }
     }
+
+    public void ApplyDOTEffect(StatModifier effect, DOTType dOTType)
+    {
+        switch (effect.DOTType)
+        {
+            case DOTType.None:
+                break;
+            case DOTType.Fire:
+                playerShoot.applyFireDOT = true;
+                break;
+            case DOTType.Poison:
+                playerShoot.applyPoisonDOT = true;
+                break;
+        }
+
+    }
+
 
     // In UpgradeManager.cs
     private void ApplySummlingEffectToAll(StatModifier effect, System.Func<SummlingStats, float> statSelector)

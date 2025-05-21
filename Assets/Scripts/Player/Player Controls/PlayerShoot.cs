@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerShoot : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class PlayerShoot : MonoBehaviour
     private PlayerController playerController;
 
     private bool canShoot = true;
+    private bool canFocus = true;
 
     // Input System
     private InputAction shootAction;
@@ -85,21 +87,12 @@ public class PlayerShoot : MonoBehaviour
 
     public IEnumerator ShootGun(GameObject bulletChoice)
     {
-
         if (canShoot)
         {
             RaycastHit hit;
-            GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
-
-            // Gets bullet base damage from player stats
-            projectileController.baseDamage = playerStats.CalculateDamage();
-            projectileController.sourceTag = "Player";
-
-            // Checks if DOT should be applied
-            CheckDOT(projectileController);
-
-            canShoot = false;
+            Rigidbody rb = bullet.GetComponent<Rigidbody>(); // Get Rigidbody
 
             // Ignore Layer 7 and 9
             int layerToIgnore1 = 7;
@@ -108,50 +101,43 @@ public class PlayerShoot : MonoBehaviour
             int layerToIgnore4 = 13;
             int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4);
 
+            // Calculate direction
+            Vector3 shootDirection;
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
-                //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
-                projectileController.target = hit.point;
-                projectileController.hit = true;
-               
-                //Debug.Log("hit something");
-                yield return new WaitForSeconds(fireCooldown);
-                canShoot = true;
+                shootDirection = (hit.point - muzzleTransform.position).normalized;
             }
             else
             {
-                //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
-                projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
-                projectileController.hit = false;
-                yield return new WaitForSeconds(fireCooldown);
-                canShoot = true;
+                shootDirection = cameraTransform.forward;
             }
 
+            // Apply velocity
+            rb.velocity = shootDirection * projectileController.speed;
 
+            // Existing code for damage, cooldown, etc.
+            projectileController.baseDamage = playerStats.CalculateDamage();
+            projectileController.sourceTag = "Player";
+            CheckDOT(projectileController);
+            canShoot = false;
 
+            yield return new WaitForSeconds(fireCooldown);
+            canShoot = true;
         }
-
     }
 
     public IEnumerator FocusShoot(GameObject bulletChoice)
     {
-
-        if (canShoot)
+        if (canFocus)
         {
-            RaycastHit hit;
-            GameObject bullet = GameObject.Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
-            // Gets bullet base damage from player stats
-            projectileController.baseDamage = playerStats.CalculateDamage() * 0.1f;
-            projectileController.sourceTag = "Player";
+            // Calculate direction
+            Vector3 shootDirection = cameraTransform.forward; // Default direction
+            RaycastHit hit;
 
-            // Checks if DOT should be applied
-            CheckDOT(projectileController);
-
-            canShoot = false;
-
-            // Ignore Layer 7 and 9
             int layerToIgnore1 = 7;
             int layerToIgnore2 = 9;
             int layerToIgnore3 = 11;
@@ -160,35 +146,22 @@ public class PlayerShoot : MonoBehaviour
 
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
-                //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * hit.distance, Color.red, 1f);
-                projectileController.target = hit.point;
-                projectileController.hit = true;
-                //Debug.Log("hit something");
-
-                yield return new WaitForSeconds(fireCooldown);
-                canShoot = true;
-
-            }
-            else
-            {
-                //Debug.DrawRay(cameraTransform.position, cameraTransform.forward * bulletMissDistance, Color.blue, 1f);
-                projectileController.target = cameraTransform.position + cameraTransform.forward * bulletMissDistance;
-                projectileController.hit = false; // Set hit to false on miss
-                //Debug.Log("nothing");
-                yield return new WaitForSeconds(fireCooldown);
-                canShoot = true;
+                shootDirection = (hit.point - muzzleTransform.position).normalized;
             }
 
+            // Apply physics force
+            rb.velocity = shootDirection * projectileController.speed;
 
+            // Configure bullet properties
+            projectileController.baseDamage = Mathf.Floor(playerStats.CalculateDamage() * 0.1f); // Focus mode damage multiplier
+            projectileController.sourceTag = "Player";
+            CheckDOT(projectileController);
 
+            // Cooldown management
+            canFocus = false;
+            yield return new WaitForSeconds(fireCooldown * 2f);
+            canFocus = true;
         }
-
-
-
-        // Debug.Log("Tryin to shoot");
-
-
-
     }
 
     public void UpdateFireRate()

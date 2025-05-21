@@ -84,19 +84,36 @@ public class SummlingManager : MonoBehaviour
         waveManager = GetComponent<WaveManager>();
         upgradeManager = GetComponent<UpgradeManager>();
     }
+    private void Update()
+    {
+        if (summlingsOwned.Count >= maxSlots)
+        {
+            isReplacing = true;
+        }
+        else
+        {
+            isReplacing = false;
+        }
+
+    }
 
     public void GenerateSummling()
     {
+        GetSummonCost();
+
         if (player.soulEssence >= GetSummonCost())
         {
-            canSummon = true;
             if (summlingsOwned.Count >= maxSlots)
             {
                 isReplacing = true;
                 UpdateButtonInteractivity();
             }
+            canSummon = true;
 
             player.SpendSoulEssence(GetSummonCost());
+
+            
+
 
             // Calculate species weights
             Dictionary<Specie, int> weights = new();
@@ -131,7 +148,7 @@ public class SummlingManager : MonoBehaviour
             
 
         }
-        else
+        else 
         {
             canSummon = false;
             Debug.Log("Not enough Soul Essence");
@@ -168,7 +185,8 @@ public class SummlingManager : MonoBehaviour
     }
 
     public float GetSummonCost()
-    {
+    {  
+        Debug.Log(Mathf.Floor(baseSummonCost + (currentWave * summonCostMultiplier) * summonCountInWave) + "SE COST");
         return Mathf.Floor(baseSummonCost + (currentWave * summonCostMultiplier) * summonCountInWave);
     }
 
@@ -281,7 +299,6 @@ public class SummlingManager : MonoBehaviour
             return; // Don't destroy the pending summon!
         }
 
-        // Normal confirmation logic
         summlingsOwned.Add(currentPendingSummon);
         UpdateSpeciesCount();
         ApplySummlingEffects(currentPendingSummon.GetComponent<SummlingStats>());
@@ -294,6 +311,7 @@ public class SummlingManager : MonoBehaviour
 
         UpdatePartyUI();
         currentPendingSummon = null;
+        // Normal confirmation logic
 
        
 

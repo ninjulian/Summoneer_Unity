@@ -11,18 +11,19 @@ public class FocusBullet : MonoBehaviour
         projectileController = GetComponent<ProjectileController>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         if (projectileController == null) return;
 
         // Skip if this is the source's own collider
-        if (other.CompareTag(projectileController.sourceTag)) return;
+        if (collision.gameObject.CompareTag(projectileController.sourceTag)) return;
 
         // Check for enemy hit
-        if (other.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             // Invoke the static event from PlayerShoot
-            PlayerShoot.OnEnemyFocused?.Invoke(other.transform);
+            PlayerShoot.OnEnemyFocused?.Invoke(collision.transform);
         }
     }
+
 }

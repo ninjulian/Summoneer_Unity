@@ -92,26 +92,21 @@ public class Summling2 : SummlingStats
 
     private void AttackBehavior()
     {
-        // Face target
-        
-
         if (currentTarget == null) return;
         transform.LookAt(currentTarget);
 
-
         if (attackCooldownTimer <= 0)
         {
-            //Debug.Log("Shooting Projectile");
-            // Shoot projectile
             GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+            Rigidbody rb = bullet.GetComponent<Rigidbody>(); // Add this
 
             // Set projectile properties
-            projectileController.baseDamage = CalculateDamage(); 
+            projectileController.baseDamage = CalculateDamage();
             Vector3 shotDirection = (currentTarget.position - muzzleTransform.position).normalized;
-            float maxDistance = 100f; 
 
-            projectileController.target = muzzleTransform.position + shotDirection * maxDistance;
+            // Physics-based movement
+            rb.velocity = shotDirection * projectileController.speed;
 
             attackCooldownTimer = damageCooldown;
         }

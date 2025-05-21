@@ -15,7 +15,6 @@ public class PlayerStatUI : MonoBehaviour
     [SerializeField] private TMP_Text movementSpeed;
     [SerializeField] private TMP_Text dashStrength;
     //[SerializeField] private TMP_Text dashCooldown;
-    [SerializeField] private TMP_Text jumpHeight;
 
     [Header("Player Reference")]
     [SerializeField] private GameObject player;
@@ -38,7 +37,6 @@ public class PlayerStatUI : MonoBehaviour
         fireRate.text = playerStats.fireRate.ToString("F2");
         movementSpeed.text = playerStats.movementSpeed.ToString("F2");
         dashStrength.text = playerStats.dashStrength.ToString("F1");
-        jumpHeight.text = playerStats.jumpHeight.ToString("F1");
         //dashCooldown.text = playerStats.dashCooldown.ToString("F1") + "s";
     }
 

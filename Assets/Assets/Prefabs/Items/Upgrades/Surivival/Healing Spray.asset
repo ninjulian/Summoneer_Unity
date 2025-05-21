@@ -16,11 +16,12 @@ MonoBehaviour:
   upgradeName: Spray Bottle
   category: 0
   stackLimit: 0
-  currentStackCount: 1
+  currentStackCount: 3
   tier: 0
   baseCost: 10
   effects:
   - statType: 0
     value: 20
     isPercentage: 0
+    DOTType: 2
   descriptionText: You heal

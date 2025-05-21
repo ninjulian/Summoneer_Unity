@@ -75,7 +75,6 @@ public class UpgradeButton : MonoBehaviour
             case StatType.Health: return "Health";
             case StatType.Damage: return "Damage";
             case StatType.MovementSpeed: return "Move Speed";
-            case StatType.JumpHeight: return "Jump Height";
             case StatType.FireRate: return "Fire Rate";
             case StatType.Defense: return "Defense";
             case StatType.Luck: return "Luck";

@@ -107,52 +107,31 @@ public class EnemyRangeAI : MonoBehaviour
 
     IEnumerator AttackPlayer()
     {
-        // Stop movement while attacking
-        //navAgent.isStopped = true;
-
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
-        transform.LookAt(player.position);
 
         if (Time.time > lastAttackTime + attackCooldown)
         {
-            RaycastHit hit;
-            GameObject bullet = GameObject.Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
+            GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+            Rigidbody rb = bullet.GetComponent<Rigidbody>(); // Add this
+
             projectileController.baseDamage = enemyStats.damage;
-
-            // Ignore Layer 7 and 9
-            int layerToIgnore1 = 7;
-            int layerToIgnore2 = 9;
-            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2);
-
-
             Vector3 shotDirection = (player.position - muzzleTransform.position).normalized;
-            float maxDistance = 100f;
 
-            // Calculate target point in the shooting direction
-            projectileController.target = muzzleTransform.position + shotDirection * maxDistance;
+            // Physics-based movement
+            rb.velocity = shotDirection * projectileController.speed;
 
-
-            // Perform attack
-            if (Vector3.Distance(transform.position, player.position) <= attackRange)
+            // Maintain raycast verification
+            if (Physics.Raycast(muzzleTransform.position, shotDirection, out RaycastHit hit, attackRange))
             {
-                lastAttackTime = Time.time;
-
-                if (Physics.Raycast(transform.position, shotDirection, out hit, maxDistance, ignoreMask))
-                {
-
-                    //Debug.DrawRay(transform.position, shotDirection * hit.distance, Color.green, 1f);
-                    //projectileController.target = hit.point;
-                    projectileController.hit = true;
-                    yield return new WaitForSeconds(attackCooldown);
-                }
-
+                projectileController.hit = true;
             }
 
+            lastAttackTime = Time.time;
+            yield return new WaitForSeconds(attackCooldown);
         }
-
     }
 
 }
