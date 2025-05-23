@@ -286,7 +286,7 @@ public class SummlingManager : MonoBehaviour
         if (currentPendingSummon == null)
         {
             Debug.LogError("Cannot confirm summon: No pending summon!");
-            return;
+           // return;
         }
 
         if (summlingsOwned.Count >= maxSlots)

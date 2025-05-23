@@ -10,20 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
-  m_Name: Tank
+  m_Name: Jacket
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  upgradeName: Tank
+  upgradeName: Jacket
   category: 0
-  stackLimit: 1
+  stackLimit: 0
   currentStackCount: 1
   tier: 0
   baseCost: 10
   effects:
-  - statType: 0
-    value: 100
+  - statType: 2
+    value: 2
     isPercentage: 0
-  - statType: 1
-    value: 100
-    isPercentage: 0
-  descriptionText: You become a tank
+    DOTType: 0
+  descriptionText: Protects you from the weather

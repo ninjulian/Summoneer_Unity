@@ -10,17 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
-  m_Name: Summling Test
+  m_Name: IceSkates
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 9170ccad386e76f42a6f2ddedeb48b8e, type: 3}
-  upgradeName: Summling Rock
-  category: 4
-  stackLimit: 0
-  currentStackCount: 1
-  tier: 0
-  baseCost: 20
+  icon: {fileID: 21300000, guid: 3f4e3b728ce137e47907a27fa7343f8e, type: 3}
+  upgradeName: ' Ice Skates'
+  category: 1
+  stackLimit: 1
+  currentStackCount: 6
+  tier: 3
+  baseCost: 40
   effects:
-  - statType: 14
-    value: 5
+  - statType: 8
+    value: 3
     isPercentage: 0
-  descriptionText: Increase Summling Damage
+    DOTType: 0
+  - statType: 7
+    value: 2
+    isPercentage: 0
+    DOTType: 0
+  descriptionText: Ice Skates

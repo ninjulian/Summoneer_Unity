@@ -87,12 +87,12 @@ public class SummlingManagerUI : MonoBehaviour
         // Set initial position based on starting index
         if (currentPageIndex == 0)
         {
-            Debug.Log("Changing Parent to SummonPOS");
+            //Debug.Log("Changing Parent to SummonPOS");
             UpdatePartyPanelLocation(SummonPos);
         }
         else if (currentPageIndex == 1)
         {
-            Debug.Log("Changing Parent to ManagamentPOS");
+            //Debug.Log("Changing Parent to ManagamentPOS");
             UpdatePartyPanelLocation(ManagementPos);
         }
     }

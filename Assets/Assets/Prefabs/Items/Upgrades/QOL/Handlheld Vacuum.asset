@@ -10,23 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
-  m_Name: Monster Drink
+  m_Name: Handlheld Vacuum
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  upgradeName: Energy Drink
-  category: 0
+  upgradeName: Handheld Vacuum
+  category: 3
   stackLimit: 0
-  currentStackCount: 3
-  tier: 0
-  baseCost: 10
+  currentStackCount: 0
+  tier: 1
+  baseCost: 25
   effects:
-  - statType: 5
-    value: 10
+  - statType: 12
+    value: 1
     isPercentage: 0
-  - statType: 0
-    value: -5
-    isPercentage: 0
-  - statType: 2
-    value: 0.1
-    isPercentage: 0
-  descriptionText: Monster Enegy Drink
+    DOTType: 0
+  descriptionText: Sucking the souls

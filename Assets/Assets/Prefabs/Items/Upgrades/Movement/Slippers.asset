@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
-  m_Name: Healing Spray
+  m_Name: Slippers
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 04f33277626bfb04c94a5042f47239f1, type: 3}
-  upgradeName: Spray Bottle
-  category: 0
+  icon: {fileID: 21300000, guid: 1f9e5c9181b40bd49ab63aa0e878e377, type: 3}
+  upgradeName: Slippers
+  category: 1
   stackLimit: 0
-  currentStackCount: 3
+  currentStackCount: 5
   tier: 0
-  baseCost: 10
+  baseCost: 5
   effects:
-  - statType: 0
-    value: 20
+  - statType: 7
+    value: 1
     isPercentage: 0
-    DOTType: 2
-  descriptionText: You heal
+    DOTType: 0
+  descriptionText: You jump higher and run faster

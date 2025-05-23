@@ -28,6 +28,8 @@ public class UIManager : MonoBehaviour
         focusAction = playerInput.actions["Focus"];
         systemAction = playerInput.actions["System"];
         pauseAction = playerInput.actions["Pause"];
+
+        UpdateCursorState();
     }
 
     private void OnEnable()
