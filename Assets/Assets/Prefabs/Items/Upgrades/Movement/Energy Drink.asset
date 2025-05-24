@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
   m_Name: Energy Drink
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: b60bfba471536d3409be61eeb4c58f43, type: 3}
   upgradeName: Energy Drink
   category: 1
   stackLimit: 0
-  currentStackCount: 3
+  currentStackCount: 4
   tier: 2
   baseCost: 30
   effects:

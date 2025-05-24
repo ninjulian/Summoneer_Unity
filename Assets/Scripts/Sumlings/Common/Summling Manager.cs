@@ -609,7 +609,7 @@ public class SummlingManager : MonoBehaviour
 
         // Update highlight information
         highlightPreview[slotIndex].SetActive(true);
-        highlightText[slotIndex].text = $"Species: {stats.specie}\nMark: {stats.mark}\n";
+        highlightText[slotIndex].text = $"{stats.summlingName}\nMark: {stats.mark}\n";
 
         foreach (var mod in stats.effects)
         {

@@ -17,8 +17,8 @@ public class PlayerStatUI : MonoBehaviour
     //[SerializeField] private TMP_Text dashCooldown;
 
     [Header("Player Reference")]
-    [SerializeField] private GameObject player;
-    private PlayerStats playerStats;
+    //[SerializeField] private GameObject player;
+    [SerializeField] private PlayerStats playerStats;
 
     //private void Start()
     //{
@@ -27,7 +27,6 @@ public class PlayerStatUI : MonoBehaviour
 
     void OnEnable()
     {
-        playerStats = player.GetComponent<PlayerStats>();
         health.text = playerStats.currentHealth.ToString() + " / " + playerStats.maxHealth.ToString();
 
         defense.text = playerStats.defense.ToString();

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
   m_Name: Med Spray
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 04f33277626bfb04c94a5042f47239f1, type: 3}
+  icon: {fileID: 21300000, guid: 30168ec427edc584d84476407cd987aa, type: 3}
   upgradeName: Med Spray
   category: 0
   stackLimit: 0

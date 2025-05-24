@@ -8,6 +8,7 @@ public class WaveManager : MonoBehaviour
     [Header("Settings")]
     public float waveFactor = 1.5f;
     public float levelFactor = 2.0f;
+    public float StatIncreaseFactor = 1.2f;
 
     [Header("Debug")]
     public int currentWave = 0;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
   m_Name: Backpack
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: d58c94e90a1ce1449967a08229feec57, type: 3}
   upgradeName: Backpack
   category: 3
   stackLimit: 1

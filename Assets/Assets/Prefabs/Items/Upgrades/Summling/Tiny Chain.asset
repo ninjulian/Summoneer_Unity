@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
   m_Name: Tiny Chain
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 7085baf43940a4c479568addd011e6a4, type: 3}
   upgradeName: Small Chain
   category: 4
   stackLimit: 0

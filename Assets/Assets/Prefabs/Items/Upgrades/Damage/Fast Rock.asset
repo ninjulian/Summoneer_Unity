@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
   m_Name: Fast Rock
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: d08ad8a262bca3241aa564ea1bd2f80a, type: 3}
+  icon: {fileID: 21300000, guid: b0776d68dc5a71648b33fef3437e6ac1, type: 3}
   upgradeName: Sharp rock
   category: 2
   stackLimit: 0

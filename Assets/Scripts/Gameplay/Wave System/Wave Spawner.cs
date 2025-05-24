@@ -64,7 +64,6 @@ public class WaveSpawner : MonoBehaviour
 
             do
             {
-
                 spawnPosition = GetValidSpawnPosition();
                 attempts++;
                 if (attempts >= maxAttempts && player != null) return false;
@@ -72,6 +71,8 @@ public class WaveSpawner : MonoBehaviour
             while (spawnPosition == Vector3.zero);
 
             GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity);
+            EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+            
             waveManager.RegisterEnemy();
             enemy.GetComponent<EnemyStats>().onDeath.AddListener(waveManager.EnemyDefeated);
             return true;
@@ -102,5 +103,15 @@ public class WaveSpawner : MonoBehaviour
             Gizmos.color = lastAttemptValid ? Color.green : Color.red;
             Gizmos.DrawWireSphere(lastSpawnAttemptPosition, 1f);
         }
+    }
+
+    void NewEnemyStats(EnemyStats enemyStats)
+    {   
+        //Calculations are on Brotato
+        enemyStats.maxHealth += 0f;
+        enemyStats.currentHealth += 0f;
+        enemyStats.damage += 0f;
+        enemyStats.defense += 0f;
+        enemyStats.movementSpeed += 0f;
     }
 }

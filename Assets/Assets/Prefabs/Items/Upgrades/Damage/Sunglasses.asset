@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
   m_Name: Sunglasses
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 35ca33493b7cb0c4d9496c76e1df0baf, type: 3}
   upgradeName: Sunglasses
   category: 2
   stackLimit: 0

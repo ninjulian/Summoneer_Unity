@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System;
 
 public class UpgradeButton : MonoBehaviour
 {
@@ -62,9 +63,14 @@ public class UpgradeButton : MonoBehaviour
                 ? $"{effect.value * 100:0.#}%"
                 : $"{effect.value:0.#}";
 
-            description += valueText + statName;
+            description += statName + " " + valueText + Environment.NewLine;
         }
         descriptionText.text = description;
+    }
+
+    public void NotHighlightingUpgrade()
+    {
+        descriptionText.text = "Welcome to the Shop";
     }
 
     private string GetStatDisplayName(StatType statType)

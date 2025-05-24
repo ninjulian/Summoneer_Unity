@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
-  m_Name: FireRate
+  m_Name: Trigger Finger
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: ba750bc60a545214786d3fb58dfb9fc5, type: 3}
+  icon: {fileID: 21300000, guid: c15db66d4f0a2854e880934a5ac0ab2f, type: 3}
   upgradeName: Trigger Finger
   category: 2
   stackLimit: 0
@@ -23,4 +23,5 @@ MonoBehaviour:
   - statType: 6
     value: 0.25
     isPercentage: 0
+    DOTType: 0
   descriptionText: You shoot faster

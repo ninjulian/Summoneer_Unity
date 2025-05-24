@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91de6abdf1ddf5140b336ba2609b2149, type: 3}
   m_Name: Turtle Shell
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: d3d86a605c137a142861ca552b85f4c7, type: 3}
   upgradeName: Turtle Shell
   category: 0
   stackLimit: 1

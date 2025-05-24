@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
-public class PlayerStats : StatClass 
+public class PlayerStats : StatClass
 {
     public float focusDuration = 5f;
     public float fireRate;
@@ -17,12 +17,12 @@ public class PlayerStats : StatClass
     [Header("Quality of Life (QOL)")]
     public float luck;
     public float affinity;
-   // public float coolDown;
+    // public float coolDown;
     public float pickUpRadius;
 
     [Header("Soul Essence")]
     public float soulEssence = 0f;
-    [HideInInspector]public float sePickUpRate = 1f;
+    [HideInInspector] public float sePickUpRate = 1f;
 
     [Header("XP")]
     public XpBar xpBar;
@@ -34,23 +34,25 @@ public class PlayerStats : StatClass
     private DamageHandler damageHandler;
 
     private void Awake()
-    {   
+    {
         base.Start();
         damageHandler = GetComponent<DamageHandler>();
         damageHandler.Initialize(this);
-        
+
 
         //Start working on the Player XP system
     }
 
     public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
     {
-        currentHealth -=incomingDamage;
+        currentHealth -= incomingDamage;
     }
 
     public void GainSoulEssence(float soulEssenceGained)
     {
-        soulEssence += soulEssenceGained * sePickUpRate;
+        // Check for luck bonus
+        float bonusMultiplier = CheckLuckBonus() ? 2f : 1f;
+        soulEssence += soulEssenceGained * sePickUpRate * bonusMultiplier;
     }
 
     public void SpendSoulEssence(float cost)
@@ -77,7 +79,9 @@ public class PlayerStats : StatClass
 
     public void GainXP(float incomingXP)
     {
-        currentXP += incomingXP;
+        // Check for luck bonus
+        float bonusMultiplier = CheckLuckBonus() ? 2f : 1f;
+        currentXP += incomingXP * bonusMultiplier;
 
         // Handle potential multiple level-ups
         while (currentXP >= xpRequired)
@@ -91,21 +95,30 @@ public class PlayerStats : StatClass
         xpBar.UpdateXPBar();
     }
 
-        //public float GetDamage()
-        //{
-        //    float damageDealt;
-        //    bool isCritical = Random.Range(0f, 100f) <= critChance;
+    private bool CheckLuckBonus()
+    {
+        if (luck <= 0) return false;
 
-        //    if (!isCritical)
-        //    {
-        //        return damage;
-        //    }
-        //    else
-        //    {
-        //        damageDealt = critMultiplier * damage;
-        //        return damageDealt;
-        //    }
-        //}
-
-
+        // Chance equals luck percentage (e.g., 15 luck = 15% chance)
+        float randomValue = Random.Range(0f, 100f);
+        return randomValue <= Mathf.Clamp(luck, 0f, 100f);
     }
+
+    //public float GetDamage()
+    //{
+    //    float damageDealt;
+    //    bool isCritical = Random.Range(0f, 100f) <= critChance;
+
+    //    if (!isCritical)
+    //    {
+    //        return damage;
+    //    }
+    //    else
+    //    {
+    //        damageDealt = critMultiplier * damage;
+    //        return damageDealt;
+    //    }
+    //}
+
+
+}
