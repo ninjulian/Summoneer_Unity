@@ -59,12 +59,12 @@ public class DamageHandler : MonoBehaviour
             healthBarUI.SetActive(true);
         }
 
-        UpdateHPUI(finalDamage);
-
         if (entityStats.currentHealth <= 0)
         {
             HandleDeath();
         }
+
+        UpdateHPUI(finalDamage);
     }
 
     private void ApplyDOT(float totalDamage, float duration, float tickInterval, DOTType type, ParticleSystem particles)

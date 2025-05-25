@@ -70,9 +70,17 @@ public class WaveSpawner : MonoBehaviour
             }
             while (spawnPosition == Vector3.zero);
 
-            GameObject enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity);
-            EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+            GameObject randomEnemy = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+
+
+            GameObject enemy = Instantiate(randomEnemy, spawnPosition, Quaternion.identity);
+            //enemy.SetActive(false);
             
+            EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
+            //Scaling enemy Stats
+            NewEnemyStats(enemyStats);
+            //enemy.SetActive(true);
+
             waveManager.RegisterEnemy();
             enemy.GetComponent<EnemyStats>().onDeath.AddListener(waveManager.EnemyDefeated);
             return true;
@@ -106,12 +114,13 @@ public class WaveSpawner : MonoBehaviour
     }
 
     void NewEnemyStats(EnemyStats enemyStats)
-    {   
-        //Calculations are on Brotato
-        enemyStats.maxHealth += 0f;
-        enemyStats.currentHealth += 0f;
-        enemyStats.damage += 0f;
-        enemyStats.defense += 0f;
-        enemyStats.movementSpeed += 0f;
+    {
+        //Hybrid scaling with the use of linear and exponential formula
+        //Stat=(Base_Stat×Exp_Multiplier Wave)+(Wave×Linear_Bonus
+        enemyStats.maxHealth = Mathf.Floor((enemyStats.maxHealth * waveManager.StatIncreaseFactor) + (waveManager.currentWave * 5f));
+        enemyStats.currentHealth = enemyStats.maxHealth;
+        enemyStats.damage = Mathf.Floor((enemyStats.damage * waveManager.StatIncreaseFactor) + (waveManager.currentWave * 0.5f));
+        enemyStats.defense = Mathf.Floor((enemyStats.defense * waveManager.StatIncreaseFactor) + (waveManager.currentWave * 0.2f));
+        enemyStats.movementSpeed = Mathf.Floor((enemyStats.movementSpeed * waveManager.StatIncreaseFactor) + (waveManager.currentWave * 0.1f));
     }
 }

@@ -15,7 +15,7 @@ public class HealthBar : MonoBehaviour
 
     private Coroutine hpCoroutine;
 
-    void Start()
+    void Awake()
     {
         entityStats = GetComponent<StatClass>();
         UpdateMaxHealth();
