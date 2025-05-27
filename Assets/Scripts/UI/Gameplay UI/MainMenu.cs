@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using TMPro;
 public class MainMenu : MonoBehaviour
 {
-    public Button startButton;
+    public GameObject startButton;
+    public TMP_Text highscoreText;
 
 
     private void Start()
@@ -14,7 +16,11 @@ public class MainMenu : MonoBehaviour
         bool tutorialCompleted = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
 
         // Disable startButton if tutorial isn't completed
-        startButton.interactable = tutorialCompleted;
+        startButton.SetActive(tutorialCompleted);
+
+        // Load and display the saved high wave
+        int highestWave = PlayerPrefs.GetInt("HighestWave", 0);
+        highscoreText.text = "Highest Wave: " + highestWave;
     }
 
     public void StartButton()

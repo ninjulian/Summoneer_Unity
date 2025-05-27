@@ -18,7 +18,7 @@ MonoBehaviour:
   stackLimit: 0
   currentStackCount: 1
   tier: 0
-  baseCost: 15
+  baseCost: 10
   effects:
   - statType: 13
     value: 5

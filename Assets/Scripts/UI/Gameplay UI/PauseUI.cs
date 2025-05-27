@@ -63,7 +63,7 @@ public class PauseUI : MonoBehaviour
     public void MainMenuButton()
     {
         //Quit to Main Menu
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void QuitToDesktopButton()

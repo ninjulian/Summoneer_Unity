@@ -13398,11 +13398,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6571936807137572854, guid: 4d39bc95967bb5545bf62a85111a933f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 56
+      value: 51
       objectReference: {fileID: 0}
     - target: {fileID: 6571936807137572854, guid: 4d39bc95967bb5545bf62a85111a933f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.97629607
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6571936807137572854, guid: 4d39bc95967bb5545bf62a85111a933f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -13410,7 +13410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6571936807137572854, guid: 4d39bc95967bb5545bf62a85111a933f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.2164396
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6571936807137572854, guid: 4d39bc95967bb5545bf62a85111a933f, type: 3}
       propertyPath: m_LocalRotation.z
@@ -13430,7 +13430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6571936807137572854, guid: 4d39bc95967bb5545bf62a85111a933f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6571936807137572854, guid: 4d39bc95967bb5545bf62a85111a933f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -14236,7 +14236,6 @@ MonoBehaviour:
   uiObject: {fileID: 0}
   inputActionsToEnable:
   - {fileID: 1197333412249008342, guid: 2117d6ad46f7394458ad84026a123f1a, type: 3}
-  - {fileID: 1370414861888420671, guid: 2117d6ad46f7394458ad84026a123f1a, type: 3}
   - {fileID: -6608955879426328369, guid: 2117d6ad46f7394458ad84026a123f1a, type: 3}
   playerObject: {fileID: 1848508814}
   oldTriggers: {fileID: 518479857}
@@ -14271,8 +14270,8 @@ Transform:
   m_GameObject: {fileID: 518479857}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9, y: 1, z: 6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -3, y: 5, z: 7}
+  m_LocalScale: {x: 0.55236435, y: 2.3460243, z: 0.86742}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 958915687}
@@ -32504,7 +32503,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1782029470
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32522,7 +32521,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -506, y: 228}
+  m_AnchoredPosition: {x: -560, y: 258}
   m_SizeDelta: {x: 363.50012, y: 23}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1782029471
@@ -63957,6 +63956,22 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 9164813914551610993, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164813914551610993, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: m_Parameters.colorGradient.atime0
+      value: 64764
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164813914551610993, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.a
+      value: 0.47058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164813914551610993, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: m_Parameters.colorGradient.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -95985,6 +96000,9 @@ MonoBehaviour:
   summlingManagerUI: {fileID: 5093618516318040532}
   crosshair: {fileID: 4094457672974396337}
   soulEssenceText: {fileID: 7401599607720636125}
+  openSystemTimer: {fileID: 0}
+  openSystemTimerText: {fileID: 0}
+  openTimer: 3
   playerInput: {fileID: 1894635694}
   waveManager: {fileID: 0}
 --- !u!114 &9002856020998517258

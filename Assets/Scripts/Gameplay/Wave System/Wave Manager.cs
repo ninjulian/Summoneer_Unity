@@ -37,6 +37,8 @@ public class WaveManager : MonoBehaviour
 
     [HideInInspector]public int enemiesSpawned = 0;
 
+    private const string HIGHEST_WAVE_KEY = "HighestWave"; // Highest Wave count tracker
+
     private void OnEnable()
     {
         playerStats = FindObjectOfType<PlayerStats>();
@@ -68,6 +70,13 @@ public class WaveManager : MonoBehaviour
 
         // +1 wave count
         currentWave++;
+
+        // Overwrite if new highest Wave
+        if (currentWave > PlayerPrefs.GetInt(HIGHEST_WAVE_KEY, 0))
+        {
+            PlayerPrefs.SetInt(HIGHEST_WAVE_KEY, currentWave);
+            PlayerPrefs.Save(); // Immediately save
+        }
         CalculateWave();    //Calculate Enemy count to Spawn
 
         onWaveStarted?.Invoke(); // Listener will call function,
@@ -101,7 +110,21 @@ public class WaveManager : MonoBehaviour
 
     public IEnumerator ShowUpgradeUICoroutine()
     {
-        yield return new WaitForSeconds(1.5f); // Wait for 1 second
+        float remainingTime = uiManager.openTimer;
+
+        uiManager.openSystemTimer.SetActive(true);
+        //yield return new WaitForSeconds(uiManager.openTimer);
+
+        // Update countdown every frame
+        while (remainingTime > 0)
+        {   
+            uiManager.openSystemTimerText.text = Mathf.CeilToInt(remainingTime).ToString();
+            remainingTime -= Time.deltaTime;
+            yield return null; // Wait one frame
+        }
+
+        uiManager.openSystemTimer.SetActive(false);
+
         UpgradeManager.Instance.GenerateUpgrades(CurrentWave);
         upgradeManager.hasRerolled = false;
         uiManager.ToggleUpgradeUI();

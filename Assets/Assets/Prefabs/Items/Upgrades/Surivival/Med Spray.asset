@@ -16,9 +16,9 @@ MonoBehaviour:
   upgradeName: Med Spray
   category: 0
   stackLimit: 0
-  currentStackCount: 3
+  currentStackCount: 4
   tier: 0
-  baseCost: 10
+  baseCost: 8
   effects:
   - statType: 1
     value: 5

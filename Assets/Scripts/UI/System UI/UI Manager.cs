@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject summlingManagerUI;
     [SerializeField] private GameObject crosshair;
     [SerializeField] private GameObject soulEssenceText;
+
+    [Header("Open Timer")]
+    public GameObject openSystemTimer;
+    public TMP_Text openSystemTimerText;
+    public float openTimer = 3f;
 
     [Header("Input")]
     [SerializeField] private PlayerInput playerInput;
@@ -30,6 +36,7 @@ public class UIManager : MonoBehaviour
         pauseAction = playerInput.actions["Pause"];
 
         UpdateCursorState();
+        SetPlayerInputs(true);
     }
 
     private void OnEnable()
@@ -41,6 +48,7 @@ public class UIManager : MonoBehaviour
         pauseAction.Enable();
 
         UpdateCursorState();
+        
     }
 
     private void OnDisable()
