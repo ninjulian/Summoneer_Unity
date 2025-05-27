@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Xml.Serialization;
-using UnityEditor.Timeline.Actions;
+//using UnityEditor.Timeline.Actions;
 using UnityEngine.SceneManagement;
 
 public class PauseUI : MonoBehaviour
@@ -69,7 +69,7 @@ public class PauseUI : MonoBehaviour
     public void QuitToDesktopButton()
     {
         //Close application
-        UnityEditor.EditorApplication.isPlaying = false;
+        //UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
 

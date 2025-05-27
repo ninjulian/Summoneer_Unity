@@ -8,6 +8,7 @@ public class Tutorial : MonoBehaviour
     public bool resetPosition = false;
     public bool spawnUI = false;
     public bool enableInputActions = false;
+    public bool disableObject = false;
 
     [Header("References")]
     public Transform resetPos;
@@ -15,6 +16,7 @@ public class Tutorial : MonoBehaviour
     public List<InputActionReference> inputActionsToEnable; // Assign in Inspector
     public GameObject playerObject;
     public GameObject oldTriggers;
+    public GameObject objectToDisable;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -30,15 +32,12 @@ public class Tutorial : MonoBehaviour
 
                 // Reset position
                 playerObject.transform.position = resetPos.position;
-                Debug.Log($"Player reset to: {resetPos.position}");
-
-                // Re-enable the CharacterController after moving
                 if (cc != null)
                     cc.enabled = true;
             }
-        
 
-        if (enableInputActions)
+
+            if (enableInputActions)
             {
                 EnableInputActions();
             }
@@ -54,6 +53,11 @@ public class Tutorial : MonoBehaviour
             if (oldTriggers != null)
             {
                 Destroy(oldTriggers);
+            }
+
+            if (disableObject && objectToDisable != null)
+            {
+                Destroy(objectToDisable);
             }
         }
     }

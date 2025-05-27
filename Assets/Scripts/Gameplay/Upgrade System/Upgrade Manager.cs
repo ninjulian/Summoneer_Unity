@@ -257,8 +257,11 @@ public class UpgradeManager : MonoBehaviour
         }
         else
         {
+            //// Apply flat value and round down
+            //stat = Mathf.Floor(stat + effect.value);
+
             // Apply flat value and round down
-            stat = Mathf.Floor(stat + effect.value);
+            stat = stat + effect.value;
         }
     }
 

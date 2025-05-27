@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeName: Gummy Bear
   category: 4
   stackLimit: 2
-  currentStackCount: 0
+  currentStackCount: 1
   tier: 3
   baseCost: 0
   effects:
@@ -25,7 +25,7 @@ MonoBehaviour:
     isPercentage: 0
     DOTType: 0
   - statType: 16
-    value: 10
+    value: 0.1
     isPercentage: 1
     DOTType: 0
   descriptionText: Sugar rush incoming!

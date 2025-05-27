@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5465665337373022107}
   m_Layer: 7
   m_Name: FocusModeBullet
-  m_TagString: Untagged
+  m_TagString: Player Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focusBullet: 1
-  speed: 50
+  speed: 40
   lifeSpan: 2
   baseDamage: 0
   sourceTag: Player

@@ -241,6 +241,11 @@ public class SummlingManagerUI : MonoBehaviour
             selectBorder[index].SetActive(false);
         }
         selectedIndices.Clear();
+
+        foreach (GameObject border in selectBorder)
+        {
+            border.SetActive(false);
+        }
     }
 
     // Transmutation Button (sells Summling for SE and XP)
@@ -351,7 +356,9 @@ public class SummlingManagerUI : MonoBehaviour
     // Modified navigation methods
     public void NextPage()
     {
+        ClearSelected();
         if (currentPageIndex >= pages.Count - 1) return;
+        CleanupPageState();
 
         SetPageActive(currentPageIndex, false);
 
@@ -360,18 +367,18 @@ public class SummlingManagerUI : MonoBehaviour
         currentPageIndex++;
         SetPageActive(currentPageIndex, true);
         CheckPage();
-        CleanupPageState();
     }
 
     public void PreviousPage()
     {
+        ClearSelected();
+        CleanupPageState();
         SetPageActive(currentPageIndex, false);
         currentPageIndex = (currentPageIndex - 1 + pages.Count) % pages.Count;
 
         CheckPage();
 
         SetPageActive(currentPageIndex, true);
-        CleanupPageState();
     }
 
     private void SetPageActive(int index, bool state)
@@ -387,13 +394,39 @@ public class SummlingManagerUI : MonoBehaviour
     private void CleanupPageState()
     {
         // Common cleanup for all page changes
+        ClearSelected();
         summonConfirmationTab.SetActive(false);
         manager.DeclineSummon();
         selectedReplacement = false;
 
         //Manager reset
-        manager.isMerging = false;
+        //Reset Transmute Function
+        if (manager.isTransmuting)
+        {
         manager.isTransmuting = false;
+        transmuteText.text = "Transmute Summlings";
+        manager.isTransmuting = false;
+        manager.UpdateButtonInteractivity();
+        ClearSelected();
+        managerDescriptionText.text = "Select a Summling to transmute";
+
+        }
+
+        if (manager.isMerging)
+        {
+        //Reset Merge Function
+        manager.isMerging = false;
+        mergeText.text = "Merge Summlings";
+        manager.isMerging = false;
+        manager.UpdateButtonInteractivity();
+        ClearSelected();
+        selectedIndices.Clear();
+        managerDescriptionText.text = "Select two identical Summlings to merge";
+
+        }
+
+
+
     }
 
     // Initialization (call in Start/Awake)

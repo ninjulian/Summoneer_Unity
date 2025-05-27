@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: c259039bf138a644fb73940d30391634, type: 2}
   m_LightingSettings: {fileID: 799641963}
 --- !u!196 &4
 NavMeshSettings:
@@ -1376,7 +1376,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.33333334
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 338b079238e3ab54b8cf761d4f7f3d02, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: f66a267a3588ef64d97759bbb5ec35d0, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &528178979
 Transform:
@@ -1422,7 +1422,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.33333334
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: fb506471f7d6419448af655148a4f14c, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 96287c156332cae40bf32977b5bb62bb, type: 2}
   m_BuildHeightMesh: 0
 --- !u!114 &528178982
 MonoBehaviour:
@@ -1453,7 +1453,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.33333334
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: a39f6c5928d600640b33ea81552b61a2, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: e1a729f91ab88a748a4ce2f8aded714d, type: 2}
   m_BuildHeightMesh: 0
 --- !u!114 &528178983
 MonoBehaviour:
@@ -1484,7 +1484,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.33333334
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 6f1df06c4c94c544683c902869d3c3a9, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 25eccfd207b79f74db16f847df431da5, type: 2}
   m_BuildHeightMesh: 0
 --- !u!114 &538881195 stripped
 MonoBehaviour:
@@ -2999,6 +2999,7 @@ MonoBehaviour:
   - {fileID: 1223382549351762016, guid: a693c337d9f47d34fbc5147590fde442, type: 3}
   - {fileID: 4962071458672015274, guid: e174daec97c9d774e9085ac904927701, type: 3}
   isSpawning: 0
+  usingSpawner: 1
 --- !u!114 &1649958849
 MonoBehaviour:
   m_ObjectHideFlags: 0

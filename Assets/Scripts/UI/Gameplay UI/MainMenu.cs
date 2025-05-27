@@ -2,11 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI; 
 public class MainMenu : MonoBehaviour
 {
-    public void StartButton()
+    public Button startButton;
+
+
+    private void Start()
     {
+        // Check if the tutorial was completed
+        bool tutorialCompleted = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
+
+        // Disable startButton if tutorial isn't completed
+        startButton.interactable = tutorialCompleted;
+    }
+
+    public void StartButton()
+    {   
+        // Load up main level
         SceneManager.LoadScene("The_Lab");
     }
 
@@ -16,13 +29,16 @@ public class MainMenu : MonoBehaviour
     }
 
     public void TutorialButton()
-    {
-        SceneManager.LoadScene("Tutorial Level");
+    {   
+
+        // Load up tutorial level
+        SceneManager.LoadScene("Tutorial");
     }
 
     public void QuitGameButton()
-    {
-        UnityEditor.EditorApplication.isPlaying = false;
+    {   
+        // Quits application
+        //UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
 }

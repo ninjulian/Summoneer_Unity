@@ -78,7 +78,7 @@ public class SummlingManager : MonoBehaviour
 
     //Summongin Functions
 
-    public void Start()
+    public void OnEnable()
     {
         UpdateButtonInteractivity();
         waveManager = GetComponent<WaveManager>();

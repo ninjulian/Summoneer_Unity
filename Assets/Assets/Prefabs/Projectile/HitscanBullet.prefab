@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2813969280978807811}
   m_Layer: 7
   m_Name: HitscanBullet
-  m_TagString: Untagged
+  m_TagString: Player Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focusBullet: 0
-  speed: 500
+  speed: 250
   lifeSpan: 1
   baseDamage: 10
   sourceTag: Player

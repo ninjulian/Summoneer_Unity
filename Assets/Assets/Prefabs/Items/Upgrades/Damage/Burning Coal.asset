@@ -21,7 +21,7 @@ MonoBehaviour:
   baseCost: 40
   effects:
   - statType: 3
-    value: 10
-    isPercentage: 0
+    value: 0.1
+    isPercentage: 1
     DOTType: 2
   descriptionText: Embers

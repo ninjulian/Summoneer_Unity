@@ -37,7 +37,7 @@ public class WaveManager : MonoBehaviour
 
     [HideInInspector]public int enemiesSpawned = 0;
 
-    private void Awake()
+    private void OnEnable()
     {
         playerStats = FindObjectOfType<PlayerStats>();
         waveSpawner = GetComponent<WaveSpawner>();
@@ -99,9 +99,9 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    private IEnumerator ShowUpgradeUICoroutine()
+    public IEnumerator ShowUpgradeUICoroutine()
     {
-        yield return new WaitForSeconds(3f); // Wait for 1 second
+        yield return new WaitForSeconds(1.5f); // Wait for 1 second
         UpgradeManager.Instance.GenerateUpgrades(CurrentWave);
         upgradeManager.hasRerolled = false;
         uiManager.ToggleUpgradeUI();

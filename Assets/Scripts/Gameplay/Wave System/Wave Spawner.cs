@@ -18,9 +18,12 @@ public class WaveSpawner : MonoBehaviour
     private Vector3 lastSpawnAttemptPosition;
     private bool lastAttemptValid;
 
+
+    public bool usingSpawner = false;
+
     //private int enemiesSpawned = 0;
 
-    private void Awake()
+    private void OnEnable()
     {
         waveManager = GetComponent<WaveManager>();
         // Adds a listener for the onWaveStarted unity Event, when invoked will run Start Spawning
@@ -29,7 +32,7 @@ public class WaveSpawner : MonoBehaviour
 
     private void StartSpawning()
     {
-        if (!isSpawning && player != null)
+        if (!isSpawning && player != null && usingSpawner)
         {
             StartCoroutine(SpawnWave());
         }
