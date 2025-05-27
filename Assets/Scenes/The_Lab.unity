@@ -397,9 +397,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "There is a bug that will freeze the game if you go from \nGame -> Main
-    Menu -> Game.\n\nIf frozen/stuck:\nAlt+f4 to Reset \nP -> Quit to Desktop \n\nPause
-    screen (P) has a Help Screen"
+  m_text: "If frozen/stuck:\nAlt+f4 to Reset \nP -> Quit to Desktop \n\nPause screen
+    (P) has a Help Screen"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1093,7 +1092,7 @@ GameObject:
   - component: {fileID: 269258272}
   - component: {fileID: 269258271}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Playtest Instructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2384,6 +2383,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03141a3ba56437c4584b81462e2337cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &879983789 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7174332005728228343, guid: 22270f97a66453245a8eb264eb347450, type: 3}
+  m_PrefabInstance: {fileID: 468205173851314429}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &881959714
 GameObject:
   m_ObjectHideFlags: 0
@@ -2625,6 +2629,11 @@ Transform:
   - {fileID: 372818445}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1041979831 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5210062791983037580, guid: 22270f97a66453245a8eb264eb347450, type: 3}
+  m_PrefabInstance: {fileID: 468205173851314429}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1043244698 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8659085574277191124, guid: a693c337d9f47d34fbc5147590fde442, type: 3}
@@ -3454,6 +3463,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6a8042c8a47a4b0419f6544b3a446d0a, type: 2}
   - {fileID: 11400000, guid: c8bc9643bde15bc469b5a5da1b643396, type: 2}
   - {fileID: 11400000, guid: 597ae8bd41bd7d74a85ef2269cd9f771, type: 2}
+  - {fileID: 11400000, guid: c8bc9643bde15bc469b5a5da1b643396, type: 2}
   commonWeight: 50
   uncommonWeight: 30
   epicWeight: 15
@@ -3467,6 +3477,7 @@ MonoBehaviour:
   upgradeButtonPrefab: {fileID: 4084000345396771510, guid: 1c92a55309421854593c4ded2928f3c7, type: 3}
   playerStats: {fileID: 1962802153}
   playerShoot: {fileID: 1962802155}
+  playerHealthBar: {fileID: 1962802158}
   upgradeDescriptionText: {fileID: 294373091}
   upgradeUI: {fileID: 877918730}
   rerollText: {fileID: 1766637923}
@@ -3851,6 +3862,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2df2fa0552266ed4d96ed371ea5e8308, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1962802158 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3987130456862253217, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+  m_PrefabInstance: {fileID: 2566455460606172624}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848508814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7bac012b087d7943a0f63bdae96a2e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1999902997 stripped
@@ -4759,6 +4781,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7634420265021886897, guid: 22270f97a66453245a8eb264eb347450, type: 3}
+      propertyPath: uiManager
+      value: 
+      objectReference: {fileID: 538881195}
+    - target: {fileID: 7803282623239699333, guid: 22270f97a66453245a8eb264eb347450, type: 3}
+      propertyPath: m_Colors.m_ColorMultiplier
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8706149955241982468, guid: 22270f97a66453245a8eb264eb347450, type: 3}
       propertyPath: m_Name
       value: GameUI
@@ -4771,6 +4801,14 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1649958852}
+    - target: {fileID: 8848162018577568318, guid: 22270f97a66453245a8eb264eb347450, type: 3}
+      propertyPath: playerHud
+      value: 
+      objectReference: {fileID: 1041979831}
+    - target: {fileID: 8848162018577568318, guid: 22270f97a66453245a8eb264eb347450, type: 3}
+      propertyPath: deathScreen
+      value: 
+      objectReference: {fileID: 879983789}
     - target: {fileID: 8848162018577568318, guid: 22270f97a66453245a8eb264eb347450, type: 3}
       propertyPath: playerInput
       value: 
@@ -4859,6 +4897,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3343733548531384275, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: dashTimer
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3343733548531384275, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: dashCooldown
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3987130456862253217, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: damageSlider
       value: 
@@ -4876,8 +4922,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1936437275}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: defense
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: affinity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: maxHealth
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: uiManager
+      value: 
+      objectReference: {fileID: 538881195}
+    - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: soulEssence
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: dashCooldown
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: currentHealth
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7984971985599275556, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: m_Camera

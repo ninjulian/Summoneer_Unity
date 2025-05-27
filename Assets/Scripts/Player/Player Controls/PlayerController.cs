@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Dash")]
     public float dashTimer = 0.2f;
-    public float dashCooldown = 1f;
+    private float dashCooldown = 1.5f;
     public bool canDash = true;
     private bool isDashing = false;
 
@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     private InputAction dashAction;
     private InputAction shootAction;
     private InputAction focusAction;
+    private InputAction pauseAction;
+    private InputAction systemAction;
 
     //[SerializeField]
     //private Transform bulletParent;
@@ -63,6 +65,8 @@ public class PlayerController : MonoBehaviour
         dashAction = playerInput.actions["Dash"];
         shootAction = playerInput.actions["Shoot"];
         focusAction = playerInput.actions["Focus"];
+        systemAction = playerInput.actions["System"];
+        pauseAction = playerInput.actions["Pause"];
 
     }
 
@@ -78,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
 
         // Check for dash input
-        if (dashAction.triggered && canDash)
+        if (dashAction.triggered && canDash && !isDashing)
         {
             StartCoroutine(HandleDash());
         }
@@ -90,9 +94,38 @@ public class PlayerController : MonoBehaviour
         Vector2 input = moveAction.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, 0, input.y);
 
-        // Takes into consideration the direction of the camera when moving
-        move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
-        move.y = 0f;
+        //// Takes into consideration the direction of the camera when moving
+        //move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
+        //move.y = 0f;
+
+        // Get horizontal camera direction
+        Vector3 horizontalForward = cameraTransform.forward;
+        horizontalForward.y = 0;
+        if (horizontalForward.sqrMagnitude > 0.01f)
+        {
+            horizontalForward.Normalize();
+        }
+        else
+        {
+            // If Player is looking up or down, get default forward
+            horizontalForward = Vector3.forward;
+        }
+
+        Vector3 horizontalRight = cameraTransform.right;
+        horizontalRight.y = 0;
+        if (horizontalRight.sqrMagnitude > 0.01f)
+        {
+            horizontalRight.Normalize();
+        }
+        else
+        {
+            // Fallback to a default right if needed
+            horizontalRight = Vector3.right;
+        }
+
+        // Calculate move direction using horizontal vectors
+        move = move.x * horizontalRight + move.z * horizontalForward;
+        move.y = 0f; // Ensures no verticality is taken into consideration
 
         movementDir = move;
 
@@ -239,6 +272,7 @@ public class PlayerController : MonoBehaviour
         // Cooldown
         yield return new WaitForSeconds(playerStats.dashCooldown);
         canDash = true;
+
     }
 
 

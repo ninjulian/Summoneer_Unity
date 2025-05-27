@@ -38,7 +38,7 @@ public class SummlingManager : MonoBehaviour
 
     [Header("Spawning")]
     public Transform summlingSpawnPoint;
-    private bool isPartyFull = false;
+    //private bool isPartyFull = false;
     public bool canSummon;
     public bool keepSummon;
 

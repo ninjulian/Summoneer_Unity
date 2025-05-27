@@ -22,7 +22,7 @@ public class PauseUI : MonoBehaviour
     public GameObject HowToPlayPage2;
     public GameObject HowToPlay2NextButton;
 
-
+    public UIManager uiManager;
 
     public void SettingsButton()
     {
@@ -63,6 +63,7 @@ public class PauseUI : MonoBehaviour
     public void MainMenuButton()
     {
         //Quit to Main Menu
+        uiManager.SetPlayerInputs(true);
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -130,5 +131,10 @@ public class PauseUI : MonoBehaviour
             HowToPlay2NextButton.SetActive(false);
         }
      
+    }
+
+    public void RestartButton()
+    {
+        SceneManager.LoadScene("The_Lab");
     }
 }

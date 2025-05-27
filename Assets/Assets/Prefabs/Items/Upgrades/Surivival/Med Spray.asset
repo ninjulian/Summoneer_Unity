@@ -18,10 +18,10 @@ MonoBehaviour:
   stackLimit: 0
   currentStackCount: 4
   tier: 0
-  baseCost: 8
+  baseCost: 5
   effects:
   - statType: 1
-    value: 5
+    value: 10
     isPercentage: 0
     DOTType: 0
   descriptionText: Healing spray

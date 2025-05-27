@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 277065086677155596}
   - component: {fileID: 2241325102426559734}
   - component: {fileID: 7776156971966823323}
+  - component: {fileID: 8831433928359371371}
   m_Layer: 12
   m_Name: Soul Essence
   m_TagString: Soul Essence
@@ -283,3 +284,22 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &8831433928359371371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3110316173820319617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  excludedObjects: []
+  bakeKeys: []
+  bakeValues: []

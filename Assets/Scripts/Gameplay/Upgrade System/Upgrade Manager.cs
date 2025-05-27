@@ -30,6 +30,7 @@ public class UpgradeManager : MonoBehaviour
     //Stat Components
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private PlayerShoot playerShoot;
+    [SerializeField] private HealthBar playerHealthBar;
 
     [SerializeField] private TMP_Text upgradeDescriptionText;
     private WaveManager waveManager;
@@ -173,9 +174,11 @@ public class UpgradeManager : MonoBehaviour
                 //Survival
                 case StatType.Health:
                     ApplyEffect(effect, ref playerStats.currentHealth);
+                    playerHealthBar.HealthIncrease();
                     break;
                 case StatType.MaxHealth:
                     ApplyEffect(effect, ref playerStats.maxHealth);
+                    
                     break;
                 case StatType.Defense:
                     ApplyEffect(effect, ref playerStats.defense);
@@ -199,7 +202,6 @@ public class UpgradeManager : MonoBehaviour
                 //Movement
                 case StatType.MovementSpeed:
                     ApplyEffect(effect, ref playerStats.movementSpeed);
-
                     break;
                 case StatType.DashStrength:
                     ApplyEffect(effect, ref playerStats.dashStrength);

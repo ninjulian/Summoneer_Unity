@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject summlingManagerUI;
     [SerializeField] private GameObject crosshair;
     [SerializeField] private GameObject soulEssenceText;
+    public GameObject deathScreen;
+    public GameObject playerHud;
 
     [Header("Open Timer")]
     public GameObject openSystemTimer;
@@ -25,6 +27,8 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1f;
+
         // Cache all input actions
         moveAction = playerInput.actions["Move"];
         lookAction = playerInput.actions["Look"];
@@ -48,10 +52,10 @@ public class UIManager : MonoBehaviour
         pauseAction.Enable();
 
         UpdateCursorState();
-        
+        SetPlayerInputs(true);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         systemAction.performed -= _ => ToggleSystemUI();
         pauseAction.performed -= _ => TogglePauseUI();
@@ -62,9 +66,10 @@ public class UIManager : MonoBehaviour
 
     public void ToggleSystemUI()
     {
+        if (systemUI == null || pauseUI == null) return; // Add null checks
+
         // Prevent opening System UI if Pause UI is active
-        if (!systemUI.activeInHierarchy && pauseUI.activeInHierarchy)
-            return;
+        if (!systemUI.activeInHierarchy && pauseUI.activeInHierarchy) return;
 
         systemUI.SetActive(!systemUI.activeInHierarchy);
         UpdateCursorState();
@@ -72,9 +77,10 @@ public class UIManager : MonoBehaviour
 
     public void TogglePauseUI()
     {
+        if (systemUI == null || pauseUI == null) return; // Add null checks
+
         // Prevent opening Pause UI if System UI is active
-        if (!pauseUI.activeInHierarchy && systemUI.activeInHierarchy)
-            return;
+        if (!pauseUI.activeInHierarchy && systemUI.activeInHierarchy) return;
 
         bool shouldPause = !pauseUI.activeInHierarchy;
         pauseUI.SetActive(shouldPause);
@@ -106,10 +112,10 @@ public class UIManager : MonoBehaviour
         UpdateCursorState();
     }
 
-    private void UpdateCursorState()
+    public void UpdateCursorState()
     {
         bool anyUIActive = systemUI.activeInHierarchy || pauseUI.activeInHierarchy || upgradeUI.activeInHierarchy ||
-            summlingManagerUI.activeInHierarchy;
+            summlingManagerUI.activeInHierarchy || deathScreen.activeInHierarchy;
 
         bool anyUIwSE = upgradeUI.activeInHierarchy || summlingManagerUI.activeInHierarchy;
        
@@ -138,7 +144,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void SetPlayerInputs(bool enable)
+    public void SetPlayerInputs(bool enable)
     {
         // Enable/disable each action
         if (enable)

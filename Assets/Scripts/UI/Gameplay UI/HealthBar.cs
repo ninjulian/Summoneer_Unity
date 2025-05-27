@@ -23,6 +23,12 @@ public class HealthBar : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        healthSlider.value = 0;
+        damageSlider.value = 0;
+    }
+
     private void Update()
     {
         UpdateMaxHealth() ;

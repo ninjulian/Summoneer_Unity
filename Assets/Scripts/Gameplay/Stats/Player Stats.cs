@@ -33,6 +33,8 @@ public class PlayerStats : StatClass
 
     private DamageHandler damageHandler;
 
+    public UIManager uiManager;
+
     private void Awake()
     {
         base.Start();
@@ -43,9 +45,35 @@ public class PlayerStats : StatClass
         //Start working on the Player XP system
     }
 
-    public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
+    private void OnDestroy()
     {
-        currentHealth -= incomingDamage;
+        if (currentHealth <= 0)
+        {
+
+        if (uiManager.deathScreen != null) 
+        { 
+            uiManager.deathScreen.SetActive(true); 
+        }
+
+        if (uiManager.playerHud != null)
+        {
+            uiManager.playerHud.SetActive(false);
+        }
+            uiManager.UpdateCursorState();
+        }
+
+
+    }
+
+    public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
+    {   
+        currentHealth = Mathf.Clamp(currentHealth - incomingDamage, 0f,  maxHealth);
+
+        if (currentHealth <= 0f)
+        {   
+            Debug.Log("DEAADAD");
+        }
+
     }
 
     public void GainSoulEssence(float soulEssenceGained)

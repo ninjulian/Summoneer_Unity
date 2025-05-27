@@ -89,8 +89,8 @@ public class EnemyRangeAI : MonoBehaviour
         //if (navAgent.isStopped) navAgent.isStopped = false;
         navAgent.SetDestination(player.position);
 
-        // Optional: Add acceleration when starting to chase
-        navAgent.speed = Mathf.Lerp(navAgent.speed, 5f, Time.deltaTime);
+
+        //navAgent.speed = Mathf.Lerp(navAgent.speed, 5f, Time.deltaTime);
     }
 
 
