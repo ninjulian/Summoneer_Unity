@@ -16,17 +16,17 @@ public class PlayerController : MonoBehaviour
     public float dashTimer = 0.2f;
     private float dashCooldown = 1.5f;
     public bool canDash = true;
-    private bool isDashing = false;
+
 
     [Header("Player Inputs")]
-    private PlayerInput playerInput;
-    private InputAction moveAction;
-    private InputAction jumpAction;
-    private InputAction dashAction;
-    private InputAction shootAction;
-    private InputAction focusAction;
-    private InputAction pauseAction;
-    private InputAction systemAction;
+    [HideInInspector] public PlayerInput playerInput;
+    [HideInInspector] public InputAction moveAction;
+    [HideInInspector] public InputAction jumpAction;
+    [HideInInspector] public InputAction dashAction;
+    [HideInInspector] public InputAction shootAction;
+    [HideInInspector] public InputAction focusAction;
+    [HideInInspector] public InputAction pauseAction;
+    [HideInInspector] public InputAction systemAction;
 
     //[SerializeField]
     //private Transform bulletParent;
@@ -46,11 +46,20 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
-    
+
+    [Header("Animation Variables")]
+    private Animator animator;
+    public bool isJumping;
+    public bool isWalking;
+    public bool isDashing;
+    public bool isShooting;
+    public bool isFocusing;
+    public bool isFalling;
+
 
     private void Awake()
     {
-       
+        animator = GetComponentInChildren<Animator>();
         cameraTransform = Camera.main.transform;
         playerStats = GetComponent<PlayerStats>();
 
@@ -79,6 +88,15 @@ public class PlayerController : MonoBehaviour
         HandleJump();
         HandleShootingRotation();
         ApplyGravity();
+
+
+        // Update animation booleans
+        bool isMoving = moveAction.ReadValue<Vector2>().magnitude > 0.1f;
+        animator.SetBool("IsWalking", isMoving && groundedPlayer && !isDashing);
+        
+        animator.SetBool("IsFalling", isFalling);  // NEW
+        Debug.Log("Is the player falling" + isFalling);
+        animator.SetBool("IsGrounded", groundedPlayer);
 
 
         // Check for dash input
@@ -154,13 +172,18 @@ public class PlayerController : MonoBehaviour
     }
 
     private void HandleJump()
-    {   
+    {
         // Makes the player jump
         if (jumpAction.triggered && groundedPlayer)
         {   
+
+            isJumping = true;
+            animator.SetBool("IsJumping", isJumping);
             jumpHeight = playerStats.jumpHeight;
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
+            Debug.Log("JUmping");
         }
+       
     }
 
 
@@ -191,9 +214,15 @@ public class PlayerController : MonoBehaviour
     private void HandleGrounding()
     {
         groundedPlayer = controller.isGrounded;
+
+        // Add falling detection
+        isFalling = !groundedPlayer && playerVelocity.y < 0;
+
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
+            isJumping = false;
+            isFalling = false; // Reset falling when grounded
         }
     }
 
@@ -234,12 +263,14 @@ public class PlayerController : MonoBehaviour
         Vector3 dashDirection = transform.forward;
         float startTime = Time.time;
 
+        
+        trailRenderer.enabled = true;
+        animator.SetBool("IsDashing", true);
 
         // Dash movement
         while (Time.time < startTime + dashTimer)
         {
 
-            trailRenderer.enabled = true;
             trailRenderer.time = dashTimer * 2f;
 
             // Calculates dash direction
@@ -262,13 +293,15 @@ public class PlayerController : MonoBehaviour
 
         }
 
+        
+
         trailRenderer.enabled = false;
 
         // Reset parameters
         //playerSpeed = originalSpeed;
         //gravityValue = originalGravity;
         isDashing = false;
-
+        animator.SetBool("IsDashing", false);
         // Cooldown
         yield return new WaitForSeconds(playerStats.dashCooldown);
         canDash = true;
