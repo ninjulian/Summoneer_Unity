@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     public bool isFalling;
 
 
+
     private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
@@ -94,9 +95,10 @@ public class PlayerController : MonoBehaviour
         bool isMoving = moveAction.ReadValue<Vector2>().magnitude > 0.1f;
         animator.SetBool("IsWalking", isMoving && groundedPlayer && !isDashing);
         
-        animator.SetBool("IsFalling", isFalling);  // NEW
+       // animator.SetBool("IsFalling", isFalling);  // NEW
         Debug.Log("Is the player falling" + isFalling);
         animator.SetBool("IsGrounded", groundedPlayer);
+        animator.SetBool("IsJumping", isJumping);
 
 
         // Check for dash input
@@ -178,7 +180,8 @@ public class PlayerController : MonoBehaviour
         {   
 
             isJumping = true;
-            animator.SetBool("IsJumping", isJumping);
+            isFalling = false;
+            //animator.SetBool("IsJumping", isJumping);
             jumpHeight = playerStats.jumpHeight;
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
             Debug.Log("JUmping");
@@ -215,14 +218,23 @@ public class PlayerController : MonoBehaviour
     {
         groundedPlayer = controller.isGrounded;
 
-        // Add falling detection
-        isFalling = !groundedPlayer && playerVelocity.y < 0;
+        // Falling detection
+        if (!groundedPlayer && playerVelocity.y < 0)
+        {
+            isFalling = true;
+        }
+        else if (groundedPlayer)
+        {
+            // Reset states when landing
+            isFalling = false;
+            isJumping = false;
+        }
+
+        animator.SetBool("IsFalling", isFalling);
 
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
-            isJumping = false;
-            isFalling = false; // Reset falling when grounded
         }
     }
 
@@ -237,6 +249,13 @@ public class PlayerController : MonoBehaviour
     private void ApplyGravity()
     {
         if (isDashing) return;
+
+        // Add falling detection when moving downward
+        if (!groundedPlayer && playerVelocity.y < 0)
+        {
+            isFalling = true;
+        }
+
 
         if (groundedPlayer && playerVelocity.y < 0)
         {

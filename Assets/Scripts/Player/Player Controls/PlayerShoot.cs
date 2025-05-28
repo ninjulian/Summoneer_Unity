@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -42,6 +43,10 @@ public class PlayerShoot : MonoBehaviour
     public bool applyFireDOT;
     public bool applyPoisonDOT;
 
+
+    [Header("Staff Aiming")]
+    [SerializeField] private Transform aimTarget;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -73,11 +78,13 @@ public class PlayerShoot : MonoBehaviour
         {
             StartCoroutine(ShootGun(bullet1Prefab));
             crosshairManager.currentCrosshairType = CrosshairManager.CrosshairType.Shooting1;
+            UpdateStaffAim();
         }
         else if (focusAction.IsPressed())
         {
             StartCoroutine(FocusShoot(bullet2Prefab));
             crosshairManager.currentCrosshairType = CrosshairManager.CrosshairType.Shooting2;
+            UpdateStaffAim();
         }
         else
         {
@@ -106,10 +113,13 @@ public class PlayerShoot : MonoBehaviour
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
                 shootDirection = (hit.point - muzzleTransform.position).normalized;
+
+                //UpdateAimTarget(hit);
             }
             else
             {
                 shootDirection = cameraTransform.forward;
+                //UpdateAimTarget(hit);
             }
 
             // Apply velocity
@@ -147,6 +157,8 @@ public class PlayerShoot : MonoBehaviour
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
                 shootDirection = (hit.point - muzzleTransform.position).normalized;
+
+               // UpdateAimTarget(hit);
             }
 
             // Apply physics force
@@ -163,6 +175,12 @@ public class PlayerShoot : MonoBehaviour
             canFocus = true;
         }
     }
+
+    //private void UpdateAimTarget(RaycastHit hit)
+    //{
+    //    aimTarget.position = hit.point;
+
+    //}
 
     public void UpdateFireRate()
     {
@@ -196,4 +214,22 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    private void UpdateStaffAim()
+    {   
+        if (aimTarget == null || muzzleTransform == null) return;
+
+        // Raycast towards camera forward
+        Vector3 rayDirection = cameraTransform.forward;
+
+        if (Physics.Raycast(muzzleTransform.position, rayDirection, out RaycastHit hitInfo, Mathf.Infinity))
+        {
+            // Move aim target to hit point
+            aimTarget.position = hitInfo.point;
+        }
+        else
+        {
+            // Default distance
+            aimTarget.position = muzzleTransform.position + rayDirection * 100f;
+        }
+    }
 }
