@@ -22,8 +22,14 @@ public class Summling2 : SummlingStats
     [SerializeField]
     private Transform muzzleTransform;
 
+
+    [Header("Animations")]
+    private Animator animator;
+
+
     private void Awake()
-    {
+    {   
+        animator = GetComponentInChildren<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         navAgent.speed = movementSpeed;
         currentState = SummlingAIState.Roam;
@@ -97,6 +103,8 @@ public class Summling2 : SummlingStats
 
         if (attackCooldownTimer <= 0)
         {
+            animator.SetBool("IsAttacking", true);
+
             GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
             Rigidbody rb = bullet.GetComponent<Rigidbody>(); // Add this
@@ -109,6 +117,10 @@ public class Summling2 : SummlingStats
             rb.velocity = shotDirection * projectileController.speed;
 
             attackCooldownTimer = damageCooldown;
+        }
+        else
+        {
+            animator.SetBool("IsAttacking", false);
         }
     }
 

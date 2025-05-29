@@ -260,10 +260,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef3cc83fde99554c82eeff8c70feff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  summlingName: Summling1
+  summlingName: Turtle
   specie: 0
   mark: 0
-  description: Tis a smole
+  description: Its a turtle
   icon: {fileID: 21300000, guid: 0276584c37050d44e99134255280c8ac, type: 3}
   archetype: 0
   affectedStatsByMark: 03000000
@@ -271,12 +271,12 @@ MonoBehaviour:
   - statType: 7
     value: 10
     isPercentage: 0
-  damage: 1
-  damageCooldown: 1
+  damage: 10
+  damageCooldown: 2
   critChance: 0
   critMultiplier: 2
   movementSpeed: 10
-  attackRange: 2
+  attackRange: 1
   detectionRange: 8
   roamRadius: 10
   focusTime: 5
@@ -299,8 +299,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 1479372276
   m_Radius: 1
-  m_Speed: 3.5
-  m_Acceleration: 10
+  m_Speed: 1
+  m_Acceleration: 1
   avoidancePriority: 50
   m_AngularSpeed: 360
   m_StoppingDistance: 0
@@ -588,10 +588,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3284451121616111829}
   m_SourcePrefab: {fileID: 100100000, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
 --- !u!4 &3713627883911274402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
   m_PrefabInstance: {fileID: 3748065401951041609}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4090012066959852824 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
+  m_PrefabInstance: {fileID: 3748065401951041609}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3284451121616111829
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4090012066959852824}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f793d9087a897ef4fb1926cce3164cdf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

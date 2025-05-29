@@ -6,7 +6,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Summling1 : SummlingStats
 {
-    [SerializeField] private SummlingAIState currentState;
+    [SerializeField] private SummlingAIState currentState = SummlingAIState.Roam;
     private NavMeshAgent navAgent;
     private Vector3 roamPosition;
 
@@ -17,11 +17,16 @@ public class Summling1 : SummlingStats
     private float stuckTimer;
     private bool isMoving;
 
+    [Header("Animations")]
+    private Animator animator;
+
+
     private void Awake()
-    {
+    {   
+        animator = GetComponentInChildren<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         navAgent.speed = movementSpeed;
-        currentState = SummlingAIState.Roam;
+        //currentState = SummlingAIState.Roam;
     }
 
     private void OnEnable()
@@ -51,10 +56,13 @@ public class Summling1 : SummlingStats
         switch (currentState)
         {
             case SummlingAIState.Roam:
+                
                 RoamBehavior();
                 break;
             case SummlingAIState.Chase:
                 ChaseBehavior();
+                
+
                 break;
             case SummlingAIState.Attack:
                 AttackBehavior();
@@ -63,7 +71,9 @@ public class Summling1 : SummlingStats
     }
 
     private void RoamBehavior()
-    {
+    {   
+        animator.SetBool("IsMoving", true);
+
         // Check if we need new destination or if stuck
         if (ShouldFindNewRoamPosition())
         {
@@ -81,14 +91,15 @@ public class Summling1 : SummlingStats
     {
         if (currentTarget != null)
         {
+            animator.SetBool("IsMoving", true);
             navAgent.isStopped = false;
             navAgent.SetDestination(currentTarget.position);
         }
     }
 
     private void AttackBehavior()
-    {   
-        
+    {
+        //animator.SetBool("IsMoving", false);
 
         if (currentTarget == null) return;
 
@@ -98,6 +109,9 @@ public class Summling1 : SummlingStats
 
         if (attackCooldownTimer <= 0)
         {
+            animator.SetBool("IsAttacking", true);
+            animator.SetTrigger("Attack");
+
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
 
             foreach (var hitCollider in hitColliders)
@@ -113,6 +127,11 @@ public class Summling1 : SummlingStats
             }
 
             attackCooldownTimer = damageCooldown;
+        }
+        else
+        {
+           
+            animator.SetBool("IsAttacking", false);
         }
     }
 

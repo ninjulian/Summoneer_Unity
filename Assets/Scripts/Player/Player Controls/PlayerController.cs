@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsWalking", isMoving && groundedPlayer && !isDashing);
         
        // animator.SetBool("IsFalling", isFalling);  // NEW
-        Debug.Log("Is the player falling" + isFalling);
+       // Debug.Log("Is the player falling" + isFalling);
         animator.SetBool("IsGrounded", groundedPlayer);
         animator.SetBool("IsJumping", isJumping);
 
