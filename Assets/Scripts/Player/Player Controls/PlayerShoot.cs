@@ -47,6 +47,10 @@ public class PlayerShoot : MonoBehaviour
     [Header("Staff Aiming")]
     [SerializeField] private Transform aimTarget;
 
+    [Header("Animation Variables")]
+    private Animator animator;
+    public bool isShooting;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -58,7 +62,9 @@ public class PlayerShoot : MonoBehaviour
     }
 
     void Start()
-    {
+    {   
+        animator = GetComponentInChildren<Animator>();
+
         cameraTransform = playerController.cameraTransform;
 
         fireCooldown = 60f / playerStats.fireRate;
@@ -89,6 +95,8 @@ public class PlayerShoot : MonoBehaviour
         else
         {
             crosshairManager.currentCrosshairType = CrosshairManager.CrosshairType.Default;
+            //aimTarget.position = muzzleTransform.position;
+            animator.SetBool("IsShooting", false);
         }
     }
 
@@ -217,6 +225,8 @@ public class PlayerShoot : MonoBehaviour
     private void UpdateStaffAim()
     {   
         if (aimTarget == null || muzzleTransform == null) return;
+
+        animator.SetBool("IsShooting", true);
 
         // Raycast towards camera forward
         Vector3 rayDirection = cameraTransform.forward;

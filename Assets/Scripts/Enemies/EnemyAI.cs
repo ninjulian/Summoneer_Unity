@@ -19,8 +19,14 @@ public class EnemyAI : MonoBehaviour
     private EnemyStats enemyStats;
 
 
+    private Animator animator;
+    public bool isAttacking;
+    public bool isDead;
+
+
     private void Awake()
-    {
+    {   
+        animator = GetComponentInChildren<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         damageHandler = GetComponent<DamageHandler>();
@@ -69,6 +75,8 @@ public class EnemyAI : MonoBehaviour
         {
             case AIState.Chase:
                 ChasePlayer();
+                animator.SetBool("IsAttacking", false);
+                animator.SetBool("IsChasing", true);
                 break;
             case AIState.Attack:
                 AttackPlayer();
@@ -87,7 +95,7 @@ public class EnemyAI : MonoBehaviour
 
 
     void AttackPlayer()
-    { 
+    {
 
         if (Time.time > lastAttackTime + attackCooldown)
         {
@@ -96,11 +104,17 @@ public class EnemyAI : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
 
+
+
+
             // Perform attack
             if (Vector3.Distance(transform.position, player.position) <= enemyStats.attackRange)
             {
                 //Debug.Log("Attacking the player");
                 lastAttackTime = Time.time;
+
+                navAgent.isStopped = true;
+                animator.SetBool("IsAttacking", true);
 
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, enemyStats.attackRange);
 
@@ -120,10 +134,17 @@ public class EnemyAI : MonoBehaviour
                     }
                 }
 
+
+
             }
+        }
+        else
+        {
+            navAgent.isStopped = false;
+            animator.SetBool("IsAttacking", false);
         }
     }
 
-    
+
 
 }
