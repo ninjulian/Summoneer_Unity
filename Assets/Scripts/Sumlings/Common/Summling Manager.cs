@@ -214,7 +214,7 @@ public class SummlingManager : MonoBehaviour
                 previewBorder.color = Color.red;
                 break;
         }
-        previewStats.text = $"Species: {stats.specie}\nMark: {stats.mark}\n";
+        previewStats.text = $"Name: {stats.summlingName}\nMark: {stats.mark}\n";
 
         foreach (var mod in stats.effects)
         {

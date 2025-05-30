@@ -427,7 +427,7 @@ MonoBehaviour:
   maxHealth: 10
   currentHealth: 0
   defense: 1
-  movementSpeed: 6
+  movementSpeed: 5
   damage: 2
   critChance: 0
   critMultiplier: 0
@@ -534,7 +534,7 @@ MonoBehaviour:
   soulEssencePrefab: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
   statClass: {fileID: 3344705432886441758}
   xpValue: 5
-  soulEssenceValue: 5
+  soulEssenceValue: 10
 --- !u!135 &3540886832374951721
 SphereCollider:
   m_ObjectHideFlags: 0

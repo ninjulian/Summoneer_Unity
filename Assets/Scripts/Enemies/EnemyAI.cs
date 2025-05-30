@@ -105,8 +105,6 @@ public class EnemyAI : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
 
 
-
-
             // Perform attack
             if (Vector3.Distance(transform.position, player.position) <= enemyStats.attackRange)
             {
@@ -115,6 +113,7 @@ public class EnemyAI : MonoBehaviour
 
                 navAgent.isStopped = true;
                 animator.SetBool("IsAttacking", true);
+                animator.SetTrigger("Attack");
 
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, enemyStats.attackRange);
 
@@ -136,6 +135,10 @@ public class EnemyAI : MonoBehaviour
 
 
 
+            }
+            else
+            {
+                animator.SetBool("IsAttacking", false);
             }
         }
         else

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -118,7 +117,7 @@ public class PlayerShoot : MonoBehaviour
 
             // Calculate direction
             Vector3 shootDirection;
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 100f, ignoreMask))
             {
                 shootDirection = (hit.point - muzzleTransform.position).normalized;
 
@@ -162,7 +161,7 @@ public class PlayerShoot : MonoBehaviour
             int layerToIgnore4 = 13;
             int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4);
 
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 100f, ignoreMask))
             {
                 shootDirection = (hit.point - muzzleTransform.position).normalized;
 

@@ -63978,6 +63978,10 @@ PrefabInstance:
       propertyPath: healthSlider
       value: 
       objectReference: {fileID: 551079715}
+    - target: {fileID: 4682596390514088838, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4779622926401591041, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: healthBarUI
       value: 
@@ -63986,6 +63990,10 @@ PrefabInstance:
       propertyPath: crosshairManager
       value: 
       objectReference: {fileID: 2234762556322952276}
+    - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
+      propertyPath: dashCooldown
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 6174515393166712331, guid: cfc64cd41d8b1284894e6387bb823f21, type: 3}
       propertyPath: pickUpRadius
       value: 0.3

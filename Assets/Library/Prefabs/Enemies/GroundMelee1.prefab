@@ -183,7 +183,7 @@ MonoBehaviour:
   maxHealth: 15
   currentHealth: 0
   defense: 1
-  movementSpeed: 8
+  movementSpeed: 5
   damage: 3
   critChance: 0
   critMultiplier: 0
@@ -237,6 +237,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentState: 0
   attackCooldown: 1
+  isAttacking: 0
+  isDead: 0
 --- !u!114 &1449746501336809629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,7 +269,7 @@ MonoBehaviour:
   soulEssencePrefab: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
   statClass: {fileID: 8405939248027678409}
   xpValue: 5
-  soulEssenceValue: 5
+  soulEssenceValue: 10
 --- !u!1 &2249185712919840553
 GameObject:
   m_ObjectHideFlags: 0

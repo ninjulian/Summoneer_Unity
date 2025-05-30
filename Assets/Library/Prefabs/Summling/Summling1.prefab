@@ -275,7 +275,7 @@ MonoBehaviour:
   damageCooldown: 1
   critChance: 0
   critMultiplier: 2
-  movementSpeed: 6
+  movementSpeed: 5
   attackRange: 2
   detectionRange: 8
   roamRadius: 10
