@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Animation Variables")]
     private Animator animator;
-    public bool isJumping;
     public bool isWalking;
     public bool isDashing;
     public bool isShooting;
@@ -98,8 +97,7 @@ public class PlayerController : MonoBehaviour
        // animator.SetBool("IsFalling", isFalling);  // NEW
        // Debug.Log("Is the player falling" + isFalling);
         animator.SetBool("IsGrounded", groundedPlayer);
-        animator.SetBool("IsJumping", isJumping);
-
+      
 
         // Check for dash input
         if (dashAction.triggered && canDash && !isDashing)
@@ -177,9 +175,9 @@ public class PlayerController : MonoBehaviour
     {
         // Makes the player jump
         if (jumpAction.triggered && groundedPlayer)
-        {   
+        {
 
-            isJumping = true;
+            animator.SetTrigger("Jump");
             isFalling = false;
             //animator.SetBool("IsJumping", isJumping);
             jumpHeight = playerStats.jumpHeight;
@@ -227,7 +225,7 @@ public class PlayerController : MonoBehaviour
         {
             // Reset states when landing
             isFalling = false;
-            isJumping = false;
+
         }
 
         animator.SetBool("IsFalling", isFalling);

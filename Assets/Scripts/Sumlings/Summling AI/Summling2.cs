@@ -74,6 +74,8 @@ public class Summling2 : SummlingStats
 
     private void RoamBehavior()
     {
+        animator.SetBool("IsMoving", true);
+
         // Check if we need new destination or if stuck
         if (ShouldFindNewRoamPosition())
         {
@@ -91,6 +93,7 @@ public class Summling2 : SummlingStats
     {
         if (currentTarget != null)
         {
+            animator.SetBool("isMoving", true);
             navAgent.isStopped = false;
             navAgent.SetDestination(currentTarget.position);
         }
@@ -104,6 +107,7 @@ public class Summling2 : SummlingStats
         if (attackCooldownTimer <= 0)
         {
             animator.SetBool("IsAttacking", true);
+            animator.SetTrigger("Attack");
 
             GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();

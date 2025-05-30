@@ -471,9 +471,9 @@ NavMeshAgent:
   m_AgentTypeID: -1923039037
   m_Radius: 1
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 442ea48dbe12bff48b5e2e7bc898ac09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  summlingName: Flying Fish
+  summlingName: Axolotl
   specie: 0
   mark: 0
   description: Fish that flies
@@ -509,7 +509,7 @@ MonoBehaviour:
   damageCooldown: 0.5
   critChance: 10
   critMultiplier: 1.5
-  movementSpeed: 15
+  movementSpeed: 5
   attackRange: 5
   detectionRange: 10
   roamRadius: 15
@@ -732,8 +732,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3274453149812703667, guid: afcc78ae70ff0fd48a0acea8688a224b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 837312046957062349}
   m_SourcePrefab: {fileID: 100100000, guid: afcc78ae70ff0fd48a0acea8688a224b, type: 3}
+--- !u!1 &8078304204865090821 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3274453149812703667, guid: afcc78ae70ff0fd48a0acea8688a224b, type: 3}
+  m_PrefabInstance: {fileID: 6731429081922532534}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &837312046957062349
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8078304204865090821}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e040e37c41da23e438a4bb2f7e1a65e5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &8885661933361393599 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2754761954161498889, guid: afcc78ae70ff0fd48a0acea8688a224b, type: 3}

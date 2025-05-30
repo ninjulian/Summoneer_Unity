@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef3cc83fde99554c82eeff8c70feff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  summlingName: Summling1
+  summlingName: Chicken
   specie: 2
   mark: 0
   description: Tis a smole
@@ -275,7 +275,7 @@ MonoBehaviour:
   damageCooldown: 1
   critChance: 0
   critMultiplier: 2
-  movementSpeed: 10
+  movementSpeed: 6
   attackRange: 2
   detectionRange: 8
   roamRadius: 10
@@ -300,7 +300,7 @@ NavMeshAgent:
   m_AgentTypeID: 1479372276
   m_Radius: 1
   m_Speed: 3.5
-  m_Acceleration: 10
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 360
   m_StoppingDistance: 0
@@ -535,7 +535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ba5b5f6fdba35a43870ad99a49a12ea, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.627
+      value: -0.92
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3ba5b5f6fdba35a43870ad99a49a12ea, type: 3}
       propertyPath: m_LocalPosition.z
