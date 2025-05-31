@@ -134,7 +134,6 @@ public class PlayerShoot : MonoBehaviour
                 //UpdateAimTarget(hit);
             }
 
-            CreateBeamTrail(muzzleTransform.position, hit.point, primaryBeam);
 
             // Apply velocity
             rb.velocity = shootDirection * projectileController.speed;
@@ -144,6 +143,8 @@ public class PlayerShoot : MonoBehaviour
             projectileController.sourceTag = "Player";
             CheckDOT(projectileController);
             canShoot = false;
+
+            CreateBeamTrail(muzzleTransform.position, hit.point, primaryBeam);
 
             yield return new WaitForSeconds(fireCooldown);
             canShoot = true;
@@ -168,7 +169,7 @@ public class PlayerShoot : MonoBehaviour
             int layerToIgnore4 = 13;
             int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4);
 
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 100f, ignoreMask))
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
                 shootDirection = (hit.point - muzzleTransform.position).normalized;
 
@@ -179,7 +180,6 @@ public class PlayerShoot : MonoBehaviour
                 shootDirection = cameraTransform.forward;
             }
 
-            CreateBeamTrail(muzzleTransform.position, hit.point, focusBeam);
 
             // Apply physics force
             rb.velocity = shootDirection * projectileController.speed;
@@ -189,9 +189,11 @@ public class PlayerShoot : MonoBehaviour
             projectileController.sourceTag = "Player";
             CheckDOT(projectileController);
 
+            CreateBeamTrail(muzzleTransform.position, hit.point, focusBeam);
+
             // Cooldown management
             canFocus = false;
-            yield return new WaitForSeconds(fireCooldown * 2f);
+            yield return new WaitForSeconds(fireCooldown * 3f);
             canFocus = true;
         }
     }

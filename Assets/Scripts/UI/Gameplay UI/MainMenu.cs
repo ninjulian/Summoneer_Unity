@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour
     public void StartButton()
     {   
         // Load up main level
-        SceneManager.LoadScene("The_Lab");
+        SceneManager.LoadScene("Final Map");
     }
 
     public void SettingsButton()

@@ -135,6 +135,6 @@ public class PauseUI : MonoBehaviour
 
     public void RestartButton()
     {
-        SceneManager.LoadScene("The_Lab");
+        SceneManager.LoadScene("Final Map");
     }
 }

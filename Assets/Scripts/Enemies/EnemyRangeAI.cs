@@ -1,10 +1,8 @@
 using UnityEngine.AI;
 using UnityEngine;
-using Unity.VisualScripting;
 using System.Collections;
 
-public enum AIRangeState { Chase, Attack }
-
+//
 public class EnemyRangeAI : MonoBehaviour
 {
     [SerializeField] private AIState _currentState;
@@ -19,48 +17,45 @@ public class EnemyRangeAI : MonoBehaviour
     private DamageHandler damageHandler;
     private EnemyStats enemyStats;
 
-    [SerializeField]
-    private GameObject bulletPrefab;
-    [SerializeField]
-    private Transform muzzleTransform;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform muzzleTransform;
 
     private bool hasLOS;
-
+    private Animator animator;
+    private bool initializeSpawn = false;
+    private bool isAttackCoroutineRunning = false; // Track attack state
 
     private void Awake()
     {
+        animator = GetComponentInChildren<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         damageHandler = GetComponent<DamageHandler>();
         enemyStats = GetComponent<EnemyStats>();
+        animator.SetTrigger("Spawn");
 
-        attackRange = enemyStats.attackRange;
-
-        navAgent.speed = enemyStats.movementSpeed;
-
-        SetState(AIState.Chase);
+        StartCoroutine(InitializeSpawn());
     }
 
     void Update()
     {
-        if (player != null)
+        if (player != null && initializeSpawn)
         {
             CheckLOS();
             CheckStateTransition();
             UpdateCurrentState();
         }
-      
     }
 
     void CheckStateTransition()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= attackRange && hasLOS && _currentState != AIState.Attack)
+        if (distanceToPlayer <= attackRange && hasLOS)
         {
             SetState(AIState.Attack);
         }
-        else if ((distanceToPlayer > attackRange || !hasLOS) && _currentState != AIState.Chase)
+        else
         {
             SetState(AIState.Chase);
         }
@@ -68,7 +63,19 @@ public class EnemyRangeAI : MonoBehaviour
 
     void SetState(AIState newState)
     {
+        // Handle state exit logic
+        if (_currentState == AIState.Attack && newState != AIState.Attack)
+        {
+            navAgent.isStopped = false;
+        }
+
         _currentState = newState;
+
+        // Handle state enter logic
+        if (_currentState == AIState.Attack)
+        {
+            navAgent.isStopped = true; // Stop movement when attacking
+        }
     }
 
     void UpdateCurrentState()
@@ -79,20 +86,19 @@ public class EnemyRangeAI : MonoBehaviour
                 ChasePlayer();
                 break;
             case AIState.Attack:
-                StartCoroutine(AttackPlayer());
+                if (!isAttackCoroutineRunning)
+                {
+                    StartCoroutine(AttackPlayer());
+                }
                 break;
         }
     }
 
     void ChasePlayer()
     {
-        //if (navAgent.isStopped) navAgent.isStopped = false;
         navAgent.SetDestination(player.position);
-
-
-        //navAgent.speed = Mathf.Lerp(navAgent.speed, 5f, Time.deltaTime);
+        //animator.SetBool("IsChasing", true);
     }
-
 
     private void CheckLOS()
     {
@@ -102,36 +108,53 @@ public class EnemyRangeAI : MonoBehaviour
         int layerToIgnore3 = 13;
         int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3);
 
-        hasLOS = Physics.Raycast(transform.position, direction, out RaycastHit hit, attackRange, ignoreMask) && hit.collider.CompareTag("Player");
+        RaycastHit hit;
+        hasLOS = Physics.Raycast(transform.position, direction, out hit, attackRange, ignoreMask);
+        if (hasLOS)
+        {
+            hasLOS = hit.collider.CompareTag("Player");
+        }
     }
 
     IEnumerator AttackPlayer()
     {
+        isAttackCoroutineRunning = true;
+        //animator.SetBool("IsChasing", false);
+
+        // Face player
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+        transform.rotation = lookRotation; // Immediate rotation
 
+        // Attack if cooldown finished
         if (Time.time > lastAttackTime + attackCooldown)
         {
-            GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
-            ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
-            Rigidbody rb = bullet.GetComponent<Rigidbody>(); // Add this
-
-            projectileController.baseDamage = enemyStats.damage;
-            Vector3 shotDirection = (player.position - muzzleTransform.position).normalized;
-
-            // Physics-based movement
-            rb.velocity = shotDirection * projectileController.speed;
-
-            // Maintain raycast verification
-            if (Physics.Raycast(muzzleTransform.position, shotDirection, out RaycastHit hit, attackRange))
-            {
-                projectileController.hit = true;
-            }
-
+            animator.SetTrigger("Attack");
+            FireProjectile();
             lastAttackTime = Time.time;
-            yield return new WaitForSeconds(attackCooldown);
         }
+
+        yield return new WaitForSeconds(0.1f); // Brief delay before next check
+        isAttackCoroutineRunning = false;
     }
 
+    private void FireProjectile()
+    {
+        GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
+        ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
+        projectileController.baseDamage = enemyStats.damage;
+        Vector3 shotDirection = (player.position - muzzleTransform.position).normalized;
+        rb.velocity = shotDirection * projectileController.speed;
+    }
+
+    private IEnumerator InitializeSpawn()
+    {
+        yield return new WaitForSeconds(1f);
+        initializeSpawn = true;
+        navAgent.speed = enemyStats.movementSpeed;
+        attackRange = enemyStats.attackRange; // Ensure range is set from stats
+        SetState(AIState.Chase);
+    }
 }

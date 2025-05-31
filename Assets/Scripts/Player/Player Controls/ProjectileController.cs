@@ -10,6 +10,9 @@ public class ProjectileController : MonoBehaviour
     public float lifeSpan = 3f;
 
     public Vector3 target { get; set; }
+
+    public Vector3 hitLocation;
+
     public bool hit { get; set; }
 
     [HideInInspector] public float baseDamage;
@@ -56,8 +59,12 @@ public class ProjectileController : MonoBehaviour
             return;
         }
 
+        hitLocation = gameObject.transform.position;
+
         StatClass targetStats = other.GetComponent<StatClass>();
         DamageHandler damageHandler = other.GetComponent<DamageHandler>();
+
+        Debug.Log(sourceTag + "has hit");
 
         if (targetStats != null)
         {

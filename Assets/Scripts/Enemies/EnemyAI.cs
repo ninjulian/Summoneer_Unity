@@ -1,7 +1,6 @@
 using UnityEngine.AI;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
-using UnityEngine.UIElements;
+using System.Collections;
 
 public enum AIState { Chase, Attack }
 
@@ -23,23 +22,33 @@ public class EnemyAI : MonoBehaviour
     public bool isAttacking;
     public bool isDead;
 
+    private bool initializeSpawn = false;
 
     private void Awake()
-    {   
+    {
+        //animator = GetComponentInChildren<Animator>();
+        //navAgent = GetComponent<NavMeshAgent>();
+        //player = GameObject.FindGameObjectWithTag("Player").transform;
+        //damageHandler = GetComponent<DamageHandler>();
+        //enemyStats = GetComponent<EnemyStats>();
+
+        //navAgent.speed = enemyStats.movementSpeed;
+
+        //SetState(AIState.Chase);
+
         animator = GetComponentInChildren<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         damageHandler = GetComponent<DamageHandler>();
         enemyStats = GetComponent<EnemyStats>();
+        animator.SetTrigger("Spawn");
 
-        navAgent.speed = enemyStats.movementSpeed;
-
-        SetState(AIState.Chase);
+        StartCoroutine(InitializeSpawn());
     }
 
     void Update()
     {
-        if (player != null)
+        if (player != null && initializeSpawn)
         {
             CheckStateTransition();
             UpdateCurrentState();
@@ -75,8 +84,7 @@ public class EnemyAI : MonoBehaviour
         {
             case AIState.Chase:
                 ChasePlayer();
-                animator.SetBool("IsAttacking", false);
-                animator.SetBool("IsChasing", true);
+               
                 break;
             case AIState.Attack:
                 AttackPlayer();
@@ -89,13 +97,16 @@ public class EnemyAI : MonoBehaviour
         //if (navAgent.isStopped) navAgent.isStopped = false;
         navAgent.SetDestination(player.position);
 
- 
+        animator.SetBool("IsChasing", true);
+
         //navAgent.speed = Mathf.Lerp(navAgent.speed, 5f, Time.deltaTime);
     }
 
 
     void AttackPlayer()
-    {
+    {   
+
+        animator.SetBool("IsChasing", false);
 
         if (Time.time > lastAttackTime + attackCooldown)
         {
@@ -148,6 +159,16 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    private IEnumerator InitializeSpawn()
+    {
 
+        yield return new WaitForSeconds(1f);
+
+        
+        initializeSpawn = true;
+        navAgent.speed = enemyStats.movementSpeed;
+
+        SetState(AIState.Chase);
+    }
 
 }

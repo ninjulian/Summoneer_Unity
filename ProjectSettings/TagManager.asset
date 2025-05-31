@@ -23,10 +23,10 @@ TagManager:
   - Summling
   - Item
   - PickUpRadius
-  - 
-  - 
-  - 
-  - 
+  - GroundSummling
+  - FlyingSummling
+  - GroundEnemy
+  - FlyingEnemy
   - 
   - 
   - 

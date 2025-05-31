@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Dash")]
     public float dashTimer = 0.2f;
-    private float dashCooldown = 1.5f;
+    //private float dashCooldown = 1.5f;
     public bool canDash = true;
 
 

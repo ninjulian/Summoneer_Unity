@@ -10,23 +10,33 @@ public class Summling1 : SummlingStats
     private NavMeshAgent navAgent;
     private Vector3 roamPosition;
 
-    public bool alwaysShowGizmos;
+    public bool alwaysShowGizmos = false;
 
     [Header("Movement Settings")]
     [SerializeField] private float stuckTimeThreshold = 0.5f; // Time before considering stuck
     private float stuckTimer;
     private bool isMoving;
 
+    [Header("Chase Settings")]
+    [SerializeField] private float maxSpeedIncreaseMultiplier = 2f; // How much faster it can get
+    [SerializeField] private float speedIncreaseAcceleration = 0.1f; // How quickly speed increases
+    private float currentSpeedMultiplier = 1f;
+
     [Header("Animations")]
     private Animator animator;
 
 
+
     private void Awake()
-    {   
+    {
         animator = GetComponentInChildren<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         navAgent.speed = movementSpeed;
         //currentState = SummlingAIState.Roam;
+
+        // On ground agents (prevents them from avoiding flying agents)
+        //navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        //navAgent.avoidanceMask = ~(1 << LayerMask.NameToLayer("FlyingAgent")); // Ignores flying layer
     }
 
     private void OnEnable()
@@ -56,12 +66,12 @@ public class Summling1 : SummlingStats
         switch (currentState)
         {
             case SummlingAIState.Roam:
-                
+
                 RoamBehavior();
                 break;
             case SummlingAIState.Chase:
                 ChaseBehavior();
-                
+
 
                 break;
             case SummlingAIState.Attack:
@@ -71,8 +81,12 @@ public class Summling1 : SummlingStats
     }
 
     private void RoamBehavior()
-    {   
+    {
         animator.SetBool("IsMoving", true);
+
+        // Resets the increasing speed to normal
+        currentSpeedMultiplier = 1f;
+        navAgent.speed = movementSpeed * currentSpeedMultiplier;
 
         // Check if we need new destination or if stuck
         if (ShouldFindNewRoamPosition())
@@ -89,6 +103,8 @@ public class Summling1 : SummlingStats
 
     private void ChaseBehavior()
     {
+        ChaseSpeedIncrease();
+
         if (currentTarget != null)
         {
             animator.SetBool("IsMoving", true);
@@ -102,6 +118,8 @@ public class Summling1 : SummlingStats
         //animator.SetBool("IsMoving", false);
 
         if (currentTarget == null) return;
+
+        ChaseSpeedIncrease();
 
         // Face target
         //Vector3 direction = (currentTarget.position - transform.position).normalized;
@@ -130,7 +148,7 @@ public class Summling1 : SummlingStats
         }
         else
         {
-           
+
             animator.SetBool("IsAttacking", false);
         }
     }
@@ -190,7 +208,18 @@ public class Summling1 : SummlingStats
 
     private Transform FindNearestEnemy()
     {
-        Collider[] enemies = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
+        // Combine both layers into a single bitmask
+        int groundEnemyLayer = LayerMask.NameToLayer("GroundEnemy");
+        int flyingEnemyLayer = LayerMask.NameToLayer("FlyingEnemy");
+        int combinedLayerMask = (1 << groundEnemyLayer) | (1 << flyingEnemyLayer);
+
+        // Find all colliders in the two layers
+        Collider[] enemies = Physics.OverlapSphere(
+            transform.position,
+            detectionRange,
+            combinedLayerMask
+        );
+
         Transform nearest = null;
         float minDistance = Mathf.Infinity;
 
@@ -224,20 +253,28 @@ public class Summling1 : SummlingStats
         focusTimer = focusTime;
     }
 
-    // Draw gizmos when object is selected or when "alwaysShowGizmos" is enabled
+    // Draw gizmos all the time
     private void OnDrawGizmos()
     {
         if (!alwaysShowGizmos) return;
-
+         
         DrawGizmosContent();
     }
 
-    // Draw gizmos only when selected (if "alwaysShowGizmos" is disabled)
+    // Draw gizmos only when selected
     private void OnDrawGizmosSelected()
     {
         if (alwaysShowGizmos) return;
 
         DrawGizmosContent();
+    }
+
+    // Increases the speed linearly, that way Summlings tick onto enemies and not outpaced as easily
+    private void ChaseSpeedIncrease()
+    {
+        currentSpeedMultiplier = Mathf.Min(currentSpeedMultiplier + speedIncreaseAcceleration * Time.deltaTime, maxSpeedIncreaseMultiplier);
+
+        navAgent.speed = movementSpeed * currentSpeedMultiplier;
     }
 
 }

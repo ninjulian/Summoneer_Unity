@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1863270840502680839}
   - component: {fileID: 2470644787795648261}
   - component: {fileID: 7706314434461328697}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 7617499450226247333}
   - component: {fileID: 5201364491345135140}
   - component: {fileID: 4199338466138220758}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: d (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 5222860414828037866}
   - component: {fileID: 6814192048623453886}
   - component: {fileID: 4253830314261136575}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: AquaticSummling1 1
   m_TagString: Summling
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 1840779663832544055}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.01, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -289,6 +289,8 @@ MonoBehaviour:
   currentState: 0
   alwaysShowGizmos: 0
   stuckTimeThreshold: 5
+  maxSpeedIncreaseMultiplier: 2
+  speedIncreaseAcceleration: 0.5
 --- !u!195 &4253830314261136575
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -298,7 +300,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1840779663832544055}
   m_Enabled: 1
   m_AgentTypeID: 1479372276
-  m_Radius: 1
+  m_Radius: 0.54
   m_Speed: 1
   m_Acceleration: 100
   avoidancePriority: 50
@@ -307,10 +309,10 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 1
+  m_Height: 0.7
+  m_BaseOffset: 0.8
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 1
 --- !u!1 &5253155922157785390
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +325,7 @@ GameObject:
   - component: {fileID: 1648578617588753239}
   - component: {fileID: 6055105687717941754}
   - component: {fileID: 4106514919616802268}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -428,7 +430,7 @@ GameObject:
   - component: {fileID: 5978265242028979171}
   - component: {fileID: 2236450745649095905}
   - component: {fileID: 8506055475602034154}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,15 +545,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.051707
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.643
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.329
+      value: -0.20000002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
       propertyPath: m_LocalRotation.w
@@ -584,6 +586,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
       propertyPath: m_Name
       value: turtle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: 84d54cbe82e1dad46b02320031e89831, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

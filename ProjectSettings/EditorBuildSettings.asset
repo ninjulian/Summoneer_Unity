@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: 5e81d2f1970d8d443821d456637beac4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/The_Lab.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Final Map.unity
+    guid: 601363aeed3311847a6d363fcbf93a64
   m_configObjects: {}

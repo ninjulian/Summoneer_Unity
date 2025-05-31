@@ -17,6 +17,11 @@ public class Summling2 : SummlingStats
     private float stuckTimer;
     private bool isMoving;
 
+    [Header("Chase Settings")]
+    [SerializeField] private float maxSpeedIncreaseMultiplier = 2f; // How much faster it can get
+    [SerializeField] private float speedIncreaseAcceleration = 0.1f; // How quickly speed increases
+    private float currentSpeedMultiplier = 1f;
+
     [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
@@ -93,6 +98,7 @@ public class Summling2 : SummlingStats
     {
         if (currentTarget != null)
         {
+            ChaseSpeedIncrease();
             animator.SetBool("isMoving", true);
             navAgent.isStopped = false;
             navAgent.SetDestination(currentTarget.position);
@@ -102,6 +108,8 @@ public class Summling2 : SummlingStats
     private void AttackBehavior()
     {
         if (currentTarget == null) return;
+
+        ChaseSpeedIncrease();
         transform.LookAt(currentTarget);
 
         if (attackCooldownTimer <= 0)
@@ -183,7 +191,18 @@ public class Summling2 : SummlingStats
 
     private Transform FindNearestEnemy()
     {
-        Collider[] enemies = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
+        // Combine both layers into a single bitmask
+        int groundEnemyLayer = LayerMask.NameToLayer("GroundEnemy");
+        int flyingEnemyLayer = LayerMask.NameToLayer("FlyingEnemy");
+        int combinedLayerMask = (1 << groundEnemyLayer) | (1 << flyingEnemyLayer);
+
+        // Find all colliders in the two layers
+        Collider[] enemies = Physics.OverlapSphere(
+            transform.position,
+            detectionRange,
+            combinedLayerMask
+        );
+
         Transform nearest = null;
         float minDistance = Mathf.Infinity;
 
@@ -217,7 +236,7 @@ public class Summling2 : SummlingStats
         focusTimer = focusTime;
     }
 
-    // Draw gizmos when object is selected or when "alwaysShowGizmos" is enabled
+    // Draw gizmos all the time
     private void OnDrawGizmos()
     {
         if (!alwaysShowGizmos) return;
@@ -225,7 +244,7 @@ public class Summling2 : SummlingStats
         DrawGizmosContent();
     }
 
-    // Draw gizmos only when selected (if "alwaysShowGizmos" is disabled)
+    // Draw gizmos only when selected
     private void OnDrawGizmosSelected()
     {
         if (alwaysShowGizmos) return;
@@ -233,19 +252,11 @@ public class Summling2 : SummlingStats
         DrawGizmosContent();
     }
 
-    // Common gizmo drawing logic
-    //private void DrawGizmosContent()
-    //{
-    //    Gizmos.color = Color.yellow;
-    //    Gizmos.DrawWireSphere(transform.position, detectionRange);
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(transform.position, attackRange);
+    private void ChaseSpeedIncrease()
+    {
+        currentSpeedMultiplier = Mathf.Min(currentSpeedMultiplier + speedIncreaseAcceleration * Time.deltaTime, maxSpeedIncreaseMultiplier);
 
-    //    // Draw target destination wire cube
-    //    Gizmos.color = Color.green;
-    //    Vector3 targetPosition = currentTarget != null ? currentTarget.position : roamPosition;
-    //    Gizmos.DrawWireCube(targetPosition, Vector3.one);
-    //}
-
+        navAgent.speed = movementSpeed * currentSpeedMultiplier;
+    }
 
 }
