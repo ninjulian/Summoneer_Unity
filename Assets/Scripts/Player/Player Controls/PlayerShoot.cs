@@ -45,10 +45,14 @@ public class PlayerShoot : MonoBehaviour
 
     [Header("Staff Aiming")]
     [SerializeField] private Transform aimTarget;
+    public GameObject primaryBeam;
+    public GameObject focusBeam;
 
     [Header("Animation Variables")]
     private Animator animator;
     public bool isShooting;
+
+
 
     private void Awake()
     {
@@ -117,10 +121,11 @@ public class PlayerShoot : MonoBehaviour
 
             // Calculate direction
             Vector3 shootDirection;
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 100f, ignoreMask))
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
                 shootDirection = (hit.point - muzzleTransform.position).normalized;
-
+                
+                
                 //UpdateAimTarget(hit);
             }
             else
@@ -128,6 +133,8 @@ public class PlayerShoot : MonoBehaviour
                 shootDirection = cameraTransform.forward;
                 //UpdateAimTarget(hit);
             }
+
+            CreateBeamTrail(muzzleTransform.position, hit.point, primaryBeam);
 
             // Apply velocity
             rb.velocity = shootDirection * projectileController.speed;
@@ -165,14 +172,20 @@ public class PlayerShoot : MonoBehaviour
             {
                 shootDirection = (hit.point - muzzleTransform.position).normalized;
 
-               // UpdateAimTarget(hit);
+                // UpdateAimTarget(hit);
             }
+            else
+            {
+                shootDirection = cameraTransform.forward;
+            }
+
+            CreateBeamTrail(muzzleTransform.position, hit.point, focusBeam);
 
             // Apply physics force
             rb.velocity = shootDirection * projectileController.speed;
 
             // Configure bullet properties
-            projectileController.baseDamage = Mathf.Floor(playerStats.CalculateDamage() * 0.1f); // Focus mode damage multiplier
+            projectileController.baseDamage = Mathf.Floor(playerStats.CalculateDamage() * 0f); // Focus mode damage multiplier
             projectileController.sourceTag = "Player";
             CheckDOT(projectileController);
 
@@ -220,6 +233,17 @@ public class PlayerShoot : MonoBehaviour
             projectileController.applyPoisonDOT = true;
         }
     }
+
+
+    private void CreateBeamTrail(Vector3 start, Vector3 end, GameObject beamTrail)
+    {
+        GameObject trail = Instantiate(beamTrail, start, Quaternion.identity);
+        LineRenderer line = trail.GetComponent<LineRenderer>();
+        line.SetPosition(0, start);
+        line.SetPosition(1, end);
+        Destroy(trail, 0.1f);
+    }
+
 
     private void UpdateStaffAim()
     {   

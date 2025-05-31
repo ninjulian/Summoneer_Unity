@@ -133,8 +133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focusBullet: 1
-  speed: 30
-  lifeSpan: 2
+  speed: 9999
+  lifeSpan: 1
   baseDamage: 0
   sourceTag: Player
   applyFireDOT: 0

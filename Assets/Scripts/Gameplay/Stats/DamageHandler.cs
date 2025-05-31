@@ -24,6 +24,7 @@ public class DamageHandler : MonoBehaviour
 
     private List<ActiveDOT> activeDOTs = new List<ActiveDOT>();
 
+
     public struct ActiveDOT
     {
         public DOTType type;
