@@ -37,11 +37,12 @@ public class EnemyAI : MonoBehaviour
         //SetState(AIState.Chase);
 
         animator = GetComponentInChildren<Animator>();
+        animator.SetTrigger("Spawn");
         navAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         damageHandler = GetComponent<DamageHandler>();
         enemyStats = GetComponent<EnemyStats>();
-        animator.SetTrigger("Spawn");
+        
 
         StartCoroutine(InitializeSpawn());
     }

@@ -278,7 +278,7 @@ public class PlayerShoot : MonoBehaviour
         LineRenderer line = trail.GetComponent<LineRenderer>();
         line.SetPosition(0, start);
         line.SetPosition(1, end);
-        Destroy(trail, 0.8f);
+        Destroy(trail, 0.1f);
     }
 
 
