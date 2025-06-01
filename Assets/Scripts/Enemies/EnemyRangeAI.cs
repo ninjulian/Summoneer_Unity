@@ -157,4 +157,29 @@ public class EnemyRangeAI : MonoBehaviour
         attackRange = enemyStats.attackRange; // Ensure range is set from stats
         SetState(AIState.Chase);
     }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player Projectile"))
+        {
+
+            Debug.Log("The player has hit me wah wah wah ");
+
+
+            ProjectileController projectileController = other.gameObject.GetComponent<ProjectileController>();
+
+            damageHandler.ReceiveDamage(projectileController.baseDamage);
+
+            // Apply DOT effects
+            if (projectileController.applyFireDOT)
+            {
+                damageHandler.ApplyFireDOT(projectileController.baseDamage, projectileController.DOTDuration);
+            }
+            if (projectileController.applyPoisonDOT)
+            {
+                damageHandler.ApplyPoisonDOT(projectileController.baseDamage, projectileController.DOTDuration);
+            }
+
+        }
+    }
 }

@@ -61,16 +61,20 @@ public class ProjectileController : MonoBehaviour
 
         hitLocation = gameObject.transform.position;
 
-        StatClass targetStats = other.GetComponent<StatClass>();
+        StatClass targetStats = other.GetComponent<StatClass>() ??
+                      other.GetComponentInParent<StatClass>() ??
+                      other.GetComponentInChildren<StatClass>();
+
         DamageHandler damageHandler = other.GetComponent<DamageHandler>();
 
-        Debug.Log(sourceTag + "has hit");
+       // Debug.Log(sourceTag + "has hit" + other.gameObject.name);
+
 
         if (targetStats != null)
         {
             damageHandler.ReceiveDamage(baseDamage);
 
-            Debug.Log(sourceTag + "has hit");
+            //Debug.Log(sourceTag + "has hit");
 
             // Apply DOT effects
             if (applyFireDOT)

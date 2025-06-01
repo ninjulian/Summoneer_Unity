@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float shootingRotationSpeed = 10f;
     [SerializeField] private TrailRenderer trailRenderer;
     private PlayerStats playerStats;
+    private PlayerShoot shoot;
 
     private CharacterController controller;
     [HideInInspector]
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         cameraTransform = Camera.main.transform;
         playerStats = GetComponent<PlayerStats>();
+        shoot = GetComponent<PlayerShoot>();
 
         // Initiatlise Trail renderer
         trailRenderer = GetComponent<TrailRenderer>();

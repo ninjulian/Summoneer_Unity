@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1575531166979497488}
   - component: {fileID: 9222151304651350112}
   - component: {fileID: 6650727695508478493}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: Cube
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 7745819356525608381}
   - component: {fileID: 6161666324603049324}
   - component: {fileID: 5223737916179336466}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: Body
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 760173443969819448}
   - component: {fileID: 6487184776031655162}
   - component: {fileID: 630157435139800725}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: Cube (1)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 3521689646999123066}
   - component: {fileID: 2066070154250972694}
   - component: {fileID: -160565027357747663}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: FlyingRange1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -385,7 +385,7 @@ SphereCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.8
@@ -420,7 +420,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4962071458672015274}
   m_Enabled: 1
   m_AgentTypeID: -1372625422
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 10
   avoidancePriority: 50
@@ -429,7 +429,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.5
+  m_Height: 1
   m_BaseOffset: 4
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -565,7 +565,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5601026545326896814}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 373458412941313229}
   - component: {fileID: 5699843345735968412}
   - component: {fileID: 1907657666280631012}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: Cube (2)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -767,7 +767,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7456148774203989378, guid: 2f9364954fcf23147b16216466eabf5d, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -807,19 +807,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2307314580582799997, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 2473895480906811141, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 3224304565701054091, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4097131215413661190, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4483782825661243583, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -863,7 +863,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5296298463099071620, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7058074180535554613, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Name
@@ -871,7 +871,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7058074180535554613, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7058074180535554613, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_IsActive
@@ -879,15 +879,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7143396400367597004, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 8463121065918850983, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 8530126290182834152, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 8722006398261285665, guid: fe7c1421db55b9a409425c4ac93b831a, type: 3}
       propertyPath: m_AnchorMax.x
@@ -992,7 +992,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02e28c02bf80dc64199a4f2554378386, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2700456230472104641, guid: 02e28c02bf80dc64199a4f2554378386, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2700456230472104641, guid: 02e28c02bf80dc64199a4f2554378386, type: 3}
+      propertyPath: m_MotionVectors
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2700456230472104641, guid: 02e28c02bf80dc64199a4f2554378386, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2700456230472104641, guid: 02e28c02bf80dc64199a4f2554378386, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1000,7 +1012,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 2d53639c68a20614da2194cdb6028bf7, type: 2}
     - target: {fileID: 6543916107878460146, guid: 02e28c02bf80dc64199a4f2554378386, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1051,7 +1063,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 525678909927455728, guid: 3dedc6113814d6c4fbfab83988e7905f, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 1099569720855321814, guid: 3dedc6113814d6c4fbfab83988e7905f, type: 3}
       propertyPath: m_Enabled
@@ -1063,7 +1075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1323379718227683100, guid: 3dedc6113814d6c4fbfab83988e7905f, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 3145071327685775186, guid: 3dedc6113814d6c4fbfab83988e7905f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1135,7 +1147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4313593545759043640, guid: 3dedc6113814d6c4fbfab83988e7905f, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4688035262981127668, guid: 3dedc6113814d6c4fbfab83988e7905f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1203,7 +1215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6621279681690972440, guid: 3dedc6113814d6c4fbfab83988e7905f, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 6621279681690972440, guid: 3dedc6113814d6c4fbfab83988e7905f, type: 3}
       propertyPath: m_IsActive
@@ -1276,7 +1288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2361128274435256338, guid: c0db6cba6eeb3cf4abddd97d43ac60ec, type: 3}
       propertyPath: m_Layer
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 2590790208973802249, guid: c0db6cba6eeb3cf4abddd97d43ac60ec, type: 3}
       propertyPath: m_LocalScale.z

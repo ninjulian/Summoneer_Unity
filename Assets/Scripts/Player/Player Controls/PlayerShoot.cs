@@ -26,8 +26,8 @@ public class PlayerShoot : MonoBehaviour
     // Player Controller
     private PlayerController playerController;
 
-    private bool canShoot = true;
-    private bool canFocus = true;
+    [HideInInspector] public bool canShoot = true;
+    [HideInInspector] public bool canFocus = true;
 
     // Input System
     private InputAction shootAction;
@@ -107,6 +107,7 @@ public class PlayerShoot : MonoBehaviour
     {
         if (canShoot)
         {
+            canShoot = false;
             RaycastHit hit;
             GameObject bullet = Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
@@ -120,29 +121,32 @@ public class PlayerShoot : MonoBehaviour
             int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4);
 
             // Calculate direction
-            Vector3 shootDirection;
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
-            {
-                shootDirection = (hit.point - muzzleTransform.position).normalized;
-                
-                
-                //UpdateAimTarget(hit);
-            }
-            else
-            {
-                shootDirection = cameraTransform.forward;
-                //UpdateAimTarget(hit);
-            }
+            //Vector3 shootDirection;
+            //if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
+            //{
+            //    shootDirection = (hit.point - muzzleTransform.position).normalized;
+            //    //pdateAimTarget(hit);
+            //}
+            //else
+            //{
+            //    shootDirection = cameraTransform.forward;
+            //    //UpdateAimTarget(hit);
+            //}
+
+            Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask);
+            RayscanHit(hit);
 
 
-            // Apply velocity
-            rb.velocity = shootDirection * projectileController.speed;
+            //Debug.Log((stats == null), stats);
+            
 
-            // Existing code for damage, cooldown, etc.
-            projectileController.baseDamage = playerStats.CalculateDamage();
-            projectileController.sourceTag = "Player";
-            CheckDOT(projectileController);
-            canShoot = false;
+            //// Apply bullet velocity
+            //rb.velocity = shootDirection * projectileController.speed;
+
+            //// Transfers data to projectile
+            //projectileController.baseDamage = playerStats.CalculateDamage();
+            //projectileController.sourceTag = "Player";
+            //CheckDOT(projectileController);
 
             CreateBeamTrail(muzzleTransform.position, hit.point, primaryBeam);
 
@@ -155,6 +159,7 @@ public class PlayerShoot : MonoBehaviour
     {
         if (canFocus)
         {
+            canFocus = false;
             GameObject bullet = Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
@@ -171,28 +176,36 @@ public class PlayerShoot : MonoBehaviour
 
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
-                shootDirection = (hit.point - muzzleTransform.position).normalized;
+                //shootDirection = (hit.point - muzzleTransform.position).normalized;
 
                 // UpdateAimTarget(hit);
             }
             else
             {
-                shootDirection = cameraTransform.forward;
+                //shootDirection = cameraTransform.forward;
             }
 
+            RayscanHit(hit);
 
+            if (hit.collider.gameObject.CompareTag("Enemy"))
+            {
+                OnEnemyFocused?.Invoke(hit.collider.transform);
+            }
+           
+
+
+            // Old Projectile based shooting
             // Apply physics force
-            rb.velocity = shootDirection * projectileController.speed;
+            //rb.velocity = shootDirection * projectileController.speed;
 
             // Configure bullet properties
-            projectileController.baseDamage = Mathf.Floor(playerStats.CalculateDamage() * 0f); // Focus mode damage multiplier
-            projectileController.sourceTag = "Player";
-            CheckDOT(projectileController);
+            //projectileController.baseDamage = Mathf.Floor(playerStats.CalculateDamage() * 0f); // Focus mode damage multiplier
+            //projectileController.sourceTag = "Player";
+            //CheckDOT(projectileController);
 
             CreateBeamTrail(muzzleTransform.position, hit.point, focusBeam);
 
             // Cooldown management
-            canFocus = false;
             yield return new WaitForSeconds(fireCooldown * 3f);
             canFocus = true;
         }
@@ -203,6 +216,28 @@ public class PlayerShoot : MonoBehaviour
     //    aimTarget.position = hit.point;
 
     //}
+
+    public void RayscanHit( RaycastHit hit)
+    {
+        Debug.Log("Thing you hit was " + hit.collider.gameObject.name);
+        EnemyStats stats = hit.collider.GetComponent<EnemyStats>();
+        DamageHandler enemyDamageHandler = hit.collider.GetComponent<DamageHandler>();
+
+        if (stats != null || enemyDamageHandler != null)
+        {
+            enemyDamageHandler.ReceiveDamage(playerStats.CalculateDamage());
+
+            // Apply DOT effects
+            if (applyFireDOT)
+            {
+                enemyDamageHandler.ApplyFireDOT(playerStats.CalculateDamage(), 3f);
+            }
+            if (applyPoisonDOT)
+            {
+                enemyDamageHandler.ApplyPoisonDOT(playerStats.CalculateDamage(), 5f);
+            }
+        }
+    }
 
     public void UpdateFireRate()
     {
@@ -243,7 +278,7 @@ public class PlayerShoot : MonoBehaviour
         LineRenderer line = trail.GetComponent<LineRenderer>();
         line.SetPosition(0, start);
         line.SetPosition(1, end);
-        Destroy(trail, 0.1f);
+        Destroy(trail, 0.8f);
     }
 
 
