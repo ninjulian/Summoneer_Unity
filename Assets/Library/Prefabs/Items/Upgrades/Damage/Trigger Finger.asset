@@ -21,7 +21,7 @@ MonoBehaviour:
   baseCost: 5
   effects:
   - statType: 6
-    value: 0.25
+    value: 0.5
     isPercentage: 0
     DOTType: 0
   descriptionText: You shoot faster

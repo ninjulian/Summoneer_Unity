@@ -52,10 +52,11 @@ public class UpgradeManager : MonoBehaviour
     }
 
     public void GenerateUpgrades(int currentWave)
-    {
+    {   
         CalculateRerollCost();
         ClearExisting();
 
+        // Generates the upgrades to fill slots
         for (int i = 0; i < 5; i++)
         {
             var upgrade = GetWeightedUpgrade();
@@ -67,10 +68,10 @@ public class UpgradeManager : MonoBehaviour
     {
         var weightedList = new List<UpgradeData>();
 
-        // Create weighted list from all upgrades that haven't reached their stack limit
+        // Create weighted list from all upgrades that havent reached their limit
         foreach (var upgrade in allUpgrades)
         {
-            // Skip upgrades that have reached their stack limit
+            // Skip upgrades reached the limit
             if (upgrade.stackLimit > 0 && upgrade.currentStackCount >= upgrade.stackLimit)
                 continue;
 
@@ -90,21 +91,20 @@ public class UpgradeManager : MonoBehaviour
         // Fallback system
         if (weightedList.Count == 0)
         {
-            Debug.LogWarning("Weighted list empty, using fallback!");
 
-            // First try common upgrades that haven't reached their limit
+            // Try common upgrades first 
             var commonUpgrades = allUpgrades.FindAll(u => u.tier == Tier.Common &&
                                                         (u.stackLimit == 0 || u.currentStackCount < u.stackLimit));
             if (commonUpgrades.Count > 0)
                 return commonUpgrades[Random.Range(0, commonUpgrades.Count)];
 
-            // Then try any upgrade that hasn't reached its limit
+            // Then tries any other upgrade
             var availableUpgrades = allUpgrades.FindAll(u => u.stackLimit == 0 || u.currentStackCount < u.stackLimit);
             if (availableUpgrades.Count > 0)
                 return availableUpgrades[Random.Range(0, availableUpgrades.Count)];
 
-            // Final error if completely empty
-            Debug.LogError("No upgrades available in the system!");
+            // If empty
+            //Debug.LogError("No upgrades available in the system!");
             return null;
         }
 

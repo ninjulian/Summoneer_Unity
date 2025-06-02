@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
@@ -18,12 +17,14 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {   
+        // Depricated aiming feature
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
         aimAction = playerInput.actions["Shoot"];
     }
 
     private void Start()
-    {
+    {   
+        // Locks cursor to screen and makes cursor invisible
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

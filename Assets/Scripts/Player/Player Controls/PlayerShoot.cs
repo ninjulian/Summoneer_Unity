@@ -134,7 +134,7 @@ public class PlayerShoot : MonoBehaviour
             //}
 
             Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask);
-            RayscanHit(hit);
+            playerRayCastHit(hit);
 
 
             //Debug.Log((stats == null), stats);
@@ -185,7 +185,7 @@ public class PlayerShoot : MonoBehaviour
                 //shootDirection = cameraTransform.forward;
             }
 
-            RayscanHit(hit);
+            playerRayCastHit(hit);
 
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
@@ -217,9 +217,8 @@ public class PlayerShoot : MonoBehaviour
 
     //}
 
-    public void RayscanHit( RaycastHit hit)
+    public void playerRayCastHit( RaycastHit hit)
     {
-        Debug.Log("Thing you hit was " + hit.collider.gameObject.name);
         EnemyStats stats = hit.collider.GetComponent<EnemyStats>();
         DamageHandler enemyDamageHandler = hit.collider.GetComponent<DamageHandler>();
 

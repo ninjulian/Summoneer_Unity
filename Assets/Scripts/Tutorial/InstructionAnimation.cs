@@ -59,9 +59,15 @@ public class InstructionAnimation : MonoBehaviour
     {
         if (other.CompareTag("Player") && currentActiveCount < instructionObjects.Count)
         {
+
             // Activate and fade in the next object in sequence
-            StartCoroutine(FadeIn(currentActiveCount));
-            currentActiveCount++;
+            if (instructionObjects.Count > 0) 
+            {
+                StartCoroutine(FadeIn(currentActiveCount));
+                currentActiveCount++;
+            }
+
+            
         }
     }
 

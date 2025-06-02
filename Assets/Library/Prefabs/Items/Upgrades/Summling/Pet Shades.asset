@@ -21,7 +21,7 @@ MonoBehaviour:
   baseCost: 10
   effects:
   - statType: 14
-    value: 1
+    value: 2
     isPercentage: 0
     DOTType: 0
   descriptionText: Small shades

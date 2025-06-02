@@ -108,16 +108,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+        //// Takes into consideration the direction of the camera when moving
+        //move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
+        //move.y = 0f;
+
+
     private void HandleMovement()
     {
         //Gets movement input
         Vector2 input = moveAction.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, 0, input.y);
-
-        //// Takes into consideration the direction of the camera when moving
-        //move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
-        //move.y = 0f;
-
         // Get horizontal camera direction
         Vector3 horizontalForward = cameraTransform.forward;
         horizontalForward.y = 0;
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // If Player is looking up or down, get default forward
+            // Default foward
             horizontalForward = Vector3.forward;
         }
 
@@ -139,17 +139,19 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // Fallback to a default right if needed
+            // Default to right if needed
             horizontalRight = Vector3.right;
         }
 
         // Calculate move direction using horizontal vectors
         move = move.x * horizontalRight + move.z * horizontalForward;
-        move.y = 0f; // Ensures no verticality is taken into consideration
+
+        // y not taken into consideration. 
+        move.y = 0f; 
 
         movementDir = move;
 
-        //Get movementspeed Stat
+        // Get movementspeed Stat
         playerSpeed = playerStats.movementSpeed; 
 
         controller.Move(move * Time.deltaTime * playerSpeed);
@@ -248,7 +250,7 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (isDashing) return;
+        //if (isDashing) return;
 
         // Add falling detection when moving downward
         if (!groundedPlayer && playerVelocity.y < 0)
@@ -265,11 +267,6 @@ public class PlayerController : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
-    private IEnumerator HandleDash()
-    {
-        canDash = false;
-        isDashing = true;
-
         //// Store original speed and gravity
         //float originalSpeed = playerSpeed;
         //float originalGravity = gravityValue;
@@ -278,6 +275,11 @@ public class PlayerController : MonoBehaviour
         //playerSpeed = dashStrength;
         ////gravityValue = 0;
         //playerVelocity.y = 0f;
+
+    private IEnumerator HandleDash()
+    {
+        canDash = false;
+        isDashing = true;
 
         Vector3 dashDirection = transform.forward;
         float startTime = Time.time;
@@ -295,24 +297,16 @@ public class PlayerController : MonoBehaviour
             // Calculates dash direction
             if (movementDir != Vector3.zero)
             {
-
                 controller.Move(movementDir * playerStats.dashStrength * Time.deltaTime);
-                //SmoothRotation(movementDir, rotationSpeed);
-
+                //SmoothRotation(movementDir, rotationSpeed
                 yield return null;
             }
             else
             {   // If player is not moving the dash direction will go toward forward direction of player
-
                 movementDir = transform.forward;
                 //SmoothRotation(movementDir, rotationSpeed);
             }
-
-
-
         }
-
-        
 
         trailRenderer.enabled = false;
 

@@ -16,7 +16,7 @@ public class TutorialLoadGame : MonoBehaviour
             PlayerPrefs.Save(); // Save immediately
 
             // Game level
-            SceneManager.LoadScene("The_Lab");
+            SceneManager.LoadScene("Final Map");
         }
     }
 }

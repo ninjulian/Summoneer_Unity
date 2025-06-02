@@ -498,7 +498,7 @@ MonoBehaviour:
   specie: 1
   mark: 0
   description: Fish that flies
-  icon: {fileID: 21300000, guid: d0e0d3e5f7cc1114ab160795d179a838, type: 3}
+  icon: {fileID: 21300000, guid: aaa8779d0d45f2948bf5be891f502da9, type: 3}
   archetype: 0
   affectedStatsByMark: 
   effects:
@@ -506,7 +506,7 @@ MonoBehaviour:
     value: 5
     isPercentage: 0
   damage: 1
-  damageCooldown: 0.5
+  damageCooldown: 1
   critChance: 10
   critMultiplier: 1.5
   movementSpeed: 5
@@ -525,7 +525,7 @@ MonoBehaviour:
   stuckTimeThreshold: 2
   maxSpeedIncreaseMultiplier: 2
   speedIncreaseAcceleration: 0.1
-  bulletPrefab: {fileID: 2411828836088549004, guid: 55a4d7fb84a8b4441972cc4a6aca10db, type: 3}
+  bulletPrefab: {fileID: 2411828836088549004, guid: c331fb3a2b90afd4e8f929105122015f, type: 3}
   muzzleTransform: {fileID: 3488604490350832402}
 --- !u!1 &8417039025252913923
 GameObject:

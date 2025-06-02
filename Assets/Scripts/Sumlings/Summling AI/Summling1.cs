@@ -89,7 +89,7 @@ public class Summling1 : SummlingStats
         navAgent.speed = movementSpeed * currentSpeedMultiplier;
 
         // Check if we need new destination or if stuck
-        if (ShouldFindNewRoamPosition())
+        if (FindNewRoamPos())
         {
             Vector2 randomPoint = Random.insideUnitCircle * roamRadius;
             roamPosition = player.transform.position + new Vector3(randomPoint.x, 0, randomPoint.y);
@@ -153,7 +153,7 @@ public class Summling1 : SummlingStats
         }
     }
 
-    private bool ShouldFindNewRoamPosition()
+    private bool FindNewRoamPos()
     {
         // Check if we've reached our destination or player moved too far
         return navAgent.remainingDistance <= navAgent.stoppingDistance ||

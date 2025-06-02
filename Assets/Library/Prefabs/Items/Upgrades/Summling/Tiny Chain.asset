@@ -20,7 +20,7 @@ MonoBehaviour:
   tier: 0
   baseCost: 10
   effects:
-  - statType: 13
+  - statType: 17
     value: 1
     isPercentage: 0
     DOTType: 0

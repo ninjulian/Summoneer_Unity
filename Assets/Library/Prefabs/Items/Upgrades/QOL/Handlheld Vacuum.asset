@@ -18,10 +18,10 @@ MonoBehaviour:
   stackLimit: 0
   currentStackCount: 0
   tier: 1
-  baseCost: 20
+  baseCost: 15
   effects:
   - statType: 12
-    value: 1
+    value: 2.5
     isPercentage: 0
     DOTType: 0
   descriptionText: Sucking the souls

@@ -118,8 +118,9 @@ public class SummlingManager : MonoBehaviour
             // Calculate species weights
             Dictionary<Specie, int> weights = new();
             foreach (Specie s in Enum.GetValues(typeof(Specie)))
-            {
-                weights[s] = 1; // Base weight
+            {   
+                // Base weight
+                weights[s] = 1; 
                 if (ownedSpeciesCount.ContainsKey(s))
                     weights[s] += ownedSpeciesCount[s] * perSpecieWeight;
             }
@@ -127,13 +128,13 @@ public class SummlingManager : MonoBehaviour
             // Select species
             Specie selectedSpecies = WeightedRandom(weights);
 
-            // Select mark
+            // Random mark
             Mark mark = GetRandomMark();
 
-            // In SummlingManager.cs - Modified GenerateSummling excerpt
             currentPendingSummon = Instantiate(GetPrefabBySpecies(selectedSpecies), summlingSpawnPoint.position, summlingSpawnPoint.rotation);
             SummlingStats stats = currentPendingSummon.GetComponent<SummlingStats>();
             stats.mark = mark;
+
             // Apply mark multipliers only to specified stats
             float markMultiplier = mark switch
             {
@@ -156,17 +157,23 @@ public class SummlingManager : MonoBehaviour
         }
     }
 
-    //Calculation for Summons
+    //Calculation for Summling weights
     private Specie WeightedRandom(Dictionary<Specie, int> weights)
     {
+        //Gets weight
         int total = weights.Values.Sum();
+
+        // Random number for weight
         int random = UnityEngine.Random.Range(0, total);
 
+        // Looks for the matching pair
         foreach (var kvp in weights)
         {
             if (random < kvp.Value) return kvp.Key;
             random -= kvp.Value;
         }
+
+        // If nothing then spawn aquatic Summling
         return Specie.Aquatic;
     }
 
@@ -552,21 +559,30 @@ public class SummlingManager : MonoBehaviour
     }
 
     public void TransmuteSummling(int index)
-    {
+    {    
+        // Cant sell if you have none
         if (index < 0 || index >= summlingsOwned.Count) return;
+        
 
         GameObject summling = summlingsOwned[index];
         SummlingStats stats = summling.GetComponent<SummlingStats>();
         if (stats == null) return;
 
+        // Gain soul essence
         player.GainSoulEssence(stats.GetTransmuteValue());
+        // Remove effects
         RemoveSummlingEffects(stats);
+
+        // Removed from party list
         summlingsOwned.RemoveAt(index);
+
+        // Removed from scene
         Destroy(summling);
+
+        // Update information
 
         UpdateSpeciesCount();
         UpdatePartyUI();
-
         UpdateEmptySlots() ;
 
     }

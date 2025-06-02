@@ -264,7 +264,7 @@ MonoBehaviour:
   specie: 2
   mark: 0
   description: Tis a smole
-  icon: {fileID: 21300000, guid: 55c86d46d8dea8549b04f16126520906, type: 3}
+  icon: {fileID: 21300000, guid: 30f38ad4ac21f17408a3eadeb97a1ee7, type: 3}
   archetype: 0
   affectedStatsByMark: 03000000
   effects:
@@ -272,7 +272,7 @@ MonoBehaviour:
     value: 10
     isPercentage: 0
   damage: 1
-  damageCooldown: 1
+  damageCooldown: 0.5
   critChance: 0
   critMultiplier: 2
   movementSpeed: 5

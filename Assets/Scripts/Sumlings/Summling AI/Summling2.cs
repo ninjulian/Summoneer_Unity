@@ -81,8 +81,8 @@ public class Summling2 : SummlingStats
     {
         animator.SetBool("IsMoving", true);
 
-        // Check if we need new destination or if stuck
-        if (ShouldFindNewRoamPosition())
+        // Check if we need new pos or if stuck
+        if (FindNewRoamPos())
         {
             Vector2 randomPoint = Random.insideUnitCircle * roamRadius;
             roamPosition = player.transform.position + new Vector3(randomPoint.x, 0, randomPoint.y);
@@ -136,7 +136,7 @@ public class Summling2 : SummlingStats
         }
     }
 
-    private bool ShouldFindNewRoamPosition()
+    private bool FindNewRoamPos()
     {
         // Check if we've reached our destination or player moved too far
         return navAgent.remainingDistance <= navAgent.stoppingDistance ||
@@ -191,17 +191,13 @@ public class Summling2 : SummlingStats
 
     private Transform FindNearestEnemy()
     {
-        // Combine both layers into a single bitmask
+        // Combine both layers one
         int groundEnemyLayer = LayerMask.NameToLayer("GroundEnemy");
         int flyingEnemyLayer = LayerMask.NameToLayer("FlyingEnemy");
         int combinedLayerMask = (1 << groundEnemyLayer) | (1 << flyingEnemyLayer);
 
         // Find all colliders in the two layers
-        Collider[] enemies = Physics.OverlapSphere(
-            transform.position,
-            detectionRange,
-            combinedLayerMask
-        );
+        Collider[] enemies = Physics.OverlapSphere(transform.position, detectionRange, combinedLayerMask);
 
         Transform nearest = null;
         float minDistance = Mathf.Infinity;

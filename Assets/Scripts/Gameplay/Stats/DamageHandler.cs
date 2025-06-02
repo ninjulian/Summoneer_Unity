@@ -70,10 +70,10 @@ public class DamageHandler : MonoBehaviour
 
     private void ApplyDOT(float totalDamage, float duration, float tickInterval, DOTType type, ParticleSystem particles)
     {
-        // Clean up existing DOTs of the same type
+        // Cleans up existing DOTs of the same type
         foreach (var existingDOT in activeDOTs.FindAll(d => d.type == type))
         {
-            // Stop and clear the particle system to reset it
+            // Stops and clears the particle system to reset it
             if (particles != null)
             {
                 particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Stop and clear particles
@@ -81,7 +81,7 @@ public class DamageHandler : MonoBehaviour
         }
         activeDOTs.RemoveAll(d => d.type == type);
 
-        // Create new DOT (no particle instantiation)
+        // Creates new DOT 
         ActiveDOT newDOT = new ActiveDOT
         {
             type = type,
@@ -90,16 +90,24 @@ public class DamageHandler : MonoBehaviour
             timeRemaining = duration,
             tickInterval = tickInterval,
             timeSinceLastTick = 0,
-            particles = particles // Directly reference the pre-attached system
+
+
+            particles = particles 
         };
 
         if (newDOT.particles != null)
         {
-            // Configure particle system to match DOT duration
+            // Configure particles to match DOT duration
             var main = newDOT.particles.main;
-            main.duration = duration; // Set emission duration to match DOT
-            main.loop = false; // Ensure it doesn't loop
-            newDOT.particles.Play(); // Start emitting
+
+            // Emission rate matches the DOT
+            main.duration = duration; 
+
+            // No loop
+            main.loop = false;
+
+            // Start emitting
+            newDOT.particles.Play(); 
         }
 
         activeDOTs.Add(newDOT);
@@ -125,7 +133,7 @@ public class DamageHandler : MonoBehaviour
             {
                 if (dot.particles != null)
                 {
-                    // Stop emitting new particles (existing ones will fade out)
+                    // Stop emitting new particles
                     dot.particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
                 }
                 activeDOTs.RemoveAt(i);

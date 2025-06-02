@@ -16,9 +16,9 @@ MonoBehaviour:
   upgradeName: Food
   category: 0
   stackLimit: 3
-  currentStackCount: 0
+  currentStackCount: 1
   tier: 2
-  baseCost: 25
+  baseCost: 20
   effects:
   - statType: 0
     value: 0.2

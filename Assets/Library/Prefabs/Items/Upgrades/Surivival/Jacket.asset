@@ -21,7 +21,7 @@ MonoBehaviour:
   baseCost: 8
   effects:
   - statType: 2
-    value: 2
+    value: 5
     isPercentage: 0
     DOTType: 0
   descriptionText: Protects you from the weather

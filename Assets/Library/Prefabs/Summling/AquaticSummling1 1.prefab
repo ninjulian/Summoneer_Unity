@@ -264,7 +264,7 @@ MonoBehaviour:
   specie: 0
   mark: 0
   description: Its a turtle
-  icon: {fileID: 21300000, guid: 0276584c37050d44e99134255280c8ac, type: 3}
+  icon: {fileID: 21300000, guid: 9d97a57802806224693bf8f635320807, type: 3}
   archetype: 0
   affectedStatsByMark: 03000000
   effects:
@@ -272,7 +272,7 @@ MonoBehaviour:
     value: 10
     isPercentage: 0
   damage: 10
-  damageCooldown: 2
+  damageCooldown: 0.5
   critChance: 0
   critMultiplier: 2
   movementSpeed: 2
