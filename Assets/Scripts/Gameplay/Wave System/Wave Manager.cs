@@ -37,7 +37,8 @@ public class WaveManager : MonoBehaviour
 
     [HideInInspector]public int enemiesSpawned = 0;
 
-    private const string HIGHEST_WAVE_KEY = "HighestWave"; // Highest Wave count tracker
+    // Highest Wave count tracker
+    private const string HIGHEST_WAVE_KEY = "HighestWave"; 
 
     private void OnEnable()
     {
@@ -58,7 +59,7 @@ public class WaveManager : MonoBehaviour
 
             if (CountdownTimer <= 0f)
             {   
-                //When count down reaches 0 start next wave
+                // When count down reaches 0 start next wave
                 IsCountingDown = false;
                 StartNextWave();
             }
@@ -75,16 +76,22 @@ public class WaveManager : MonoBehaviour
         if (currentWave > PlayerPrefs.GetInt(HIGHEST_WAVE_KEY, 0))
         {
             PlayerPrefs.SetInt(HIGHEST_WAVE_KEY, currentWave);
-            PlayerPrefs.Save(); // Immediately save
-        }
-        CalculateWave();    //Calculate Enemy count to Spawn
 
-        onWaveStarted?.Invoke(); // Listener will call function,
-                                 // in this case Wave Spawner script will run StartSpawning
+            // Immediately save
+            PlayerPrefs.Save(); 
+        }
+
+        //Calculate Enemy count to Spawn
+        CalculateWave();
+
+        // Listener will call function,
+        // in this case Wave Spawner script will run StartSpawning
+        onWaveStarted?.Invoke(); 
     }
 
     private void CalculateWave()
     {
+        //Calculate Enemy count to Spawn
         targetEnemies = Mathf.RoundToInt((currentWave * waveFactor) + (playerStats.playerLevel * levelFactor));
     }
 
@@ -109,50 +116,62 @@ public class WaveManager : MonoBehaviour
     }
 
     public IEnumerator ShowUpgradeUICoroutine()
-    {
+    {   
+        // Start timer
         float remainingTime = uiManager.openTimer;
 
+        // Shows the timer
         uiManager.openSystemTimer.SetActive(true);
         //yield return new WaitForSeconds(uiManager.openTimer);
 
         // Update countdown every frame
         while (remainingTime > 0)
         {   
+            //Updates UI text for countdown
             uiManager.openSystemTimerText.text = Mathf.CeilToInt(remainingTime).ToString();
             remainingTime -= Time.deltaTime;
-            yield return null; // Wait one frame
+            yield return null; 
         }
 
+        // Hide timer
         uiManager.openSystemTimer.SetActive(false);
 
+        // Generate upgrades and reset UI
         UpgradeManager.Instance.GenerateUpgrades(CurrentWave);
         upgradeManager.hasRerolled = false;
+
+        // Toggles upgrade UI
         uiManager.ToggleUpgradeUI();
     }
 
     public void CompleteWave()
     {
-      
-       // enemiesSpawned = 0;
-        StartCountdown(); // Starts the next wave
-        onWaveCompleted?.Invoke(); //Invoke onWaveCompleted Unity Event
+
+        // Starts the next wave
+        StartCountdown();
+
+        // Invoke other system
+        onWaveCompleted?.Invoke(); 
     }
 
-    // Call start countdown when done using the UpgradeU
+    // Call start countdown when done using the UpgradeUI
     public void StartCountdown()
     {
         if (enemiesAlive <= 0 && enemiesSpawned >= targetEnemies && !IsCountingDown)
         {   
-            //Resets reroll boolean
+            // Resets reroll boolean
             upgradeManager.hasRerolled = false;
 
+            // Reset enemy trackers
             enemiesSpawned = 0;
             enemiesAlive = 0;
+
+            // Start countdown
             IsCountingDown = true;
             CountdownTimer = timeBetweenWaves;
         }
     }
 
-
+    // For difficulty scaling;
     public int GetTargetEnemies() => targetEnemies;
 }

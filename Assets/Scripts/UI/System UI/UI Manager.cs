@@ -66,7 +66,7 @@ public class UIManager : MonoBehaviour
 
     public void ToggleSystemUI()
     {
-        if (systemUI == null || pauseUI == null) return; // Add null checks
+        if (systemUI == null || pauseUI == null) return; 
 
         // Prevent opening System UI if Pause UI is active
         if (!systemUI.activeInHierarchy && pauseUI.activeInHierarchy) return;
@@ -77,7 +77,7 @@ public class UIManager : MonoBehaviour
 
     public void TogglePauseUI()
     {
-        if (systemUI == null || pauseUI == null) return; // Add null checks
+        if (systemUI == null || pauseUI == null) return; 
 
         // Prevent opening Pause UI if System UI is active
         if (!pauseUI.activeInHierarchy && systemUI.activeInHierarchy) return;
@@ -101,9 +101,10 @@ public class UIManager : MonoBehaviour
 
     public void OnUpgradeDone()
     {
-        ToggleUpgradeUI(); // Close the upgrade UI
+        // Close the upgrade UI
+        ToggleUpgradeUI(); 
         waveManager.CompleteWave();
-        //waveManager.StartCountdown(); // Start the next wave countdown
+        //waveManager.StartCountdown(); 
     }
 
     public void ToggleSummlingManagerUI()
@@ -125,12 +126,12 @@ public class UIManager : MonoBehaviour
         // Set cursor lock state and visibility
         if (anyUIActive)
         {
-            Cursor.lockState = CursorLockMode.Confined; // Or None if you want cursor to leave window
+            Cursor.lockState = CursorLockMode.Confined; 
             Cursor.visible = true;
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked; // Properly locks the cursor
+            Cursor.lockState = CursorLockMode.Locked; 
             Cursor.visible = false;
         }
 

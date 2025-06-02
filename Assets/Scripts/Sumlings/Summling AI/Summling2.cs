@@ -13,13 +13,13 @@ public class Summling2 : SummlingStats
     public bool alwaysShowGizmos;
 
     [Header("Movement Settings")]
-    [SerializeField] private float stuckTimeThreshold = 0.5f; // Time before considering stuck
+    [SerializeField] private float stuckTimeThreshold = 0.5f; 
     private float stuckTimer;
     private bool isMoving;
 
     [Header("Chase Settings")]
-    [SerializeField] private float maxSpeedIncreaseMultiplier = 2f; // How much faster it can get
-    [SerializeField] private float speedIncreaseAcceleration = 0.1f; // How quickly speed increases
+    [SerializeField] private float maxSpeedIncreaseMultiplier = 2f;
+    [SerializeField] private float speedIncreaseAcceleration = 0.1f; 
     private float currentSpeedMultiplier = 1f;
 
     [SerializeField]
@@ -87,7 +87,7 @@ public class Summling2 : SummlingStats
             Vector2 randomPoint = Random.insideUnitCircle * roamRadius;
             roamPosition = player.transform.position + new Vector3(randomPoint.x, 0, randomPoint.y);
             navAgent.SetDestination(roamPosition);
-            stuckTimer = 0f; // Reset stuck timer when setting new destination
+            stuckTimer = 0f; 
         }
 
         // Additional check for being stuck
@@ -125,7 +125,7 @@ public class Summling2 : SummlingStats
             projectileController.baseDamage = CalculateDamage();
             Vector3 shotDirection = (currentTarget.position - muzzleTransform.position).normalized;
 
-            // Physics-based movement
+            // Physics-based shooting
             rb.velocity = shotDirection * projectileController.speed;
 
             attackCooldownTimer = damageCooldown;

@@ -8,7 +8,8 @@ using Unity.VisualScripting;
 using System.Collections;
 
 public class UpgradeManager : MonoBehaviour
-{
+{   
+    // Singleton pattern, global access point
     public static UpgradeManager Instance;
 
     [Header("Settings")]
@@ -27,7 +28,7 @@ public class UpgradeManager : MonoBehaviour
     private SummlingManager summlingManager;
     private List<StatModifier> summlingModifiers = new List<StatModifier>();
 
-    //Stat Components
+    // Stat Components
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private PlayerShoot playerShoot;
     [SerializeField] private HealthBar playerHealthBar;
@@ -36,13 +37,15 @@ public class UpgradeManager : MonoBehaviour
     private WaveManager waveManager;
     [SerializeField] private UpgradeUI upgradeUI;
 
-    private List<UpgradeButton> _currentButtons = new();
+    // Button locations for upgrade
+    private List<UpgradeButton> currentButtons = new();
 
-    //Reroll variables
+    // Reroll variables
     [SerializeField] private TMP_Text rerollText;
     private float rerollCost = 1f;
     public bool hasRerolled = false;
 
+    // Assigns the singleton instance. ONLY ONE EXISTS
     void Awake() => Instance = this;
 
     public void Start()
@@ -53,7 +56,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void GenerateUpgrades(int currentWave)
     {   
+        // Update reroll cost
         CalculateRerollCost();
+
+        // removes old upgrades
         ClearExisting();
 
         // Generates the upgrades to fill slots
@@ -64,17 +70,20 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    // Returns Weight of upgrade
     UpgradeData GetWeightedUpgrade()
     {
         var weightedList = new List<UpgradeData>();
 
         // Create weighted list from all upgrades that havent reached their limit
+
         foreach (var upgrade in allUpgrades)
         {
             // Skip upgrades reached the limit
             if (upgrade.stackLimit > 0 && upgrade.currentStackCount >= upgrade.stackLimit)
                 continue;
 
+            // Assigns weight based on rarity tier
             int weight = upgrade.tier switch
             {
                 Tier.Common => commonWeight,
@@ -84,11 +93,12 @@ public class UpgradeManager : MonoBehaviour
                 _ => 0
             };
 
+            // Adds the upgrade to the pool weight
             for (int i = 0; i < weight; i++)
                 weightedList.Add(upgrade);
         }
 
-        // Fallback system
+        // Fallback system if none found
         if (weightedList.Count == 0)
         {
 
@@ -103,7 +113,7 @@ public class UpgradeManager : MonoBehaviour
             if (availableUpgrades.Count > 0)
                 return availableUpgrades[Random.Range(0, availableUpgrades.Count)];
 
-            // If empty
+            // If empty and no more upgrades left
             //Debug.LogError("No upgrades available in the system!");
             return null;
         }
@@ -122,22 +132,27 @@ public class UpgradeManager : MonoBehaviour
             _ => 1f
         };
 
+        //Calculation for price
         return Mathf.RoundToInt((upgrade.baseCost + wave * waveCostFactor) * multiplier);
     }
 
     public void ClearExisting()
     {
         // Create a list of buttons that are not null to avoid destroying already destroyed objects
-        foreach (var button in _currentButtons.Where(b => b != null).ToList())
+        foreach (var button in currentButtons.Where(b => b != null).ToList())
         {
+            // Clears UI
             Destroy(button.gameObject);
         }
-        _currentButtons.Clear();
+
+        // Clears list
+        currentButtons.Clear();
+        //_currentButtons.Clear();
     }
 
     public void ClearButton(GameObject buttonObj)
     {
-        _currentButtons.Remove(buttonObj.GetComponent<UpgradeButton>());
+        currentButtons.Remove(buttonObj.GetComponent<UpgradeButton>());
         Destroy(buttonObj, 0.1f);
     }
 
@@ -149,20 +164,20 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
 
-        GameObject buttonObj = Instantiate(upgradeButtonPrefab, upgradeSlots[_currentButtons.Count]);
+        // Creates upgrade prefabs
+        GameObject buttonObj = Instantiate(upgradeButtonPrefab, upgradeSlots[currentButtons.Count]);
 
 
         Button buttonComponent = buttonObj.GetComponentInChildren<Button>();
 
-        //Gets rid of button no matter what. Moved to OnClick() in Upgrade Button
-       // buttonComponent.onClick.AddListener(() => ClearButton(buttonObj));
-        
-
+        // Initialize button logic
         var button = buttonObj.GetComponent<UpgradeButton>();
         button.GetDescriptionTextBox(upgradeDescriptionText);
         button.Initialize(data, CalculatePrice(data, wave));
-        _currentButtons.Add(button);
+        currentButtons.Add(button);
     }
+
+    // Applies  effect to corresponding stat
     public void ApplyUpgradeEffects(List<StatModifier> effects)
     {
         foreach (var effect in effects)
@@ -262,7 +277,7 @@ public class UpgradeManager : MonoBehaviour
             //// Apply flat value and round down
             //stat = Mathf.Floor(stat + effect.value);
 
-            // Apply flat value and round down
+            // Apply flat increase and round down
             stat = stat + effect.value;
         }
     }
@@ -284,18 +299,21 @@ public class UpgradeManager : MonoBehaviour
     }
 
 
-    // In UpgradeManager.cs
+    // Apply Upgrade effects to Summlings
     private void ApplySummlingEffectToAll(StatModifier effect, System.Func<SummlingStats, float> statSelector)
     {
         foreach (var summling in summlingManager.summlingsOwned)
         {
             var stats = summling.GetComponent<SummlingStats>();
             if (stats != null)
-            {
+            {   
+                // Get current modifier
                 float currentValue = statSelector(stats);
+
+                // Apply modifier
                 ApplyEffect(effect, ref currentValue);
-                // Update the stat (e.g., stats.damage = currentValue)
-                // You'll need a way to set the value back, like:
+
+                // Update new stat
                 SetSummlingStat(stats, effect.statType, currentValue);
             }
         }
@@ -342,6 +360,7 @@ public class UpgradeManager : MonoBehaviour
         {
             hasRerolled = true;
 
+            // Spend player Soul essence
             playerStats.SpendSoulEssence(rerollCost);
 
             GenerateUpgrades(waveManager.currentWave);

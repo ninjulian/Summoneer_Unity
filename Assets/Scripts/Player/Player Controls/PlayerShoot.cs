@@ -65,7 +65,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     void Start()
-    {   
+    {
         animator = GetComponentInChildren<Animator>();
 
         cameraTransform = playerController.cameraTransform;
@@ -83,6 +83,7 @@ public class PlayerShoot : MonoBehaviour
 
     public void HandleInput()
     {
+        // Changes crosshair to match shooting style
         if (shootAction.IsPressed())
         {
             StartCoroutine(ShootGun(bullet1Prefab));
@@ -103,6 +104,7 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    // Shoots depricated bullet and raycast towards player crosshair
     public IEnumerator ShootGun(GameObject bulletChoice)
     {
         if (canShoot)
@@ -111,7 +113,7 @@ public class PlayerShoot : MonoBehaviour
             RaycastHit hit;
             GameObject bullet = Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
-            Rigidbody rb = bullet.GetComponent<Rigidbody>(); // Get Rigidbody
+            Rigidbody rb = bullet.GetComponent<Rigidbody>(); 
 
             // Ignore Layer 7 and 9
             int layerToIgnore1 = 7;
@@ -138,7 +140,7 @@ public class PlayerShoot : MonoBehaviour
 
 
             //Debug.Log((stats == null), stats);
-            
+
 
             //// Apply bullet velocity
             //rb.velocity = shootDirection * projectileController.speed;
@@ -148,6 +150,7 @@ public class PlayerShoot : MonoBehaviour
             //projectileController.sourceTag = "Player";
             //CheckDOT(projectileController);
 
+            // Visual trail
             CreateBeamTrail(muzzleTransform.position, hit.point, primaryBeam);
 
             yield return new WaitForSeconds(fireCooldown);
@@ -155,6 +158,7 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    // Same as primary fire
     public IEnumerator FocusShoot(GameObject bulletChoice)
     {
         if (canFocus)
@@ -165,7 +169,7 @@ public class PlayerShoot : MonoBehaviour
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
             // Calculate direction
-            Vector3 shootDirection = cameraTransform.forward; // Default direction
+            Vector3 shootDirection = cameraTransform.forward;
             RaycastHit hit;
 
             int layerToIgnore1 = 7;
@@ -187,11 +191,12 @@ public class PlayerShoot : MonoBehaviour
 
             playerRayCastHit(hit);
 
+            //Triggers OnEnemyFocused, makes them highlighted and targetted by the Summlings
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
                 OnEnemyFocused?.Invoke(hit.collider.transform);
             }
-           
+
 
 
             // Old Projectile based shooting
@@ -203,6 +208,7 @@ public class PlayerShoot : MonoBehaviour
             //projectileController.sourceTag = "Player";
             //CheckDOT(projectileController);
 
+            // Cool visual trail
             CreateBeamTrail(muzzleTransform.position, hit.point, focusBeam);
 
             // Cooldown management
@@ -217,11 +223,13 @@ public class PlayerShoot : MonoBehaviour
 
     //}
 
-    public void playerRayCastHit( RaycastHit hit)
+    // Moved projectile logic into raycast instaed
+    public void playerRayCastHit(RaycastHit hit)
     {
         EnemyStats stats = hit.collider.GetComponent<EnemyStats>();
         DamageHandler enemyDamageHandler = hit.collider.GetComponent<DamageHandler>();
 
+        // References to hit enemy stats and applies damage to them, or trigger DOT
         if (stats != null || enemyDamageHandler != null)
         {
             enemyDamageHandler.ReceiveDamage(playerStats.CalculateDamage());
@@ -238,12 +246,14 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    // Turns firerate into a more readable number
     public void UpdateFireRate()
     {
         // Convert bullets-per-second to cooldown between shots
         fireCooldown = 1f / playerStats.fireRate;
     }
 
+    // Affinity is the chance to trigger DOT effects
     private bool CheckAffinity(float affinity)
     {
         // Ensure affinity is within valid range (0-100)
@@ -270,7 +280,7 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-
+    // Visual response to shooting
     private void CreateBeamTrail(Vector3 start, Vector3 end, GameObject beamTrail)
     {
         GameObject trail = Instantiate(beamTrail, start, Quaternion.identity);
@@ -280,9 +290,9 @@ public class PlayerShoot : MonoBehaviour
         Destroy(trail, 0.1f);
     }
 
-
+    // Staff would be following the new area you are trying to shoot at
     private void UpdateStaffAim()
-    {   
+    {
         if (aimTarget == null || muzzleTransform == null) return;
 
         animator.SetBool("IsShooting", true);

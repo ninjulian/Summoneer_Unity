@@ -266,11 +266,8 @@ MonoBehaviour:
   description: Its a turtle
   icon: {fileID: 21300000, guid: 9d97a57802806224693bf8f635320807, type: 3}
   archetype: 0
-  affectedStatsByMark: 03000000
-  effects:
-  - statType: 7
-    value: 10
-    isPercentage: 0
+  affectedStatsByMark: 0e0000000d000000
+  effects: []
   damage: 10
   damageCooldown: 0.5
   critChance: 0

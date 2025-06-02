@@ -6,21 +6,23 @@ public enum AIState { Chase, Attack }
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] private AIState _currentState;
+    // Enemy AI state
+    [SerializeField] private AIState currentState;
 
     private Transform player;
     private NavMeshAgent navAgent;
 
+    // Enemy attack variable
     [SerializeField] private float attackCooldown = 1f;
     private float lastAttackTime;
 
     private DamageHandler damageHandler;
     private EnemyStats enemyStats;
 
-
+    // Animation Variables
     private Animator animator;
-    public bool isAttacking;
-    public bool isDead;
+    [HideInInspector] public bool isAttacking;
+    [HideInInspector] public bool isDead;
 
     private bool initializeSpawn = false;
 
@@ -33,59 +35,63 @@ public class EnemyAI : MonoBehaviour
         //enemyStats = GetComponent<EnemyStats>();
 
         //navAgent.speed = enemyStats.movementSpeed;
-
         //SetState(AIState.Chase);
 
+
+        // References neccesary components
         animator = GetComponentInChildren<Animator>();
-        animator.SetTrigger("Spawn");
+        animator.SetTrigger("Spawn");   // Run spawn animation
         navAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         damageHandler = GetComponent<DamageHandler>();
         enemyStats = GetComponent<EnemyStats>();
-        
 
+        // Initializes state
         StartCoroutine(InitializeSpawn());
     }
 
-    void Update()
+    private void Update()
     {
         if (player != null && initializeSpawn)
         {
+            // Checks for any state changes and updates them
             CheckStateTransition();
             UpdateCurrentState();
         }
     }
 
-    void CheckStateTransition()
+    // If close to Player change to attack State
+    private void CheckStateTransition()
     {
-        
-            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-            if (distanceToPlayer <= enemyStats.attackRange && _currentState != AIState.Attack)
-            {
-                SetState(AIState.Attack);
-            }
-            else if (distanceToPlayer > enemyStats.attackRange && _currentState != AIState.Chase)
-            {
-                SetState(AIState.Chase);
-            }
-        
+        // If Player outside Attack range  Attack the Player
+        if (distanceToPlayer <= enemyStats.attackRange && currentState != AIState.Attack)
+        {
+            SetState(AIState.Attack);
+        }
+        // If Player outside Attack range  Chase the Player
+        else if (distanceToPlayer > enemyStats.attackRange && currentState != AIState.Chase)
+        {
+            SetState(AIState.Chase);
+        }
+
     }
 
-    void SetState(AIState newState)
+    private void SetState(AIState newState)
     {
-        _currentState = newState;
-        // Add any state entry logic here
+        currentState = newState;
+
     }
 
-    void UpdateCurrentState()
+    private void UpdateCurrentState()
     {
-        switch (_currentState)
+        switch (currentState)
         {
             case AIState.Chase:
                 ChasePlayer();
-               
+
                 break;
             case AIState.Attack:
                 AttackPlayer();
@@ -93,7 +99,8 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    void ChasePlayer()
+    // Set Player position as NavAgent destination, aka the target
+    private void ChasePlayer()
     {
         //if (navAgent.isStopped) navAgent.isStopped = false;
         navAgent.SetDestination(player.position);
@@ -104,8 +111,8 @@ public class EnemyAI : MonoBehaviour
     }
 
 
-    void AttackPlayer()
-    {   
+    private void AttackPlayer()
+    {
 
         animator.SetBool("IsChasing", false);
 
@@ -123,7 +130,7 @@ public class EnemyAI : MonoBehaviour
                 //Debug.Log("Attacking the player");
                 lastAttackTime = Time.time;
 
-                navAgent.isStopped = true;
+                navAgent.isStopped = true; // Enemy stops when attacking
                 animator.SetBool("IsAttacking", true);
                 animator.SetTrigger("Attack");
 
@@ -145,8 +152,6 @@ public class EnemyAI : MonoBehaviour
                     }
                 }
 
-
-
             }
             else
             {
@@ -162,10 +167,10 @@ public class EnemyAI : MonoBehaviour
 
     private IEnumerator InitializeSpawn()
     {
-
+        // Lets spawn animation to play
         yield return new WaitForSeconds(1f);
 
-        
+
         initializeSpawn = true;
         navAgent.speed = enemyStats.movementSpeed;
 

@@ -14,6 +14,7 @@ public class CrosshairManager : MonoBehaviour
     public enum CrosshairType { Shooting1, Shooting2, Default }
     public CrosshairType currentCrosshairType;
 
+    // Changes crosshair type
     public void Update()
     {
         switch (currentCrosshairType)

@@ -6,13 +6,15 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 public class PlayerStats : StatClass
 {
+
+    // Player speciic 
     public float focusDuration = 5f;
     public float fireRate;
 
     [Header("Movement")]
     public float jumpHeight;
     public float dashStrength = 10f;
-    public float dashCooldown = 0.2f;
+    public float dashCooldown = 0.5f;
 
     [Header("Quality of Life (QOL)")]
     public float luck;
@@ -24,6 +26,7 @@ public class PlayerStats : StatClass
     public float soulEssence = 0f;
     [HideInInspector] public float sePickUpRate = 1f;
 
+    //Not completely implemented
     [Header("XP")]
     public XpBar xpBar;
     [HideInInspector] public float xpRequired;
@@ -37,8 +40,11 @@ public class PlayerStats : StatClass
 
     private void Awake()
     {
+        // Calls the start function from StatClass parent class
         base.Start();
         damageHandler = GetComponent<DamageHandler>();
+
+        // linking this object to dmage handler
         damageHandler.Initialize(this);
 
 
@@ -50,15 +56,19 @@ public class PlayerStats : StatClass
         if (currentHealth <= 0)
         {
 
-        if (uiManager.deathScreen != null) 
-        { 
-            uiManager.deathScreen.SetActive(true); 
-        }
+            if (uiManager.deathScreen != null)
+            {
+                // Loads death screen
+                uiManager.deathScreen.SetActive(true);
+            }
 
-        if (uiManager.playerHud != null)
-        {
-            uiManager.playerHud.SetActive(false);
-        }
+            if (uiManager.playerHud != null)
+            {
+                // Hides hud
+                uiManager.playerHud.SetActive(false);
+            }
+
+            // Unlock cursor so not stuck
             uiManager.UpdateCursorState();
         }
 
@@ -66,19 +76,20 @@ public class PlayerStats : StatClass
     }
 
     public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
-    {   
-        currentHealth = Mathf.Clamp(currentHealth - incomingDamage, 0f,  maxHealth);
+    {
+        currentHealth = Mathf.Clamp(currentHealth - incomingDamage, 0f, maxHealth);
 
         if (currentHealth <= 0f)
-        {   
-            Debug.Log("DEAADAD");
+        {
+            //Debug.Log("DEAADAD");
+            // Not actually used cause I just have a restart button instead
         }
 
     }
 
     public void GainSoulEssence(float soulEssenceGained)
     {
-        // Check for luck bonus
+        // Check for luck bonus, if lucky double soul essence gained
         float bonusMultiplier = CheckLuckBonus() ? 2f : 1f;
         soulEssence += soulEssenceGained * sePickUpRate * bonusMultiplier;
     }
@@ -101,7 +112,8 @@ public class PlayerStats : StatClass
     public void CalculateXPCap()
     {
         xpRequired = (playerLevel + 3f) * playerLevel;
-        xpBar.xpSlider.maxValue = xpRequired; // Force UI update
+        // Force UI update
+        xpBar.xpSlider.maxValue = xpRequired;
     }
 
 
@@ -117,9 +129,12 @@ public class PlayerStats : StatClass
             playerLevel++;
             currentXP -= xpRequired;
             xpBar.xpSlider.value = currentXP;
-            CalculateXPCap(); // Update requirement for next level
+
+            // Update requirement for next level
+            CalculateXPCap();
         }
 
+        //Not fully incremented
         xpBar.UpdateXPBar();
     }
 

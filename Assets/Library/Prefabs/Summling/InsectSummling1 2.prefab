@@ -266,11 +266,8 @@ MonoBehaviour:
   description: Tis a smole
   icon: {fileID: 21300000, guid: ecf5a77f0ae73d343bb2c143c2b9b61d, type: 3}
   archetype: 0
-  affectedStatsByMark: 03000000
-  effects:
-  - statType: 7
-    value: 10
-    isPercentage: 0
+  affectedStatsByMark: 0e0000000d000000
+  effects: []
   damage: 1
   damageCooldown: 0.5
   critChance: 0

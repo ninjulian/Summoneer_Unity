@@ -4,29 +4,34 @@ using System.Collections;
 
 //
 public class EnemyRangeAI : MonoBehaviour
-{
-    [SerializeField] private AIState _currentState;
+{   
+    // Enemy AI state
+    [SerializeField] private AIState currentState;
     private float attackRange = 2f;
 
     private Transform player;
     private NavMeshAgent navAgent;
 
+    // Enemy Attack variables
     [SerializeField] private float attackCooldown = 1f;
     private float lastAttackTime;
+    private bool hasLOS;
 
     private DamageHandler damageHandler;
     private EnemyStats enemyStats;
 
+    // Bullet variables
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform muzzleTransform;
 
-    private bool hasLOS;
+    //  Animation varaibles
     private Animator animator;
     private bool initializeSpawn = false;
     private bool isAttackCoroutineRunning = false; // Track attack state
 
     private void Awake()
-    {
+    {   
+        // Reference neccesary components
         animator = GetComponentInChildren<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -34,6 +39,7 @@ public class EnemyRangeAI : MonoBehaviour
         enemyStats = GetComponent<EnemyStats>();
         animator.SetTrigger("Spawn");
 
+        // Initializes state
         StartCoroutine(InitializeSpawn());
     }
 
@@ -41,20 +47,23 @@ public class EnemyRangeAI : MonoBehaviour
     {
         if (player != null && initializeSpawn)
         {
+            // Checks for any state changes and updates them
             CheckLOS();
             CheckStateTransition();
             UpdateCurrentState();
         }
     }
-
+    // If close to Player change to attack State
     void CheckStateTransition()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
+        // If Player outside Attack range  Attack the Player
         if (distanceToPlayer <= attackRange && hasLOS)
         {
             SetState(AIState.Attack);
         }
+        // If Player outside Attack range  Chase the Player
         else
         {
             SetState(AIState.Chase);
@@ -63,43 +72,46 @@ public class EnemyRangeAI : MonoBehaviour
 
     void SetState(AIState newState)
     {
-        // Handle state exit logic
-        if (_currentState == AIState.Attack && newState != AIState.Attack)
+        // Chase state
+        if (currentState == AIState.Attack && newState != AIState.Attack)
         {
-            navAgent.isStopped = false;
+            navAgent.isStopped = false; // Able to move 
         }
 
-        _currentState = newState;
+        currentState = newState;
 
-        // Handle state enter logic
-        if (_currentState == AIState.Attack)
+        // Attack state
+        if (currentState == AIState.Attack)
         {
-            navAgent.isStopped = true; // Stop movement when attacking
+            navAgent.isStopped = true; // Stops moving when attacking
         }
     }
 
     void UpdateCurrentState()
     {
-        switch (_currentState)
+        switch (currentState)
         {
             case AIState.Chase:
                 ChasePlayer();
                 break;
             case AIState.Attack:
                 if (!isAttackCoroutineRunning)
-                {
+                {   
+                    // Coroutine for Shooting
                     StartCoroutine(AttackPlayer());
                 }
                 break;
         }
     }
-
+    // Set Player position as NavAgent destination, aka the target
     void ChasePlayer()
     {
         navAgent.SetDestination(player.position);
         //animator.SetBool("IsChasing", true);
+
     }
 
+    // Checks if the Enemy has a line of sight with the Player
     private void CheckLOS()
     {
         Vector3 direction = (player.position - transform.position).normalized;
@@ -124,7 +136,9 @@ public class EnemyRangeAI : MonoBehaviour
         // Face player
         Vector3 direction = (player.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = lookRotation; // Immediate rotation
+
+        // Looks at shooting rotation
+        transform.rotation = lookRotation; 
 
         // Attack if cooldown finished
         if (Time.time > lastAttackTime + attackCooldown)
@@ -134,52 +148,55 @@ public class EnemyRangeAI : MonoBehaviour
             lastAttackTime = Time.time;
         }
 
-        yield return new WaitForSeconds(0.1f); // Brief delay before next check
+        // Brief delay before next check
+        yield return new WaitForSeconds(0.1f); 
         isAttackCoroutineRunning = false;
     }
 
     private void FireProjectile()
-    {
+    {   
+        // Creates bullet instantiate 
         GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, Quaternion.identity);
         ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
+        // Apply Enemy stat damage to instantiated bullet projectile
         projectileController.baseDamage = enemyStats.damage;
         Vector3 shotDirection = (player.position - muzzleTransform.position).normalized;
         rb.velocity = shotDirection * projectileController.speed;
     }
 
     private IEnumerator InitializeSpawn()
-    {
+    {   
+        // Lets spawn animation play 
         yield return new WaitForSeconds(1f);
         initializeSpawn = true;
         navAgent.speed = enemyStats.movementSpeed;
-        attackRange = enemyStats.attackRange; // Ensure range is set from stats
+        attackRange = enemyStats.attackRange;
         SetState(AIState.Chase);
     }
 
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Player Projectile"))
-        {
+    // Old script to try and fix collision not working
+    //void OnCollisionEnter(Collision other)
+    //{
+    //    if (other.gameObject.CompareTag("Player Projectile"))
+    //    {
 
-            Debug.Log("The player has hit me wah wah wah ");
 
+    //        ProjectileController projectileController = other.gameObject.GetComponent<ProjectileController>();
 
-            ProjectileController projectileController = other.gameObject.GetComponent<ProjectileController>();
+    //        damageHandler.ReceiveDamage(projectileController.baseDamage);
 
-            damageHandler.ReceiveDamage(projectileController.baseDamage);
+    //        // Apply DOT effects
+    //        if (projectileController.applyFireDOT)
+    //        {
+    //            damageHandler.ApplyFireDOT(projectileController.baseDamage, projectileController.DOTDuration);
+    //        }
+    //        if (projectileController.applyPoisonDOT)
+    //        {
+    //            damageHandler.ApplyPoisonDOT(projectileController.baseDamage, projectileController.DOTDuration);
+    //        }
 
-            // Apply DOT effects
-            if (projectileController.applyFireDOT)
-            {
-                damageHandler.ApplyFireDOT(projectileController.baseDamage, projectileController.DOTDuration);
-            }
-            if (projectileController.applyPoisonDOT)
-            {
-                damageHandler.ApplyPoisonDOT(projectileController.baseDamage, projectileController.DOTDuration);
-            }
-
-        }
-    }
+    //    }
+    //}
 }

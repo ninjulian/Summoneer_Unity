@@ -98,18 +98,22 @@ public class SummlingManager : MonoBehaviour
     }
 
     public void GenerateSummling()
-    {
+    {   
+        // Updates Summon cost
         GetSummonCost();
 
         if (player.soulEssence >= GetSummonCost())
-        {
+        {   
+            // Player can afford
             if (summlingsOwned.Count >= maxSlots)
-            {
+            {   
+                // Enters replacement mode if full
                 isReplacing = true;
                 UpdateButtonInteractivity();
             }
             canSummon = true;
 
+            // Player spends SE
             player.SpendSoulEssence(GetSummonCost());
 
             
@@ -125,7 +129,7 @@ public class SummlingManager : MonoBehaviour
                     weights[s] += ownedSpeciesCount[s] * perSpecieWeight;
             }
 
-            // Select species
+            // Random Specie 
             Specie selectedSpecies = WeightedRandom(weights);
 
             // Random mark
@@ -140,10 +144,12 @@ public class SummlingManager : MonoBehaviour
             {
                 Mark.Newborn => 1f,
                 Mark.Child => 1.2f,
-                Mark.Pre => 1.5f,
+                Mark.Adult => 1.5f,
                 _ => 1f
             };
             stats.ApplyMarkMultiplier(markMultiplier);
+
+            // Show Stats UI
             UpdatePreviewUI(stats);
 
             
@@ -177,9 +183,10 @@ public class SummlingManager : MonoBehaviour
         return Specie.Aquatic;
     }
 
+    // Rolls a random mark 
     private Mark GetRandomMark()
     {
-        float[] weights = { 75f, 20f, 5f }; // Newborn, Child, Pre
+        float[] weights = { 75f, 20f, 5f }; // Newborn, Child, Adult
         float total = weights.Sum();
         float random = UnityEngine.Random.Range(0, total);
 
@@ -193,7 +200,8 @@ public class SummlingManager : MonoBehaviour
 
     public float GetSummonCost()
     {  
-        Debug.Log(Mathf.Floor(baseSummonCost + (currentWave * summonCostMultiplier) * summonCountInWave) + "SE COST");
+        // Calculate Summon Cost
+      //  Debug.Log(Mathf.Floor(baseSummonCost + (currentWave * summonCostMultiplier) * summonCountInWave) + "SE COST");
         return Mathf.Floor(baseSummonCost + (currentWave * summonCostMultiplier) * summonCountInWave);
     }
 
@@ -217,7 +225,7 @@ public class SummlingManager : MonoBehaviour
                 previewBorder.color = Color.blue;
                 break;
 
-            case Mark.Pre:
+            case Mark.Adult:
                 previewBorder.color = Color.red;
                 break;
         }
@@ -237,7 +245,8 @@ public class SummlingManager : MonoBehaviour
             // Always process all 5 slots
             bool hasSummling = i < summlingsOwned.Count;
 
-            highlightPreview[i].SetActive(false); // Reset highlight state
+            // Reset highlight state
+            highlightPreview[i].SetActive(false); 
 
             if (hasSummling)
             {
@@ -248,6 +257,7 @@ public class SummlingManager : MonoBehaviour
                 }
                 icons[i].sprite = stats.icon;
 
+                // Sets border color based on the Mark
                 switch (stats.mark)
                 {
                     case Mark.Newborn:
@@ -258,7 +268,7 @@ public class SummlingManager : MonoBehaviour
                         iconBorder[i].color = Color.blue;
                         break;
 
-                    case Mark.Pre:
+                    case Mark.Adult:
                         iconBorder[i].color = Color.red;
                         break;
                 }
@@ -298,12 +308,12 @@ public class SummlingManager : MonoBehaviour
 
         if (summlingsOwned.Count >= maxSlots)
         {
-            // Only set replacing state, don't decline
+            
             isReplacing = true;
 
             UpdateButtonInteractivity();
 
-            return; // Don't destroy the pending summon!
+            return; 
         }
 
         summlingsOwned.Add(currentPendingSummon);
@@ -324,7 +334,7 @@ public class SummlingManager : MonoBehaviour
 
     }
 
-    // Modified DeclineSummon to handle replacement cancellation
+    // DeclineSummon handles replacement cancellation
     public void DeclineSummon()
     {
         if (currentPendingSummon != null)
@@ -353,7 +363,7 @@ public class SummlingManager : MonoBehaviour
 
         foreach (var group in groups)
         {
-            if (group.Count() >= 2 && group.Key.Mark != Mark.Pre)
+            if (group.Count() >= 2 && group.Key.Mark != Mark.Adult)
             {
                 // Remove old summlings
                 var toRemove = group.Take(2).ToList();
@@ -451,11 +461,10 @@ public class SummlingManager : MonoBehaviour
 
         foreach (GameObject summling in summlingsOwned)
         {
-            // Skip null entries
             if (summling == null) continue;
 
             SummlingStats stats = summling.GetComponent<SummlingStats>();
-            // Skip if component missing
+
             if (stats == null) continue;
 
             Specie s = stats.specie;
@@ -463,6 +472,7 @@ public class SummlingManager : MonoBehaviour
         }
     }
 
+    // removes the effect of the chosen Summling
     public void RemoveSummlingEffects(SummlingStats stats)
     {
         foreach (var mod in stats.effects)
@@ -489,7 +499,6 @@ public class SummlingManager : MonoBehaviour
         Debug.Log($"Selected slot {slotIndex} for replacement");
     }
 
-    // New method to confirm replacement
     public void ConfirmReplacement()
     {
         if (!isReplacing || pendingReplacementIndex == -1)
@@ -516,7 +525,8 @@ public class SummlingManager : MonoBehaviour
     }
 
     public void MergeSummlings(int index1, int index2)
-    {
+    {   
+
         if (index1 < 0 || index1 >= summlingsOwned.Count) return;
         if (index2 < 0 || index2 >= summlingsOwned.Count) return;
         if (index1 == index2) return;
@@ -526,20 +536,23 @@ public class SummlingManager : MonoBehaviour
         SummlingStats stats1 = s1.GetComponent<SummlingStats>();
         SummlingStats stats2 = s2.GetComponent<SummlingStats>();
 
+        // Cannot merge highest rarity
         if (stats1.summlingName != stats2.summlingName || stats1.mark != stats2.mark) return;
-        if (stats1.mark == Mark.Pre) return;
+        if (stats1.mark == Mark.Adult) return;
 
         // Proceed with merge
         int targetIndex = Mathf.Min(index1, index2);
         GameObject newSummling = Instantiate(s1);
         SummlingStats newStats = newSummling.GetComponent<SummlingStats>();
+
+        // Increases Mark of Summling
         newStats.mark = stats1.mark + 1;
 
-        //Apply summling stat modifiers
+        //Apply summling stat modifiers to new one
         ApplySummlingEffects(newStats);
-        UpgradeManager.Instance.ApplyExistingModifiersToSummling(newStats); // Add this
+        UpgradeManager.Instance.ApplyExistingModifiersToSummling(newStats); 
 
-        // Remove old
+        // Remove old Summling
         RemoveSummlingEffects(stats1);
         RemoveSummlingEffects(stats2);
         summlingsOwned.Remove(s1);
@@ -548,7 +561,7 @@ public class SummlingManager : MonoBehaviour
         Destroy(s2);
         icons[index2].sprite = defaultIcon;
 
-        // Insert new
+        // Insert new Summling
         summlingsOwned.Insert(targetIndex, newSummling);
         ApplySummlingEffects(newStats);
 
@@ -570,6 +583,7 @@ public class SummlingManager : MonoBehaviour
 
         // Gain soul essence
         player.GainSoulEssence(stats.GetTransmuteValue());
+
         // Remove effects
         RemoveSummlingEffects(stats);
 
@@ -602,16 +616,17 @@ public class SummlingManager : MonoBehaviour
             }
         }
 
-        UpdateEmptySlots(); // Ensure UI consistency
+        // Ensure UI consistency
+        UpdateEmptySlots();
     }
 
     private bool ShouldButtonBeInteractable()
     {
-        // Add any additional conditions for interactivity here
+       
         return isReplacing || isMerging || isTransmuting;
     }
 
-    // Add these methods to handle hover states
+   
     public void ShowHighlight(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= highlightPreview.Length) return;

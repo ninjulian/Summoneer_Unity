@@ -16,6 +16,7 @@ public class SoulEssencePickup : MonoBehaviour
         pickupCollider.isTrigger = true;
     }
 
+    // Checks if it is Player
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -24,6 +25,7 @@ public class SoulEssencePickup : MonoBehaviour
         }
     }
 
+    // Add XP and SE gain for player
     private void Collect(PlayerStats playerStats)
     {
         if (playerStats != null)

@@ -6,7 +6,7 @@ using static UpgradeData;
 
 public enum Specie { Aquatic, Insect, Plushie}
 
-public enum Mark { Newborn, Child, Pre}
+public enum Mark { Newborn, Child, Adult}
 
 public enum DOTType { None, Poison, Fire}
 public enum Archetype { Melee, Range, Mix}
@@ -68,7 +68,7 @@ public abstract class SummlingStats : MonoBehaviour
     protected float attackCooldownTimer;
 
     [Header("Player Leash Threshold")]
-    public float leashRadius = 1f; // Distance before updating roam position
+    public float leashRadius = 1f; 
     public float returnToPlayerSpeedMultiplier = 1.2f;
 
     [Header("References")]
@@ -88,7 +88,7 @@ public abstract class SummlingStats : MonoBehaviour
         return isCrit ? damage * critMultiplier : damage;
     }
 
-     // Common gizmo drawing logic
+     // Shows the radius of Summling stats for an easier tuning
     public void DrawGizmosContent()
     {
         Gizmos.color = Color.yellow;
@@ -115,13 +115,15 @@ public abstract class SummlingStats : MonoBehaviour
             if (affectedStatsByMark.Contains(mod.statType))
             {
                 mod.value *= multiplier;
-                effects[i] = mod; // Update the struct in list
+
+                // Update the struct in list
+                effects[i] = mod; 
             }
         }
     }
 
     public float GetTransmuteValue()
     {
-        return 10f;
+        return Mathf.Floor(Random.Range(1, 100f));
     }
 }

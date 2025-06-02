@@ -43,6 +43,7 @@ public class EnemyStats : StatClass
     private void OnDestroy()
     {
         // Unsubscribe to prevent memory leaks
+        // If not it will crash 
         PlayerShoot.OnEnemyFocused -= HandleEnemyFocused;
     }
 
@@ -64,11 +65,13 @@ public class EnemyStats : StatClass
 
         if (currentHealth <= 0)
         {
+            // Invokes enemy defeated function in Wave Spawner
             onDeath?.Invoke();
 
         }
     }
 
+    // World canvas text values that show damage taken
     void ShowDamageText(float damageValue, DamageHandler.DOTType? dotType)
     {
 
@@ -97,7 +100,8 @@ public class EnemyStats : StatClass
             }
         }
         else
-        {    if (gameObject != null)
+        {
+            if (gameObject != null)
             {
                 tmp.color = Color.white;
             }

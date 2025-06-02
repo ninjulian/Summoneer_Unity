@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class XpBar : MonoBehaviour
 {
     [SerializeField] public Slider xpSlider;
-    [SerializeField] private float fillSpeed = 0.5f; // Speed of the animation
+    [SerializeField] private float fillSpeed = 0.5f; 
 
     private PlayerStats playerStats;
     private Coroutine currentAnimation;
@@ -42,7 +42,7 @@ public class XpBar : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             xpSlider.value = Mathf.Lerp(startValue, targetXP, t);
 
-            // Update max value dynamically
+            // Update max value
             xpSlider.maxValue = playerStats.xpRequired;
 
             // Clamp value to prevent overshooting

@@ -500,11 +500,8 @@ MonoBehaviour:
   description: Fish that flies
   icon: {fileID: 21300000, guid: 3d6c0ddb1f66586499df94c99665fc44, type: 3}
   archetype: 0
-  affectedStatsByMark: 
-  effects:
-  - statType: 6
-    value: 5
-    isPercentage: 0
+  affectedStatsByMark: 0d000000
+  effects: []
   damage: 2
   damageCooldown: 1
   critChance: 10

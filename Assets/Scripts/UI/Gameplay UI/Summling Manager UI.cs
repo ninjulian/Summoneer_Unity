@@ -77,7 +77,6 @@ public class SummlingManagerUI : MonoBehaviour
         summlingPartyPanel.transform.localPosition = Vector3.zero;
         summlingPartyPanel.transform.localRotation = Quaternion.identity;
 
-        // Optional: Reset scale if needed
         // summlingPartyPanel.transform.localScale = Vector3.one;
     }
 
@@ -97,7 +96,7 @@ public class SummlingManagerUI : MonoBehaviour
         }
     }
 
-    //Updates the cost to Summon Summlings
+    // Update cost
     private void UpdateCost()
     {
         float cost = manager.GetSummonCost();
@@ -115,20 +114,19 @@ public class SummlingManagerUI : MonoBehaviour
            
             manager.summonCountInWave += 1;
             UpdateCost();
-            Debug.Log("OPening confirmation page");
+           // Debug.Log("OPening confirmation page");
 
-            summonConfirmationTab.SetActive(true); //Awlays shows confirmation tab
+            // Awlays shows confirmation tab
+            summonConfirmationTab.SetActive(true);
 
             replaceSummling.SetActive(manager.isReplacing);
 
 
         }
         else
-        {
-            
-            Debug.Log("Not enough Soul Essence!");
-                // You could add visual feedback here (like shaking the button or showing a message)
-                
+        {   
+            // Need to insert logic if I dont got the funds
+            // Debug.Log("Not enough Soul Essence!");   
             
         }
 
@@ -161,10 +159,11 @@ public class SummlingManagerUI : MonoBehaviour
 
     // Confirmation Button with the Summon Button
     public void ConfirmSummon()
-    {
+    {   
         if (manager.isReplacing && !selectedReplacement)
-        {
-            return; // Require slot selection
+        {   
+            // Needs to select one
+            return; 
         }
 
         // Close confirmation tab
@@ -173,7 +172,9 @@ public class SummlingManagerUI : MonoBehaviour
         if (manager.isReplacing)
         {
             manager.ConfirmReplacement();
-            replaceSummling.SetActive(false); // Explicitly hide replacement UI
+
+            // Hide replacement UI
+            replaceSummling.SetActive(false);
         }
         else
         {
@@ -188,7 +189,7 @@ public class SummlingManagerUI : MonoBehaviour
         selectedReplacement = false;
     }
 
-    // If the Player decides to not accept the Summoned Summling
+    // If the Player decides to not accept the Summling
     public void CancelSummon()
     {
         // Closes confirmation page and takes away SE
@@ -255,7 +256,7 @@ public class SummlingManagerUI : MonoBehaviour
         {
             // Activate Transmute mode
             transmuteText.text = "Cancel";
-            mergeText.text = "Merge Summlings"; // Reset Merge button text
+            mergeText.text = "Merge Summlings";
 
             manager.isTransmuting = true;
             manager.isMerging = false;
@@ -429,7 +430,7 @@ public class SummlingManagerUI : MonoBehaviour
 
     }
 
-    // Initialization (call in Start/Awake)
+    // Initialization
     private void InitializePages()
     {
         // Deactivate all pages first
@@ -438,7 +439,8 @@ public class SummlingManagerUI : MonoBehaviour
             page.SetActive(false);
         }
         CheckPage();
-        // Activate starting page
+
+        // Activate page
         SetPageActive(currentPageIndex, true);
     }
 
@@ -452,7 +454,7 @@ public class SummlingManagerUI : MonoBehaviour
         }
         else
         {
-            // Enforce 2-selection limit with "rolling" selection
+            // only 2 can be selected
             if (selectedIndices.Count >= 2)
             {
                 // Remove oldest selection (first in list)
@@ -500,9 +502,9 @@ public class SummlingManagerUI : MonoBehaviour
                 confirmMTText.text = "Merge the pair?";
                 return;
             }
-            else if (stats1.mark == Mark.Pre || stats2.mark == Mark.Pre)
+            else if (stats1.mark == Mark.Adult || stats2.mark == Mark.Adult)
             {
-                confirmMTText.text = "Cannot Merge with a Mark : Pre";
+                confirmMTText.text = "Cannot Merge with a Mark : Adult";
             }
             else
             {

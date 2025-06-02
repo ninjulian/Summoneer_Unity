@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private float playerSpeed;
     private float jumpHeight;
     public float gravityValue = -9.81f;
-    private Vector3 movementDir; // Movement Direction
+    private Vector3 movementDir; 
 
     [Header("Dash")]
     public float dashTimer = 0.2f;
@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         bool isMoving = moveAction.ReadValue<Vector2>().magnitude > 0.1f;
         animator.SetBool("IsWalking", isMoving && groundedPlayer && !isDashing);
         
-       // animator.SetBool("IsFalling", isFalling);  // NEW
+       // animator.SetBool("IsFalling", isFalling); 
        // Debug.Log("Is the player falling" + isFalling);
         animator.SetBool("IsGrounded", groundedPlayer);
       
@@ -253,10 +253,10 @@ public class PlayerController : MonoBehaviour
         //if (isDashing) return;
 
         // Add falling detection when moving downward
-        if (!groundedPlayer && playerVelocity.y < 0)
-        {
-            isFalling = true;
-        }
+        //if (!groundedPlayer && playerVelocity.y < 0)
+        //{
+        //    isFalling = true;
+        //}
 
 
         if (groundedPlayer && playerVelocity.y < 0)

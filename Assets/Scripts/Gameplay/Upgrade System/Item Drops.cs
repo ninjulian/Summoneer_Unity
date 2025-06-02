@@ -12,6 +12,7 @@ public class ItemDrops : MonoBehaviour
     public float xpValue;
     public float soulEssenceValue;
 
+    // Simple sciprt in charge of spawning Soul essence when enemy dies
     public void DropItems()
     {
 

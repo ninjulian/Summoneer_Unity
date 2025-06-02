@@ -1,5 +1,7 @@
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WaveUIManager : MonoBehaviour
 {
@@ -32,12 +34,11 @@ public class WaveUIManager : MonoBehaviour
     private void UpdateCountdown()
     {
         countdownText.text = waveManager.IsCountingDown ?
-            $"Next wave in: {Mathf.CeilToInt(waveManager.CountdownTimer)}" :
-            "";
+            "Next wave in: " + Mathf.CeilToInt(waveManager.CountdownTimer).ToString() :"";
     }
 
     private void UpdateEnemyCounter()
     {
-        enemyCounter.text = $"Spawning: {waveManager.enemiesSpawned}/{waveManager.TargetEnemies}";
+        enemyCounter.text = "Spawning: " + waveManager.enemiesSpawned + "/" + waveManager.TargetEnemies;
     }
 }

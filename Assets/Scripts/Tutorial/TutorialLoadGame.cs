@@ -12,10 +12,11 @@ public class TutorialLoadGame : MonoBehaviour
         {
 
             // Set PlayerPrefs to mark tutorial as completed
-            PlayerPrefs.SetInt("TutorialCompleted", 1); // 1 = true, 0 = false
-            PlayerPrefs.Save(); // Save immediately
+            // 1 = true, 0 = false
+            PlayerPrefs.SetInt("TutorialCompleted", 1); 
 
-            // Game level
+            // Save immediately
+            PlayerPrefs.Save();
             SceneManager.LoadScene("Final Map");
         }
     }

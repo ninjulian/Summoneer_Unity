@@ -18,6 +18,7 @@ public class PlayerPickup : MonoBehaviour
         UpdatePlayerRadius();
     }
 
+    // SE moves towards player
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Soul Essence"))
@@ -31,8 +32,10 @@ public class PlayerPickup : MonoBehaviour
         }
     }
 
+    // SE floats back into position
     private void OnTriggerExit(Collider other)
-    {
+    {   
+        // Make sure item is Soul Essence before picking up
         if (other.CompareTag("Soul Essence"))
         {
             //SoulEssencePickup soulEssencePickup = other.GetComponent<SoulEssencePickup>();
@@ -46,7 +49,7 @@ public class PlayerPickup : MonoBehaviour
     }
 
 
-
+    // Pick up radius of where SE will move towards player
     public void UpdatePlayerRadius()
     {
         pickUpCollider.radius = playerStats.pickUpRadius;

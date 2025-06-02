@@ -33,7 +33,7 @@ public class ItemMovement : MonoBehaviour
 
     private void Update()
     {   
-        // If target not in range it will float 
+        // If Player not in range it will float 
         if (!inRange)
         {
             FloatInPlace();
@@ -67,6 +67,7 @@ public class ItemMovement : MonoBehaviour
         );
     }
 
+    // Can only move towards Player if there is a positive LOS check
     private bool CheckLineOfSight(Vector3 from, Vector3 to)
     {
         Vector3 direction = to - from;

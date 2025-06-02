@@ -13,7 +13,7 @@ public class Tutorial : MonoBehaviour
     [Header("References")]
     public Transform resetPos;
     public GameObject uiObject;
-    public List<InputActionReference> inputActionsToEnable; // Assign in Inspector
+    public List<InputActionReference> inputActionsToEnable;
     public GameObject playerObject;
     public GameObject oldTriggers;
     public GameObject objectToDisable;

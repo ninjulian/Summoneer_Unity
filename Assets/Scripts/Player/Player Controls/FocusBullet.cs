@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -11,6 +13,7 @@ public class FocusBullet : MonoBehaviour
         projectileController = GetComponent<ProjectileController>();
     }
 
+    //Depricated and not use since raycast hit now
     private void OnCollisionEnter(Collision collision)
     {
         if (projectileController == null) return;
@@ -21,7 +24,7 @@ public class FocusBullet : MonoBehaviour
         // Check for enemy hit
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Invoke the static event from PlayerShoot
+            // Invoke event from PlayerShoot
             PlayerShoot.OnEnemyFocused?.Invoke(collision.transform);
         }
     }

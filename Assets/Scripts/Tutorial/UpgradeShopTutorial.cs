@@ -6,7 +6,7 @@ public class UpgradeShopTutorial : MonoBehaviour
 {
     //public GameObject upgradeUI;
     public UIManager uiManager;
-  // public UpgradeManager upgradeManager;
+    //public UpgradeManager upgradeManager;
 
     private void OnTriggerEnter(Collider other)
     {

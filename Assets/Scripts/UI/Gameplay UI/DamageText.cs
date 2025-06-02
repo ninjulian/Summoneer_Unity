@@ -5,8 +5,12 @@ using TMPro;
 public class DamageText : MonoBehaviour
 {
     public float lifespan = 1f;
-    public float floatSpeed = 1f;      // How fast it moves downzward
-    public float fadeDuration = 1f;      // How long it takes to fade
+
+    // How fast it moves downzward
+    public float floatSpeed = 1f;
+
+    // How long it takes to fade
+    public float fadeDuration = 1f;      
 
     private TextMeshPro tmpText;
     private Color startColor;
@@ -21,7 +25,7 @@ public class DamageText : MonoBehaviour
 
         Destroy(gameObject, lifespan);
     }
-
+    
     void Update()
     {
         // Face the camera

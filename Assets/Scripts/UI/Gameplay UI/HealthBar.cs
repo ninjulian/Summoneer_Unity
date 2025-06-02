@@ -51,7 +51,9 @@ public class HealthBar : MonoBehaviour
     public void StartHpUIUpdate(float damageValue)
     {
         if (hpCoroutine != null)
-            StopCoroutine(hpCoroutine); // stop previous one if still running
+
+            // stop previous one if still running
+            StopCoroutine(hpCoroutine); 
 
         hpCoroutine = StartCoroutine(UpdateHpUICoroutine(damageValue));
     }
@@ -71,7 +73,7 @@ public class HealthBar : MonoBehaviour
         //healthSlider.value = entityStats.currentHealth;
         //damageSlider.value = entityStats.currentHealth;
 
-        hpCoroutine = null; // finished
+        hpCoroutine = null; 
     }
 
     public void HealthIncrease()

@@ -16,15 +16,15 @@ public class DamageHandler : MonoBehaviour
     [SerializeField] private ParticleSystem poisonParticles;
 
     [SerializeField] private GameObject healthBarUI;
-    
-   // [SerializeField] private Transform DOTLocation;
+
+    // [SerializeField] private Transform DOTLocation;
 
     [Header("UI")]
     private HealthBar healthBar;
 
     private List<ActiveDOT> activeDOTs = new List<ActiveDOT>();
 
-
+    // Damage over time variable
     public struct ActiveDOT
     {
         public DOTType type;
@@ -39,9 +39,9 @@ public class DamageHandler : MonoBehaviour
     [HideInInspector] public enum DOTType { Fire, Poison }
 
     private void Awake()
-    {
-        poisonParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Stop and clear particles
-        fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Stop and clear particles
+    {   //Gets rid of particles and stops them before needing to show them with DOT Triggers
+        poisonParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         healthBar = GetComponent<HealthBar>();
     }
 
@@ -50,10 +50,12 @@ public class DamageHandler : MonoBehaviour
         ProcessDOTs();
     }
 
-    public void ReceiveDamage(float rawDamage, DOTType? dotType = null) // Modified line
+
+    public void ReceiveDamage(float rawDamage, DOTType? dotType = null)
     {
+        // Unfinished damage calculation
         float finalDamage = Mathf.Max(rawDamage - entityStats.defense, 1);
-        entityStats.TakeDamage(finalDamage, dotType); // Modified line
+        entityStats.TakeDamage(finalDamage, dotType);
 
         if (!healthBarUI.activeInHierarchy)
         {
@@ -65,24 +67,29 @@ public class DamageHandler : MonoBehaviour
             HandleDeath();
         }
 
+        // Updates health bar component of owner
         UpdateHPUI(finalDamage);
     }
 
     private void ApplyDOT(float totalDamage, float duration, float tickInterval, DOTType type, ParticleSystem particles)
     {
-        // Cleans up existing DOTs of the same type
+
         foreach (var existingDOT in activeDOTs.FindAll(d => d.type == type))
         {
-            // Stops and clears the particle system to reset it
+
             if (particles != null)
             {
-                particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // Stop and clear particles
+                // Stops and clears the particle system to reset it
+                particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             }
         }
+
+        // Cleans up pre existing DOTS of the same type
         activeDOTs.RemoveAll(d => d.type == type);
 
         // Creates new DOT 
-        ActiveDOT newDOT = new ActiveDOT
+        //ActiveDOT newDOT = new ActiveDOT
+        ActiveDOT newDOT = new()
         {
             type = type,
             totalDamage = totalDamage,
@@ -92,7 +99,7 @@ public class DamageHandler : MonoBehaviour
             timeSinceLastTick = 0,
 
 
-            particles = particles 
+            particles = particles
         };
 
         if (newDOT.particles != null)
@@ -101,20 +108,21 @@ public class DamageHandler : MonoBehaviour
             var main = newDOT.particles.main;
 
             // Emission rate matches the DOT
-            main.duration = duration; 
+            main.duration = duration;
 
             // No loop
             main.loop = false;
 
             // Start emitting
-            newDOT.particles.Play(); 
+            newDOT.particles.Play();
         }
 
+        // Adds new DOT 
         activeDOTs.Add(newDOT);
     }
 
     private void ProcessDOTs()
-    {
+    {   // Backwards loop to prevent any skipping
         for (int i = activeDOTs.Count - 1; i >= 0; i--)
         {
             ActiveDOT dot = activeDOTs[i];
@@ -145,21 +153,23 @@ public class DamageHandler : MonoBehaviour
         }
     }
 
+    // Fire Damage over time effect
     public void ApplyFireDOT(float baseDamage, float duration)
     {
         ApplyDOT(baseDamage * 0.10f, duration, 0.5f, DOTType.Fire, fireParticles);
     }
 
+    // Poison Damage over time effect
     public void ApplyPoisonDOT(float baseDamage, float duration)
     {
         ApplyDOT(baseDamage * 0.05f, duration, 1f, DOTType.Poison, poisonParticles);
     }
 
 
-
+    // Death logic
     private void HandleDeath()
     {
-        // Add death logic (animation, drops, etc)
+
         Destroy(gameObject);
     }
 
@@ -169,10 +179,11 @@ public class DamageHandler : MonoBehaviour
         entityStats = stats;
     }
 
+    // Updates health bar UI
     public void UpdateHPUI(float value)
     {
         if (healthBar != null)
-        {   
+        {
 
             healthBar.StartHpUIUpdate(value);
 

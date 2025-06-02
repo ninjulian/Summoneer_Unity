@@ -12,13 +12,13 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        // Check if the tutorial was completed
+        // Checks if the tutorial was completed
         bool tutorialCompleted = PlayerPrefs.GetInt("TutorialCompleted", 0) == 1;
 
-        // Disable startButton if tutorial isn't completed
+        // Disable startButton if tutorial is not done
         startButton.SetActive(tutorialCompleted);
 
-        // Load and display the saved high wave
+        // Load and display highest wave
         int highestWave = PlayerPrefs.GetInt("HighestWave", 0);
         highscoreText.text = "Highest Wave: " + highestWave;
     }
