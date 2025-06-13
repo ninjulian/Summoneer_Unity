@@ -318,9 +318,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet1Prefab: {fileID: 2411828836088549004, guid: d276ea2336bfff04a9ce430e98b3fcbc, type: 3}
   bullet2Prefab: {fileID: 2411828836088549004, guid: 19faad638aca7eb4291d0e5c95947bfd, type: 3}
+  primarySparkEffect: {fileID: 0}
+  focusSparkEffect: {fileID: 0}
   bulletMissDistance: 100
   muzzleTransform: {fileID: 133339156011845416}
   crosshairManager: {fileID: 0}
+  canShoot: 1
+  canFocus: 1
   applyFireDOT: 0
   applyPoisonDOT: 0
   aimTarget: {fileID: 4313653322657502201}
@@ -377,6 +381,8 @@ MonoBehaviour:
   fireParticles: {fileID: 1778186787393684889}
   poisonParticles: {fileID: 9061693327095238250}
   healthBarUI: {fileID: 0}
+  meshRenderer: {fileID: 7357997406095698677}
+  dmgTakenFlash: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &3987130456862253217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5737,6 +5743,11 @@ Transform:
 --- !u!4 &7320514137024913875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6000407479487422213, guid: 00b1f2f9dbdeab748a7488810fbbeca4, type: 3}
+  m_PrefabInstance: {fileID: 3950230946131328726}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7357997406095698677 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5822821947120931875, guid: 00b1f2f9dbdeab748a7488810fbbeca4, type: 3}
   m_PrefabInstance: {fileID: 3950230946131328726}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7390304613910244846 stripped

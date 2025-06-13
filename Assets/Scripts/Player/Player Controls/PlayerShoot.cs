@@ -13,6 +13,9 @@ public class PlayerShoot : MonoBehaviour
     [Header("Bullet Prefabs")]
     [SerializeField] private GameObject bullet1Prefab;
     [SerializeField] private GameObject bullet2Prefab;
+    [SerializeField] private ParticleSystem primarySparkEffect;
+    [SerializeField] private ParticleSystem focusSparkEffect;
+
 
     public float bulletMissDistance = 100f;
 
@@ -136,7 +139,7 @@ public class PlayerShoot : MonoBehaviour
             //}
 
             Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask);
-            playerRayCastHit(hit);
+            playerRayCastHit(hit, primarySparkEffect);
 
 
             //Debug.Log((stats == null), stats);
@@ -189,7 +192,7 @@ public class PlayerShoot : MonoBehaviour
                 //shootDirection = cameraTransform.forward;
             }
 
-            playerRayCastHit(hit);
+            playerRayCastHit(hit, focusSparkEffect);
 
             //Triggers OnEnemyFocused, makes them highlighted and targetted by the Summlings
             if (hit.collider.gameObject.CompareTag("Enemy"))
@@ -224,10 +227,17 @@ public class PlayerShoot : MonoBehaviour
     //}
 
     // Moved projectile logic into raycast instaed
-    public void playerRayCastHit(RaycastHit hit)
+    public void playerRayCastHit(RaycastHit hit, ParticleSystem sparkEffect)
     {
         EnemyStats stats = hit.collider.GetComponent<EnemyStats>();
         DamageHandler enemyDamageHandler = hit.collider.GetComponent<DamageHandler>();
+
+        Vector3 spawnPosition = hit.point + hit.normal * 0.05f; // Small offset from surface
+        Quaternion rotation = Quaternion.LookRotation(hit.normal);
+
+        ParticleSystem hitsparks = Instantiate(sparkEffect, spawnPosition, rotation);
+        float totalDuration = hitsparks.main.duration + hitsparks.main.startLifetime.constantMax;
+        Destroy(hitsparks.gameObject, totalDuration);
 
         // References to hit enemy stats and applies damage to them, or trigger DOT
         if (stats != null || enemyDamageHandler != null)

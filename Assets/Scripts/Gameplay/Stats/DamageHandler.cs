@@ -17,6 +17,11 @@ public class DamageHandler : MonoBehaviour
 
     [SerializeField] private GameObject healthBarUI;
 
+    [SerializeField] private Renderer meshRenderer;
+    private Color originalColour;
+
+    public Color dmgTakenFlash = Color.red;
+
     // [SerializeField] private Transform DOTLocation;
 
     [Header("UI")]
@@ -43,6 +48,8 @@ public class DamageHandler : MonoBehaviour
         poisonParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         healthBar = GetComponent<HealthBar>();
+
+        originalColour = meshRenderer.material.color;
     }
 
     void FixedUpdate()
@@ -56,6 +63,14 @@ public class DamageHandler : MonoBehaviour
         // Unfinished damage calculation
         float finalDamage = Mathf.Max(rawDamage - entityStats.defense, 1);
         entityStats.TakeDamage(finalDamage, dotType);
+
+        if (meshRenderer != null)
+        {
+            StopCoroutine(DamageFlashRoutine());
+            StartCoroutine(DamageFlashRoutine());
+        }
+        else Debug.Log("Mesh Renderer is null");
+
 
         if (!healthBarUI.activeInHierarchy)
         {
@@ -165,6 +180,19 @@ public class DamageHandler : MonoBehaviour
         ApplyDOT(baseDamage * 0.05f, duration, 1f, DOTType.Poison, poisonParticles);
     }
 
+
+    private IEnumerator DamageFlashRoutine()
+    {
+        // Change to white
+        meshRenderer.material.color = Color.red;
+
+        // Wait for 0.1 seconds
+        yield return new WaitForSeconds(0.1f);
+
+        // Return to original color
+        meshRenderer.material.color = originalColour;
+
+    }
 
     // Death logic
     private void HandleDeath()
