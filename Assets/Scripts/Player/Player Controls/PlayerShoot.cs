@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+//using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class PlayerShoot : MonoBehaviour
 {
@@ -36,6 +37,15 @@ public class PlayerShoot : MonoBehaviour
     private InputAction shootAction;
     private InputAction focusAction;
     private PlayerInput playerInput;
+
+    // Focus Fire 
+    [Header("Cooldown UI")]
+    [SerializeField] private GameObject focusSlider;
+    [SerializeField] private Slider focusCooldownSlider;
+    private float focusCooldownTimer = 0f;
+    private float currentFocusCooldownDuration;
+    private bool isFocusOnCooldown = false;
+
 
     // Player Stats
     private PlayerStats playerStats;
@@ -74,6 +84,14 @@ public class PlayerShoot : MonoBehaviour
         cameraTransform = playerController.cameraTransform;
 
         fireCooldown = 60f / playerStats.fireRate;
+
+        if (focusCooldownSlider != null)
+        {
+            focusSlider.SetActive(false);
+            focusCooldownSlider.minValue = 0;
+            focusCooldownSlider.maxValue = 1;
+            focusCooldownSlider.value = 0;
+        }
     }
 
     // Update is called once per frame
@@ -81,6 +99,7 @@ public class PlayerShoot : MonoBehaviour
     {
         HandleInput();
         UpdateFireRate();
+        UpdateFocusCooldown();
 
     }
 
@@ -95,7 +114,7 @@ public class PlayerShoot : MonoBehaviour
         }
         else if (focusAction.IsPressed())
         {
-            StartCoroutine(FocusShoot(bullet2Prefab));
+            FocusShoot(bullet2Prefab);
             crosshairManager.currentCrosshairType = CrosshairManager.CrosshairType.Shooting2;
             UpdateStaffAim();
         }
@@ -123,7 +142,8 @@ public class PlayerShoot : MonoBehaviour
             int layerToIgnore2 = 9;
             int layerToIgnore3 = 11;
             int layerToIgnore4 = 13;
-            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4);
+            int layerToIgnore5 = 8;
+            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4 | 1 << layerToIgnore5);
 
             // Calculate direction
             //Vector3 shootDirection;
@@ -161,12 +181,60 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-    // Same as primary fire
-    public IEnumerator FocusShoot(GameObject bulletChoice)
+    //// Same as primary fire
+    //public IEnumerator FocusShoot(GameObject bulletChoice)
+    //{
+    //    if (canFocus)
+    //    {
+    //        canFocus = false;
+    //        GameObject bullet = Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
+    //        ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
+    //        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
+    //        // Calculate direction
+    //        Vector3 shootDirection = cameraTransform.forward;
+    //        RaycastHit hit;
+
+    //        int layerToIgnore1 = 7;
+    //        int layerToIgnore2 = 9;
+    //        int layerToIgnore3 = 11;
+    //        int layerToIgnore4 = 13;
+    //        int layerToIgnore5 = 8;
+    //        int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4 | 1 << layerToIgnore5);
+
+    //        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
+    //        {
+    //            //shootDirection = (hit.point - muzzleTransform.position).normalized;
+
+    //            // UpdateAimTarget(hit);
+    //        }
+    //        else
+    //        {
+    //            //shootDirection = cameraTransform.forward;
+    //        }
+
+    //        playerRayCastHit(hit, focusSparkEffect);
+
+    //        //Triggers OnEnemyFocused, makes them highlighted and targetted by the Summlings
+    //        if (hit.collider.gameObject.CompareTag("Enemy"))
+    //        {
+    //            OnEnemyFocused?.Invoke(hit.collider.transform);
+    //        }
+
+    //        // Cool visual trail
+    //        CreateBeamTrail(muzzleTransform.position, hit.point, focusBeam);
+
+    //        // Cooldown management
+    //        yield return new WaitForSeconds(fireCooldown * 3f);
+    //        canFocus = true;
+    //    }
+    //}
+
+    public void FocusShoot(GameObject bulletChoice)
     {
-        if (canFocus)
+        if (!isFocusOnCooldown)
         {
-            canFocus = false;
+
             GameObject bullet = Instantiate(bulletChoice, muzzleTransform.position, Quaternion.identity);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>();
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
@@ -179,7 +247,8 @@ public class PlayerShoot : MonoBehaviour
             int layerToIgnore2 = 9;
             int layerToIgnore3 = 11;
             int layerToIgnore4 = 13;
-            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4);
+            int layerToIgnore5 = 8;
+            int ignoreMask = ~(1 << layerToIgnore1 | 1 << layerToIgnore2 | 1 << layerToIgnore3 | 1 << layerToIgnore4 | 1 << layerToIgnore5);
 
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask))
             {
@@ -200,23 +269,51 @@ public class PlayerShoot : MonoBehaviour
                 OnEnemyFocused?.Invoke(hit.collider.transform);
             }
 
-
-
-            // Old Projectile based shooting
-            // Apply physics force
-            //rb.velocity = shootDirection * projectileController.speed;
-
-            // Configure bullet properties
-            //projectileController.baseDamage = Mathf.Floor(playerStats.CalculateDamage() * 0f); // Focus mode damage multiplier
-            //projectileController.sourceTag = "Player";
-            //CheckDOT(projectileController);
-
             // Cool visual trail
             CreateBeamTrail(muzzleTransform.position, hit.point, focusBeam);
 
-            // Cooldown management
-            yield return new WaitForSeconds(fireCooldown * 3f);
-            canFocus = true;
+            isFocusOnCooldown = true;
+            currentFocusCooldownDuration = fireCooldown * 3f;
+            focusCooldownTimer = currentFocusCooldownDuration;
+            focusCooldownTimer = 0f; // Start from 0
+
+            // Activate and setup slider
+            if (focusCooldownSlider != null)
+            {
+                focusCooldownSlider.gameObject.SetActive(true);
+                focusCooldownSlider.value = 0f;
+            }
+        }
+    }
+
+    private void UpdateFocusCooldown()
+    {
+        if (isFocusOnCooldown)
+        {
+            focusCooldownTimer += Time.deltaTime;
+            focusSlider.SetActive(canFocus);
+            focusSlider.SetActive(true);
+
+            if (focusCooldownSlider != null)
+            {
+                focusCooldownSlider.value = focusCooldownTimer / currentFocusCooldownDuration;
+
+            }
+
+            if (focusCooldownTimer >= currentFocusCooldownDuration)
+            {
+                focusCooldownTimer = 0;
+                isFocusOnCooldown = false;
+                focusSlider.SetActive(false);
+
+                if (focusCooldownSlider != null)
+                {
+                    focusCooldownSlider.gameObject.SetActive(false);
+                }
+            }
+
+
+
         }
     }
 
@@ -240,7 +337,7 @@ public class PlayerShoot : MonoBehaviour
         Destroy(hitsparks.gameObject, totalDuration);
 
         // References to hit enemy stats and applies damage to them, or trigger DOT
-        if (stats != null || enemyDamageHandler != null)
+        if (stats != null || enemyDamageHandler != null && hit.collider.CompareTag("Enemy"))
         {
             enemyDamageHandler.ReceiveDamage(playerStats.CalculateDamage());
 
