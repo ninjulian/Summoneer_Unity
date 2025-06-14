@@ -7,6 +7,8 @@ public class ItemDrops : MonoBehaviour
     [SerializeField] private GameObject soulEssencePrefab;
     private SoulEssencePickup soulEssence;
 
+    
+
     public StatClass statClass;
 
     public float xpValue;
@@ -17,9 +19,12 @@ public class ItemDrops : MonoBehaviour
     {
 
         GameObject soulEssencePickup = Instantiate(soulEssencePrefab, transform.position, transform.rotation);
+
+       
         soulEssence = soulEssencePickup.GetComponent<SoulEssencePickup>();
         soulEssence.xpValue = xpValue;
         soulEssence.soulEssenceValue = soulEssenceValue;
+
     }
 
 }

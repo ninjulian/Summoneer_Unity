@@ -159,7 +159,7 @@ public class PlayerShoot : MonoBehaviour
             //}
 
             Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity, ignoreMask);
-            playerRayCastHit(hit, primarySparkEffect);
+            playerRayCastHit(hit, primarySparkEffect, false);
 
 
             //Debug.Log((stats == null), stats);
@@ -261,7 +261,7 @@ public class PlayerShoot : MonoBehaviour
                 //shootDirection = cameraTransform.forward;
             }
 
-            playerRayCastHit(hit, focusSparkEffect);
+            playerRayCastHit(hit, focusSparkEffect, true);
 
             //Triggers OnEnemyFocused, makes them highlighted and targetted by the Summlings
             if (hit.collider.gameObject.CompareTag("Enemy"))
@@ -324,7 +324,7 @@ public class PlayerShoot : MonoBehaviour
     //}
 
     // Moved projectile logic into raycast instaed
-    public void playerRayCastHit(RaycastHit hit, ParticleSystem sparkEffect)
+    public void playerRayCastHit(RaycastHit hit, ParticleSystem sparkEffect, bool isFocus)
     {
         EnemyStats stats = hit.collider.GetComponent<EnemyStats>();
         DamageHandler enemyDamageHandler = hit.collider.GetComponent<DamageHandler>();
@@ -338,8 +338,15 @@ public class PlayerShoot : MonoBehaviour
 
         // References to hit enemy stats and applies damage to them, or trigger DOT
         if (stats != null || enemyDamageHandler != null && hit.collider.CompareTag("Enemy"))
-        {
-            enemyDamageHandler.ReceiveDamage(playerStats.CalculateDamage());
+        {   
+            if (!isFocus)
+            {
+                enemyDamageHandler.ReceiveDamage(playerStats.CalculateDamage());
+                
+            }
+            else enemyDamageHandler.ReceiveDamage(playerStats.CalculateDamage() * 0.1f);
+
+
 
             // Apply DOT effects
             if (applyFireDOT)

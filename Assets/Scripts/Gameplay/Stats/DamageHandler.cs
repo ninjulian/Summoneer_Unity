@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.UI;
 
 
@@ -14,6 +16,7 @@ public class DamageHandler : MonoBehaviour
     [Header("Particle System")]
     [SerializeField] private ParticleSystem fireParticles;
     [SerializeField] private ParticleSystem poisonParticles;
+    [SerializeField] private GameObject deathParticles;
 
     [SerializeField] private GameObject healthBarUI;
 
@@ -55,6 +58,21 @@ public class DamageHandler : MonoBehaviour
     void FixedUpdate()
     {
         ProcessDOTs();
+    }
+
+    private void OnDestroy()
+    {   
+        if (deathParticles != null)
+        {
+            //ParticleSystem ps = deathParticles.GetComponent<ParticleSystem>();
+            //var sh = ps.shape;
+            //sh.enabled = true;
+            //sh.shapeType = ParticleSystemShapeType.SkinnedMeshRenderer;
+            //sh.skinnedMeshRenderer = (SkinnedMeshRenderer)meshRenderer; 
+            Instantiate(deathParticles, gameObject.transform);
+            
+        }
+        
     }
 
 

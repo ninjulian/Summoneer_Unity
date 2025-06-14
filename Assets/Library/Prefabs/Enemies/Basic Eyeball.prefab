@@ -487,6 +487,7 @@ MonoBehaviour:
   entityStats: {fileID: 3344705432886441758}
   fireParticles: {fileID: 130535743412144284}
   poisonParticles: {fileID: 1027579751530234524}
+  deathParticles: {fileID: 2868329033061463629, guid: 7c2fcad66910c9f4e82d878d17b697eb, type: 3}
   healthBarUI: {fileID: 8271277905948488611}
   meshRenderer: {fileID: 1195139124275879479}
   dmgTakenFlash: {r: 1, g: 1, b: 1, a: 0}
@@ -555,6 +556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soulEssencePrefab: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
+  spawnEffect: {fileID: 2868329033061463629, guid: 7c2fcad66910c9f4e82d878d17b697eb, type: 3}
   statClass: {fileID: 3344705432886441758}
   xpValue: 5
   soulEssenceValue: 15

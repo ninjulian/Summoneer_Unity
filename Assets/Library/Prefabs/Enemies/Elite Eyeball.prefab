@@ -487,7 +487,10 @@ MonoBehaviour:
   entityStats: {fileID: 3344705432886441758}
   fireParticles: {fileID: 130535743412144284}
   poisonParticles: {fileID: 1027579751530234524}
+  deathParticles: {fileID: 0}
   healthBarUI: {fileID: 8271277905948488611}
+  meshRenderer: {fileID: 0}
+  dmgTakenFlash: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &4181876272426243066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,7 +503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd893098198f9bc49bb1b742fa16b571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentState: 0
+  currentState: 0
   attackCooldown: 1
   bulletPrefab: {fileID: 2411828836088549004, guid: 8c276fbbd065f1344ab5d0979d70e1eb, type: 3}
   muzzleTransform: {fileID: 5601026545326896814}
@@ -553,6 +556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soulEssencePrefab: {fileID: 3110316173820319617, guid: bfd1a681b2721f44a9eab3acbf47c22a, type: 3}
+  spawnEffect: {fileID: 2868329033061463629, guid: 7c2fcad66910c9f4e82d878d17b697eb, type: 3}
   statClass: {fileID: 3344705432886441758}
   xpValue: 5
   soulEssenceValue: 15
