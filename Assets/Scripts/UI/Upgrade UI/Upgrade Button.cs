@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using System;
+using System.Collections;
+using DG.Tweening;
 
 public class UpgradeButton : MonoBehaviour
 {
@@ -17,10 +19,14 @@ public class UpgradeButton : MonoBehaviour
     private int upgradePrice;
 
     private PlayerStats playerStats;
+    private UpgradeButtonAnimation upgradeButtonAnimation;
 
     public void Awake()
     {
         playerStats = FindAnyObjectByType<PlayerStats>();
+        upgradeButtonAnimation = GetComponent<UpgradeButtonAnimation>();
+
+        upgradeButtonAnimation.SpawnItem();
     }
 
     public void Initialize(UpgradeData data, int price)
@@ -66,11 +72,15 @@ public class UpgradeButton : MonoBehaviour
             description += statName + " " + valueText + Environment.NewLine;
         }
         descriptionText.text = description;
+
+        upgradeButtonAnimation.HoverScale();
+
     }
 
     public void NotHighlightingUpgrade()
     {
         descriptionText.text = "Welcome to the Shop";
+        upgradeButtonAnimation.LeaveScale();
     }
 
     private string GetStatDisplayName(StatType statType)
@@ -110,13 +120,31 @@ public class UpgradeButton : MonoBehaviour
             upgradeData.currentStackCount += 1;
             UpgradeManager.Instance.ApplyUpgradeEffects(upgradeData.effects);
             UpgradeUI.Instance.UpdateCurrencyText();
-            Destroy(gameObject);
+            StartCoroutine(DestroyUpgrade());
         }
         else
         {
             descriptionText.text = "Insufficient Soul Essence";
             //descriptionText.color = Color.red;
         }
+    }
+
+    IEnumerator DestroyUpgrade()
+    {
+        Button b = GetComponentInChildren<Button>();
+        b.interactable = false;
+        // Remove all registered events first
+        EventTrigger[] triggers = GetComponentsInChildren<EventTrigger>();
+        foreach (EventTrigger trigger in triggers)
+        {
+            // Remove all registered events first
+            trigger.triggers.Clear();
+            // Then destroy the component
+            Destroy(trigger);
+        }
+        upgradeButtonAnimation.DestroyItem();
+        yield return new WaitForSeconds(0.3f);
+        Destroy(gameObject);
     }
 
     Color GetTierColor(Tier tier)

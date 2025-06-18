@@ -1,6 +1,7 @@
 // SoulEssencePickup.cs
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class SoulEssencePickup : MonoBehaviour
 {
@@ -24,9 +25,8 @@ public class SoulEssencePickup : MonoBehaviour
 
     private void OnEnable()
     {
-        transform.localScale = Vector3.zero;
-        LeanTween.scale(gameObject, new Vector3(0.3f, 0.3f, 0.3f), 1f).setEase(LeanTweenType.easeOutBack); // Smooth easing effect
-
+        transform.localScale = Vector3.zero; // Start from zero scale
+        transform.DOScale(new Vector3(0.3f, 0.3f, 0.3f), 1f).SetEase(Ease.OutBack); // Smooth easing effect
         //StartCoroutine(ScaleOverTime());
     }
 
