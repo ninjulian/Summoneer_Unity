@@ -41,7 +41,8 @@ public class UpgradeButtonAnimation : MonoBehaviour
         //rectTransform.DOAnchorPosY(0f, 1f, false).SetEase(Ease.OutBounce);
         spawnSequence.Append((transform.DOScaleY(1f, 0.2f)).SetEase(Ease.OutBack));
 
-        spawnSequence.Append((transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f)).SetEase(Ease.OutBack));
+        spawnSequence.Append(transform.DOScale(new Vector3(1f, 1f, 1f), Random.Range(0.1f, 0.3f)).SetEase(Ease.OutBack)
+);
     }
 
     public void DestroyItem()

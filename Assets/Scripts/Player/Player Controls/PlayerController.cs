@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
             //animator.SetBool("IsJumping", isJumping);
             jumpHeight = playerStats.jumpHeight;
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
-            Debug.Log("JUmping");
+            //Debug.Log("JUmping");
         }
        
     }

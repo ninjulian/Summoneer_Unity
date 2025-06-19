@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
+using System;
 
 
 public class SummlingManagerUI : MonoBehaviour
@@ -50,6 +52,8 @@ public class SummlingManagerUI : MonoBehaviour
     //private bool isMergeMode = false;
     //private bool isTransmuteMode = false;
 
+    public SummonButtonAnimation summonAnimation;
+    public SummonButtonAnimation replaceAnimation;
 
     public void Awake()
     {
@@ -61,6 +65,15 @@ public class SummlingManagerUI : MonoBehaviour
     {
         UpdateCost();
         UpdatePartyPanelLocation(SummonPos);
+
+        
+    }
+
+    private void OnDisable()
+    {   
+        summonButton.gameObject.SetActive(true);
+        manager.DeclineSummon();
+        summonConfirmationTab.gameObject.SetActive(false);
     }
 
     //Changes the location and parent of the Party Panel UI so ease of use and referencing
@@ -118,9 +131,13 @@ public class SummlingManagerUI : MonoBehaviour
 
             // Awlays shows confirmation tab
             summonConfirmationTab.SetActive(true);
-
             replaceSummling.SetActive(manager.isReplacing);
 
+            // Play Summon animation
+            summonAnimation.SummonOpenUI();
+
+            // Turns off summon button
+            summonButton.gameObject.SetActive(false);
 
         }
         else
@@ -138,7 +155,9 @@ public class SummlingManagerUI : MonoBehaviour
         if (manager.isReplacing)
         {
             replaceSummling.SetActive(true);
-            summonButton.SetActive(summonButton.activeInHierarchy);
+            //summonButton.SetActive(summonButton.activeInHierarchy);
+            StartCoroutine(EnableSummonButton(summonButton.activeInHierarchy));
+            replaceAnimation.replaceOpenUI();
         }
 
         //else
@@ -153,8 +172,11 @@ public class SummlingManagerUI : MonoBehaviour
     public void NotReplacingSummling()
     {
         replaceSummling.SetActive(!replaceSummling.activeInHierarchy);
-        summonButton.SetActive(!summonButton.activeInHierarchy);
-        manager.DeclineSummon();
+        //summonButton.SetActive(!summonButton.activeInHierarchy);
+        StartCoroutine(EnableSummonButton(!summonButton.activeInHierarchy));
+        manager.DeclineSummon();        
+        replaceAnimation.replaceCloseUI();
+       
     }
 
     // Confirmation Button with the Summon Button
@@ -166,15 +188,18 @@ public class SummlingManagerUI : MonoBehaviour
             return; 
         }
 
+        StartCoroutine(ConfirmSummonCoroutine());
+        StartCoroutine(EnableSummonButton(true));
+
         // Close confirmation tab
-        summonConfirmationTab.SetActive(false);
+        //summonConfirmationTab.SetActive(false);
 
         if (manager.isReplacing)
         {
             manager.ConfirmReplacement();
 
             // Hide replacement UI
-            replaceSummling.SetActive(false);
+            //replaceSummling.SetActive(false);
         }
         else
         {
@@ -187,22 +212,73 @@ public class SummlingManagerUI : MonoBehaviour
             border.SetActive(false);
         }
         selectedReplacement = false;
+
+      
+
     }
 
     // If the Player decides to not accept the Summling
+    //public void CancelSummon()
+    //{
+    //    // Closes confirmation page and takes away SE
+    //    manager.DeclineSummon();
+    //    summonConfirmationTab.SetActive(!summonConfirmationTab.activeInHierarchy);
+    //    //summonButton.SetActive(!manager.isReplacing);
+    //    StartCoroutine(EnableSummonButton(!manager.isReplacing));
+    //    selectedReplacement = false;
+    //    summonAnimation.SummonCloseUI();
+
+    //    foreach (GameObject border in selectBorder)
+    //    {
+    //        border.SetActive(false);
+    //    }
+    //}
+
     public void CancelSummon()
+    {
+        StartCoroutine(CancelSummonCoroutine());
+    }
+
+    public IEnumerator CancelSummonCoroutine()
     {
         // Closes confirmation page and takes away SE
         manager.DeclineSummon();
-        summonConfirmationTab.SetActive(!summonConfirmationTab.activeInHierarchy);
-        summonButton.SetActive(!manager.isReplacing);
+        
         selectedReplacement = false;
+        summonAnimation.SummonCloseUI();
+        yield return new WaitForSeconds(0.3f);
+        summonConfirmationTab.SetActive(false);
+        //summonButton.SetActive(!manager.isReplacing);
+        StartCoroutine(EnableSummonButton(true));
 
         foreach (GameObject border in selectBorder)
         {
             border.SetActive(false);
         }
+
+        
+
+       
     }
+
+    public IEnumerator ConfirmSummonCoroutine()
+    {
+
+        summonAnimation.SummonCloseUI();
+
+        //foreach (GameObject border in selectBorder)
+        //{
+        //    border.SetActive(false);
+        //}
+
+        yield return new WaitForSeconds(0.3f);
+
+        summonConfirmationTab.SetActive(false);
+        //summonButton.SetActive(!manager.isReplacing);
+        StartCoroutine(EnableSummonButton(true));
+    }
+
+
 
     //public void SelectSummling()
     //{
@@ -211,23 +287,25 @@ public class SummlingManagerUI : MonoBehaviour
 
     // Confirm Button in Manager page (Confirm Merge and Transmutation)
     public void ConfirmMTButton()
-    {   
-        transmuteText.text = "Transmute Summling";
-        mergeText.text = "Merge Summling";
-
-
+    {
         if (manager.isMerging)
         {
             PerformMerge();
+            // Reset merge state
+            manager.isMerging = false;
+            mergeText.text = "Merge Summling";
         }
         else if (manager.isTransmuting)
         {
             PerformTransmute();
+            // Reset transmute state
+            manager.isTransmuting = false;
+            transmuteText.text = "Transmute Summling";
         }
 
         ClearSelected();
-        
-        //Turns off confirm Button
+
+        // Turns off confirm Button
         confirmMTButton.SetActive(false);
 
         // Updates Party Panel UI
@@ -368,6 +446,8 @@ public class SummlingManagerUI : MonoBehaviour
         currentPageIndex++;
         SetPageActive(currentPageIndex, true);
         CheckPage();
+
+        //manager.DeclineSummon();
     }
 
     public void PreviousPage()
@@ -380,6 +460,7 @@ public class SummlingManagerUI : MonoBehaviour
         CheckPage();
 
         SetPageActive(currentPageIndex, true);
+        StartCoroutine(EnableSummonButton(true));
     }
 
     private void SetPageActive(int index, bool state)
@@ -451,6 +532,8 @@ public class SummlingManagerUI : MonoBehaviour
             // Deselect if already selected
             selectedIndices.Remove(slotIndex);
             selectBorder[slotIndex].SetActive(false);
+            // Returns to normal size
+            selectBorder[slotIndex].transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InBack);
         }
         else
         {
@@ -461,11 +544,16 @@ public class SummlingManagerUI : MonoBehaviour
                 int firstIndex = selectedIndices[0];
                 selectedIndices.RemoveAt(0);
                 selectBorder[firstIndex].SetActive(false);
+                ////Returns to normal size
+                //selectBorder[slotIndex].transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InBack);
+
             }
 
             // Add new selection
             selectedIndices.Add(slotIndex);
             selectBorder[slotIndex].SetActive(true);
+            //// Selected Size
+            //selectBorder[slotIndex].transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.1f).SetEase(Ease.InBack);
         }
 
         UpdateMergeConfirmation();
@@ -477,12 +565,19 @@ public class SummlingManagerUI : MonoBehaviour
         foreach (var index in selectedIndices)
         {
             selectBorder[index].SetActive(false);
+
+            // Returns to normal size
+            selectBorder[slotIndex].transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.InBack);
         }
         selectedIndices.Clear();
 
         // Set new selection
         selectedIndices.Add(slotIndex);
         selectBorder[slotIndex].SetActive(true);
+
+        //// Selected Size
+        //selectBorder[slotIndex].transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.1f).SetEase(Ease.InBack);
+
         UpdateTransmuteConfirmation();
     }
 
@@ -528,6 +623,13 @@ public class SummlingManagerUI : MonoBehaviour
         {
             confirmMTButton.SetActive(false);
         }
+    }
+
+    IEnumerator EnableSummonButton(bool b)
+    {
+        yield return new WaitForSeconds(0.3f);
+        summonButton.gameObject.SetActive(b);
+
     }
 
 

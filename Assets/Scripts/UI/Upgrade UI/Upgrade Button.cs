@@ -19,11 +19,13 @@ public class UpgradeButton : MonoBehaviour
     private int upgradePrice;
 
     private PlayerStats playerStats;
+    private PlayerStatUI playerStatsUI;
     private UpgradeButtonAnimation upgradeButtonAnimation;
 
     public void Awake()
     {
         playerStats = FindAnyObjectByType<PlayerStats>();
+        playerStatsUI = FindAnyObjectByType<PlayerStatUI>();
         upgradeButtonAnimation = GetComponent<UpgradeButtonAnimation>();
 
         upgradeButtonAnimation.SpawnItem();
@@ -120,6 +122,7 @@ public class UpgradeButton : MonoBehaviour
             upgradeData.currentStackCount += 1;
             UpgradeManager.Instance.ApplyUpgradeEffects(upgradeData.effects);
             UpgradeUI.Instance.UpdateCurrencyText();
+            playerStatsUI.UpdateStats();
             StartCoroutine(DestroyUpgrade());
         }
         else

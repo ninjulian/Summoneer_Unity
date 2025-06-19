@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -45,10 +46,10 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        systemAction.performed += _ => ToggleSystemUI();
+        //systemAction.performed += _ => ToggleSystemUI();
         pauseAction.performed += _ => TogglePauseUI();
 
-        systemAction.Enable();
+        //systemAction.Enable();
         pauseAction.Enable();
 
         UpdateCursorState();
@@ -101,8 +102,16 @@ public class UIManager : MonoBehaviour
 
     public void OnUpgradeDone()
     {
+        StartCoroutine(Finished());   
+    }
+
+    IEnumerator Finished()
+    {
+        OpenUI ui = upgradeUI.gameObject.GetComponent<OpenUI>();
+        ui.closeAnimation();
+        yield return new WaitForSeconds(0.2f);
         // Close the upgrade UI
-        ToggleUpgradeUI(); 
+        ToggleUpgradeUI();
         waveManager.CompleteWave();
         //waveManager.StartCountdown(); 
     }
