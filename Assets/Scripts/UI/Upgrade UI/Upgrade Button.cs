@@ -122,7 +122,12 @@ public class UpgradeButton : MonoBehaviour
             upgradeData.currentStackCount += 1;
             UpgradeManager.Instance.ApplyUpgradeEffects(upgradeData.effects);
             UpgradeUI.Instance.UpdateCurrencyText();
-            playerStatsUI.UpdateStats();
+
+            if (playerStatsUI != null) 
+            {
+                playerStatsUI.UpdateStats();
+            }
+            
             StartCoroutine(DestroyUpgrade());
         }
         else

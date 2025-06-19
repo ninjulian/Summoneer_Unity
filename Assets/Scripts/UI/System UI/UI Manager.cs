@@ -44,6 +44,17 @@ public class UIManager : MonoBehaviour
         SetPlayerInputs(true);
     }
 
+    private void Update()
+    {
+        // Simple Escape key check that works everywhere
+        if (!Application.isEditor && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            TogglePauseUI();
+        }
+
+        
+    }
+
     private void OnEnable()
     {
         //systemAction.performed += _ => ToggleSystemUI();
