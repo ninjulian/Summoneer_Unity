@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 using System.Collections;
 
 public class UpgradeManager : MonoBehaviour
-{   
+{
     // Singleton pattern, global access point
     public static UpgradeManager Instance;
 
@@ -25,6 +25,8 @@ public class UpgradeManager : MonoBehaviour
     [Header("References")]
     public Transform[] upgradeSlots;
     [SerializeField] private GameObject upgradeButtonPrefab;
+
+    // Summling Upgrade Modifiers
     private SummlingManager summlingManager;
     private List<StatModifier> summlingModifiers = new List<StatModifier>();
 
@@ -45,6 +47,10 @@ public class UpgradeManager : MonoBehaviour
     private float rerollCost = 1f;
     public bool hasRerolled = false;
 
+    // Upgrade Inventory, keeps track of Upgrades currently owned
+    public UpgradeInventory upgradeInventory;
+
+
     // Assigns the singleton instance. ONLY ONE EXISTS
     void Awake() => Instance = this;
 
@@ -52,10 +58,11 @@ public class UpgradeManager : MonoBehaviour
     {
         waveManager = GetComponent<WaveManager>();
         summlingManager = GetComponent<SummlingManager>();
+        upgradeInventory = GetComponent<UpgradeInventory>();
     }
 
     public void GenerateUpgrades(int currentWave)
-    {   
+    {
         // Update reroll cost
         CalculateRerollCost();
 
@@ -179,11 +186,12 @@ public class UpgradeManager : MonoBehaviour
 
     // Applies  effect to corresponding stat
     public void ApplyUpgradeEffects(List<StatModifier> effects)
-    {
+    {   
+
         foreach (var effect in effects)
         {
             switch (effect.statType)
-            {   
+            {
 
                 //Player Modifiers
                 //Survival
@@ -193,7 +201,7 @@ public class UpgradeManager : MonoBehaviour
                     break;
                 case StatType.MaxHealth:
                     ApplyEffect(effect, ref playerStats.maxHealth);
-                    
+
                     break;
                 case StatType.Defense:
                     ApplyEffect(effect, ref playerStats.defense);
@@ -257,7 +265,7 @@ public class UpgradeManager : MonoBehaviour
                     break;
             }
 
-            // ADD THIS: Check if the effect has a DOT type
+            // Check if the effect has a DOT type
             if (effect.DOTType != DOTType.None)
             {
                 ApplyDOTEffect(effect, effect.DOTType);
@@ -306,7 +314,7 @@ public class UpgradeManager : MonoBehaviour
         {
             var stats = summling.GetComponent<SummlingStats>();
             if (stats != null)
-            {   
+            {
                 // Get current modifier
                 float currentValue = statSelector(stats);
 
@@ -355,7 +363,7 @@ public class UpgradeManager : MonoBehaviour
     }
 
     public void RerollButton()
-    {   
+    {
         if (playerStats.soulEssence >= rerollCost)
         {
             hasRerolled = true;
@@ -366,7 +374,7 @@ public class UpgradeManager : MonoBehaviour
             GenerateUpgrades(waveManager.currentWave);
 
             //UpgradeUI.Instance.UpdateCurrencyText();
-        
+
         }
 
     }
@@ -381,13 +389,36 @@ public class UpgradeManager : MonoBehaviour
             rerollText.text = rerollCost.ToString();
         }
         else
-        {   
+        {
             rerollCost = Mathf.Ceil(0.70f * waveManager.currentWave) + rerollCost;
             rerollText.text = rerollCost.ToString();
         }
 
-       
+
 
     }
 
+    //public void AddUpgrade(UpgradeData upgrade)
+    //{   
+       
+
+    //    // If the upgrade is already owned, add 1 to its count
+    //    if (upgradeInventory.ownedUpgrades.ContainsKey(upgrade.upgradeName))
+    //    {
+    //        upgradeInventory.ownedUpgrades[upgrade.upgradeName]++;
+    //    }
+    //    // If the upgrade is not owned, add it with a count of 1
+    //    else
+    //    {
+    //        upgradeInventory.ownedUpgrades.Add(upgrade.upgradeName, 1);
+    //    }
+
+       
+    //}
+
+    public void AddOwnedUpgrade(UpgradeData upgrade)
+    {
+       upgradeInventory.AddUpgrade(upgrade.upgradeName);
+        
+    }
 }

@@ -120,6 +120,8 @@ public class UpgradeButton : MonoBehaviour
         {
             playerStats.SpendSoulEssence(upgradePrice);
             upgradeData.currentStackCount += 1;
+
+            UpgradeManager.Instance.AddOwnedUpgrade(upgradeData);
             UpgradeManager.Instance.ApplyUpgradeEffects(upgradeData.effects);
             UpgradeUI.Instance.UpdateCurrencyText();
 
@@ -175,9 +177,12 @@ public class UpgradeButton : MonoBehaviour
 
             return upgradeData.currentStackCount <= upgradeData.stackLimit;
 
+        } else
+        {
+            return false;
         }
 
-        return false;
+            
     }
 
 
