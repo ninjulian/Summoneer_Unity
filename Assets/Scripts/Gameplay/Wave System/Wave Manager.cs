@@ -108,7 +108,7 @@ public class WaveManager : MonoBehaviour
         enemiesAlive--;
 
         //If enemies alive is 0 and all of enemies are spawned
-        if (enemiesAlive <= 0 && enemiesSpawned >= targetEnemies)
+        if (enemiesAlive == 0 && enemiesSpawned >= targetEnemies)
         {
             // Show upgrade UI instead of completing wave immediately
             StartCoroutine(ShowUpgradeUICoroutine());
