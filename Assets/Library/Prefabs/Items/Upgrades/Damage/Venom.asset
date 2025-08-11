@@ -15,8 +15,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 25e1ffbc1f27aa546b64992c25db9b0d, type: 3}
   upgradeName: Venom
   category: 2
-  stackLimit: 0
-  currentStackCount: 1
+  stackLimit: 1
+  currentStackCount: 0
   tier: 2
   baseCost: 25
   effects:

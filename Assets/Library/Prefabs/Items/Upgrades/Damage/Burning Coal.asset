@@ -15,8 +15,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: e8e9a5e7f393d704db8ad5f1063960b7, type: 3}
   upgradeName: Burning Coal
   category: 2
-  stackLimit: 0
-  currentStackCount: 2
+  stackLimit: 1
+  currentStackCount: 0
   tier: 2
   baseCost: 20
   effects:

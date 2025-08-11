@@ -59,6 +59,11 @@ public class UpgradeManager : MonoBehaviour
         waveManager = GetComponent<WaveManager>();
         summlingManager = GetComponent<SummlingManager>();
         upgradeInventory = GetComponent<UpgradeInventory>();
+
+        foreach (var upgrade in allUpgrades)
+        {
+            upgrade.currentStackCount = 0; // Initialize current stack count
+        }
     }
 
     public void GenerateUpgrades(int currentWave)
@@ -395,7 +400,7 @@ public class UpgradeManager : MonoBehaviour
         }
 
 
-
+            
     }
 
     //public void AddUpgrade(UpgradeData upgrade)

@@ -32,18 +32,22 @@ public class UpgradeData : ScriptableObject
     public string upgradeName;
     [Tooltip("Upgrade Category")] public UpgradeCategory category;
     [Tooltip("Stack limit count. 0 means no limit")] public int stackLimit = 0;
-    [HideInInspector]   public int currentStackCount;
+    [Tooltip("Number of owned upgrades")] public int currentStackCount;
     [Tooltip("Tier of the Upgrade")] public Tier tier;
     [Tooltip("Base Upgrade cost")] public int baseCost;
     [Tooltip("Upgrade Modifiers")] public List<StatModifier> effects;
     [Tooltip("Descrition of the Upgrade effects")] public string descriptionText;
 
-    [System.Serializable]public struct StatModifier
+    [System.Serializable]
+    public struct StatModifier
     {
         [Tooltip("What stat value will be affected? " +
-        "Example: If you want Damage to increase use Damage")] public StatType statType;
+        "Example: If you want Damage to increase use Damage")]
+        public StatType statType;
         [Tooltip("Value of effect. Example: 10 if you want +10 Damage")] public float value;
         [Tooltip("Use decimal equivalents if Percentage.")] public bool isPercentage;
         [Tooltip("Damage overtime Type")] public DOTType DOTType;
     }
+
+
 }
