@@ -157,7 +157,7 @@ public class SummlingManagerUI : MonoBehaviour
             replaceSummling.SetActive(true);
             //summonButton.SetActive(summonButton.activeInHierarchy);
             StartCoroutine(EnableSummonButton(summonButton.activeInHierarchy));
-            replaceAnimation.replaceOpenUI();
+            replaceAnimation.ReplaceOpenUI();
         }
 
         //else
@@ -175,7 +175,7 @@ public class SummlingManagerUI : MonoBehaviour
         //summonButton.SetActive(!summonButton.activeInHierarchy);
         StartCoroutine(EnableSummonButton(!summonButton.activeInHierarchy));
         manager.DeclineSummon();        
-        replaceAnimation.replaceCloseUI();
+        replaceAnimation.ReplaceCloseUI();
        
     }
 
@@ -576,7 +576,7 @@ public class SummlingManagerUI : MonoBehaviour
         selectBorder[slotIndex].SetActive(true);
 
         //// Selected Size
-        //selectBorder[slotIndex].transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.1f).SetEase(Ease.InBack);
+        selectBorder[slotIndex].transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.1f).SetEase(Ease.InBack);
 
         UpdateTransmuteConfirmation();
     }

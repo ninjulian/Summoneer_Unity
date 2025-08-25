@@ -29,9 +29,13 @@ public class OpenUI : MonoBehaviour
     }
 
     public void closeAnimation()
-    {   
-        closeSequence = DOTween.Sequence();
-        closeSequence.Append(transform.DOScaleX(0.1f, 0.1f));
-        closeSequence.Append(transform.DOScaleY(0.1f, 0.1f));
+    {
+        if (gameObject != null)
+        {
+            closeSequence = DOTween.Sequence();
+            closeSequence.Append(transform.DOScaleX(0.1f, 0.1f));
+            closeSequence.Append(transform.DOScaleY(0.1f, 0.1f));
+
+        }
     }
 }
