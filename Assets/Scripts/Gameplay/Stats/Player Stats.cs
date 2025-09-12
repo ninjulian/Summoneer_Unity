@@ -38,6 +38,11 @@ public class PlayerStats : StatClass
 
     public UIManager uiManager;
 
+    //Command Variables
+    public bool isGodMode = false;
+    private float savedMaxHealth;
+    private float savedCurrentHealth;
+
     private void Awake()
     {
         // Calls the start function from StatClass parent class
@@ -77,6 +82,12 @@ public class PlayerStats : StatClass
 
     public override void TakeDamage(float incomingDamage, DamageHandler.DOTType? dotType = null)
     {
+        if (isGodMode)
+        {
+            Debug.Log("Damage prevented by God Mode");
+            return; // Skip damage processing if in god mode
+        }
+
         currentHealth = Mathf.Clamp(currentHealth - incomingDamage, 0f, maxHealth);
 
         if (currentHealth <= 0f)
@@ -93,6 +104,7 @@ public class PlayerStats : StatClass
         float bonusMultiplier = CheckLuckBonus() ? 2f : 1f;
         soulEssence += soulEssenceGained * sePickUpRate * bonusMultiplier;
     }
+
 
     public void SpendSoulEssence(float cost)
     {
@@ -145,6 +157,33 @@ public class PlayerStats : StatClass
         // Chance equals luck percentage (e.g., 15 luck = 15% chance)
         float randomValue = Random.Range(0f, 100f);
         return randomValue <= Mathf.Clamp(luck, 0f, 100f);
+    }
+
+
+    // Debug Commands
+
+    public void AddSoulEssence(float soulEssenceGained)
+    {
+        soulEssence += soulEssenceGained;
+    }
+
+    public void ToggleGodMode(bool val)
+    {
+
+        if (val)
+        {
+            savedCurrentHealth = currentHealth;
+            savedMaxHealth = maxHealth;
+
+            maxHealth = float.PositiveInfinity;
+            currentHealth = float.PositiveInfinity;
+        }
+        else
+        {
+            currentHealth = savedCurrentHealth;
+            maxHealth = savedMaxHealth;
+        }
+
     }
 
     //public float GetDamage()
