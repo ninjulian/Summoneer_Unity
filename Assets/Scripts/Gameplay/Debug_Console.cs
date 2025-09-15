@@ -145,6 +145,9 @@ public class Debug_Console : MonoBehaviour
             AddOutputLine("  godmode - Toggle invincibility");
             AddOutputLine("  quit - Quit the game");
             AddOutputLine("  givemoney <amount> - Adds soul essence");
+            AddOutputLine("  set <stat> <value> - Set player stat (health, damage, critchance, critmultiplier, jumpheight, dashstrength, dashcooldown, luck, affinity, pickupradius, firerate, focusduration)");
+            AddOutputLine("  get currentstats - Display current player stats");
+
         });
 
         // Clear command
@@ -251,6 +254,81 @@ public class Debug_Console : MonoBehaviour
                 return;
             }
         });
+
+
+        commandDictionary.Add("get currentstats", (parts) =>
+        {
+            PlayerStats playerStats = FindAnyObjectByType<PlayerStats>();
+
+            AddOutputLine("Health: " + playerStats.currentHealth + "/" + playerStats.maxHealth);
+            AddOutputLine("Damage: " + playerStats.damage);
+            AddOutputLine("Critical Chance: " + playerStats.critChance);
+            AddOutputLine("Critical Multiplier:" + playerStats.critChance);
+            AddOutputLine("Fire Rate: " + playerStats.fireRate);
+            AddOutputLine("Movement Speed: " + playerStats.movementSpeed);
+            AddOutputLine("Jump Height: " + playerStats.jumpHeight);
+            AddOutputLine("Dash Strength: " + playerStats.dashStrength);
+            AddOutputLine("Dash Cooldown: " + playerStats.dashCooldown);
+            AddOutputLine("Luck: " + playerStats.luck);
+            AddOutputLine("Affinity: " + playerStats.affinity);
+            AddOutputLine("Focus Duration: " + playerStats.focusDuration);
+
+        });
+
+        //commandDictionary.Add("sethealth", (parts) =>
+
+        //{
+        //    if (parts.Length < 2)
+        //    {
+        //        AddOutputLine("Usage: sethealth <value>");
+        //        return;
+        //    }
+
+        //    if (int.TryParse(parts[1], out int amount))
+        //    {
+        //        PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+        //        if (playerStats != null)
+        //        {   
+
+        //            playerStats.maxHealth = amount;
+
+        //            playerStats.currentHealth = playerStats.maxHealth;
+        //            AddOutputLine($"Updated Health: {playerStats.currentHealth}");
+        //        }
+        //        else
+        //        {
+        //            AddOutputLine("PlayerStats component not found.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        AddOutputLine("Invalid amount. Usage: sethealth <value>");
+        //    }
+        //});
+
+        // Stat value changer command
+        commandDictionary.Add("set", (parts) =>
+
+        {
+            if (parts.Length < 2)
+            {
+                AddOutputLine("Usage: set <stat> <value>");
+                return;
+            }
+            
+            string stat = parts[1].ToLower().ToString();
+            float statValue = Convert.ToSingle(parts[2]);
+
+            PlayerStats playerstats = FindObjectOfType<PlayerStats>();
+            AddOutputLine("Stat to set: " + stat);
+
+            playerstats.SetStat(stat, statValue);
+
+
+        });
+
+        
+
     }
 
     // Adds output to unity log

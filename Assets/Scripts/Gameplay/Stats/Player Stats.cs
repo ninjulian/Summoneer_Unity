@@ -186,6 +186,61 @@ public class PlayerStats : StatClass
 
     }
 
+    public void SetStat(string statName, float value)
+    {
+        switch (statName.ToLower())
+        {
+            case "health":
+                maxHealth = value;
+                currentHealth = Mathf.Min(currentHealth, maxHealth);
+                break;
+            case "damage":
+                damage = value;
+                break;
+            case "critchance":
+                critChance = value;
+                break;
+            case "critmultiplier":
+                critMultiplier = value;
+                break;
+            case "speed":
+                movementSpeed = value;
+                break;
+            case "jumpheight":
+                jumpHeight = value;
+                break;
+            case "dashstrength":
+                dashStrength = value;
+                break;
+            case "dashcooldown":
+                dashCooldown = value;
+                break;
+            case "luck":
+                luck = value;
+                break;
+            case "affinity":
+                affinity = value;
+                break;
+            case "pickupradius":
+                pickUpRadius = value;
+                break;
+            case "firedelay":
+                fireRate = value;
+                break;
+            case "focusduration":
+                focusDuration = value;
+                break;
+            default:
+                Debug.LogWarning($"Stat '{statName}' not recognized.");
+                break;
+        }
+    }
+
+    public void CurrentStats()
+    {
+
+    }
+
     //public float GetDamage()
     //{
     //    float damageDealt;

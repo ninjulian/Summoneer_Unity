@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    private float playerSpeed;
+    public float playerSpeed;
     private float jumpHeight;
     public float gravityValue = -9.81f;
     private Vector3 movementDir; 
