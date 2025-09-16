@@ -340,7 +340,7 @@ public class Debug_Console : MonoBehaviour
                 AddOutputLine("Usage: set <stat> <value>");
                 return;
             }
-            
+
             string stat = parts[1].ToLower().ToString();
             float statValue = Convert.ToSingle(parts[2]);
 
@@ -353,7 +353,7 @@ public class Debug_Console : MonoBehaviour
         });
 
         // Spawning Entity Command
-        commandDictionary.Add("spawn",  (parts) =>
+        commandDictionary.Add("spawn", (parts) =>
         {
             if (parts.Length < 2)
             {
@@ -364,7 +364,7 @@ public class Debug_Console : MonoBehaviour
             GameObject player = GameObject.Find("Player");
             Transform playerLocation = player.transform;
 
-           
+
             if (int.TryParse(parts[2], out int amount))
             {
                 AddOutputLine("Spawning " + amount);
@@ -378,7 +378,28 @@ public class Debug_Console : MonoBehaviour
 
         });
 
-        
+        // Removes specific Entity
+        commandDictionary.Add("despawn", (parts) =>
+        {
+
+            if (int.TryParse(parts[2], out int amount))
+            {
+                AddOutputLine($"Despawning {amount} {parts[1]} ");
+
+              
+                    debug_Spawn_Entity.DespawnEntity(parts[1], amount);
+                
+            }
+        });
+
+        // Clears all spawned entities
+        commandDictionary.Add("clearall", (parts) =>
+        {
+            AddOutputLine("Clearing spawned Entities)");
+            debug_Spawn_Entity.ClearEntities();
+            AddOutputLine("Removed " + debug_Spawn_Entity.spawnedPrefabs.Count + "Entities");
+        });
+
 
     }
 

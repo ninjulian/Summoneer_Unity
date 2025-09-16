@@ -29,19 +29,27 @@ public class Debug_Spawn_Entity : MonoBehaviour
     // Clearing Logic
 
     public void DespawnEntity(string entityName, int count)
-    {
+    {   
+
         foreach (GameObject prefab in spawnedPrefabs)
-        {   
-            if (prefab.name == entityName)
+        {
+            for (int i = 0; i > count; i++)
             {
-                for (int i = 0; i > count; i++)
+                if (prefab.name == entityName)
                 {
                     Destroy(prefab);
                 }
             }
-
         }
+           
+    }
 
+    public void ClearEntities()
+    {
+        foreach (GameObject prefab in spawnedPrefabs)
+        {
+            Destroy(prefab);
+        }
     }
 
 }
