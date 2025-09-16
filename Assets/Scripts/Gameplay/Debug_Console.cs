@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
+[RequireComponent(typeof(Debug_Spawn_Entity))]
 public class Debug_Console : MonoBehaviour
 {
     [Header("Console Settings")]
@@ -16,8 +18,18 @@ public class Debug_Console : MonoBehaviour
     private Dictionary<string, Action<string[]>> commandDictionary = new Dictionary<string, Action<string[]>>();
     private bool focusOnTextfield = false;
 
+    public PlayerInput playerInput;
+    public PlayerInput consoleInput;
+
+     public InputAction toggleConsoleAction;
+
+    private Debug_Spawn_Entity debug_Spawn_Entity;
+
+
+
     void Start()
     {
+        debug_Spawn_Entity = GetComponent<Debug_Spawn_Entity>();
         // Register default commands
         RegisterCommands();
 
@@ -28,6 +40,19 @@ public class Debug_Console : MonoBehaviour
 
     void Update()
     {
+        // Toggle console with "`" key
+        //if (toggleConsoleAction.triggered)
+        //{
+        //    playerInput.enabled = !playerInput.enabled;
+        //    consoleInput.enabled = !consoleInput.enabled;
+
+        //    showConsole = !showConsole;
+        //    focusOnTextfield = showConsole;
+
+        //    // Lock/unlock cursor based on console state
+        //    Cursor.lockState = showConsole ? CursorLockMode.None : CursorLockMode.Locked;
+        //    Cursor.visible = showConsole;
+        //}
         // Toggle console with "`" key
         if (Input.GetKeyDown(toggleKey))
         {
@@ -323,6 +348,32 @@ public class Debug_Console : MonoBehaviour
             AddOutputLine("Stat to set: " + stat);
 
             playerstats.SetStat(stat, statValue);
+
+
+        });
+
+        // Spawning Entity Command
+        commandDictionary.Add("spawn",  (parts) =>
+        {
+            if (parts.Length < 2)
+            {
+                AddOutputLine("Usage: spawn <entity name> <count>");
+                return;
+            }
+
+            GameObject player = GameObject.Find("Player");
+            Transform playerLocation = player.transform;
+
+           
+            if (int.TryParse(parts[2], out int amount))
+            {
+                AddOutputLine("Spawning " + amount);
+
+                for (int i = 0; i < amount; i++)
+                {
+                    debug_Spawn_Entity.SpawnEntity(parts[1], playerLocation);
+                }
+            }
 
 
         });
