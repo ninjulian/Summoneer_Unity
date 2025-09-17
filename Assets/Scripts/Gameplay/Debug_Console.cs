@@ -417,15 +417,89 @@ public class Debug_Console : MonoBehaviour
         // Control Waves Command
         commandDictionary.Add("setwave", (parts) =>
         {
-            WaveManager waveManager = FindObjectOfType<WaveManager>();
+            if (parts.Length < 2)
+            {
+                AddOutputLine("Usage: setwave <waveNumber>");
+                return;
+            }
 
+            if (!int.TryParse(parts[1], out int waveNumber) || waveNumber < 1)
+            {
+                AddOutputLine("Invalid wave number. Usage: setwave <waveNumber>");
+                return;
+            }
+
+            // Destroy all enemy tags
+            string enemyTag = "Enemy";
+            var enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+            int destroyedCount = 0;
+            foreach (var enemy in enemies)
+            {
+                Destroy(enemy);
+                destroyedCount++;
+            }
+            AddOutputLine($"Destroyed {destroyedCount} enemies with tag '{enemyTag}'.");
+
+            // Find WaveManager
+            WaveManager waveManager = FindObjectOfType<WaveManager>();
+            if (waveManager == null)
+            {
+                AddOutputLine("WaveManager not found.");
+                return;
+            }
+
+            // Resets the WaveSpawner state
+            var waveSpawner = waveManager.GetComponent<WaveSpawner>();
+            if (waveSpawner != null)
+            {
+                waveSpawner.StopAllCoroutines();
+                waveSpawner.isSpawning = false;
+                waveManager.enemiesAlive = 0;
+                waveManager.enemiesSpawned = 0;
+            }
             
+
+            waveManager.currentWave = waveNumber - 1; // -1 because StartNextWave() increments it
+            waveManager.StartNextWave();
+            AddOutputLine($"Set wave to {waveNumber} and started the wave.");
         });
 
         commandDictionary.Add("nextwave", (parts) =>
         {
-            
+            // Destroy all enemy tags
+            string enemyTag = "Enemy";
+            var enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+            int destroyedCount = 0;
+            foreach (var enemy in enemies)
+            {
+                Destroy(enemy);
+                destroyedCount++;
+            }
+            AddOutputLine($"Destroyed {destroyedCount} enemies with tag '{enemyTag}'.");
+
+            // Find WaveManager
+            WaveManager waveManager = FindObjectOfType<WaveManager>();
+            if (waveManager == null)
+            {
+                AddOutputLine("WaveManager not found.");
+                return;
+            }
+
+            // Resets the WaveSpawner state
+            var waveSpawner = waveManager.GetComponent<WaveSpawner>();
+            if (waveSpawner != null)
+            {
+                waveSpawner.StopAllCoroutines();
+                waveSpawner.isSpawning = false;
+                waveManager.enemiesAlive = 0;
+                waveManager.enemiesSpawned = 0;
+            }
+
+
+            waveManager.StartNextWave();
+            AddOutputLine($"Starting Wave {waveManager.currentWave + 1}");
         });
+    
 
 
         // Summling Party Cheats
