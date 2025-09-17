@@ -172,6 +172,9 @@ public class Debug_Console : MonoBehaviour
             AddOutputLine("  givemoney <amount> - Adds soul essence");
             AddOutputLine("  set <stat> <value> - Set player stat (health, damage, critchance, critmultiplier, jumpheight, dashstrength, dashcooldown, luck, affinity, pickupradius, firerate, focusduration)");
             AddOutputLine("  get currentstats - Display current player stats");
+            AddOutputLine("  spawn <entity name> <count> - Spawn entities at player location");
+            AddOutputLine("  despawn <entity name> <count> - Despawn specific number of entities");
+            AddOutputLine("  clearall - Clear all spawned entities");
 
         });
 
@@ -374,21 +377,31 @@ public class Debug_Console : MonoBehaviour
                     debug_Spawn_Entity.SpawnEntity(parts[1], playerLocation);
                 }
             }
+            else
+            {
+                AddOutputLine("Invalid count parameter");
+            }
 
 
         });
 
-        // Removes specific Entity
+        // Remove specfic spawned entities command
         commandDictionary.Add("despawn", (parts) =>
         {
+            if (parts.Length < 3)
+            {
+                AddOutputLine("Usage: despawn <entity name> <count>");
+                return;
+            }
 
             if (int.TryParse(parts[2], out int amount))
             {
-                AddOutputLine($"Despawning {amount} {parts[1]} ");
-
-              
-                    debug_Spawn_Entity.DespawnEntity(parts[1], amount);
-                
+                AddOutputLine($"Despawning {amount} {parts[1]}");
+                debug_Spawn_Entity.DespawnEntity(parts[1], amount);
+            }
+            else
+            {
+                AddOutputLine("Invalid count parameter");
             }
         });
 
@@ -400,6 +413,36 @@ public class Debug_Console : MonoBehaviour
             AddOutputLine("Removed " + debug_Spawn_Entity.spawnedPrefabs.Count + "Entities");
         });
 
+
+        // Control Waves Command
+        commandDictionary.Add("setwave", (parts) =>
+        {
+            WaveManager waveManager = FindObjectOfType<WaveManager>();
+
+            
+        });
+
+        commandDictionary.Add("nextwave", (parts) =>
+        {
+            
+        });
+
+
+        // Summling Party Cheats
+        commandDictionary.Add("summling", (parts) =>
+        {
+
+
+
+        });
+
+        // Upgrade Editor Command
+        commandDictionary.Add("upgrade", (parts) =>
+        {
+
+
+
+        });
 
     }
 

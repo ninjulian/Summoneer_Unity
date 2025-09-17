@@ -29,19 +29,32 @@ public class Debug_Spawn_Entity : MonoBehaviour
     // Clearing Logic
 
     public void DespawnEntity(string entityName, int count)
-    {   
+    {
+        // Find all matching entities in the spawnedPrefabs list
+        List<GameObject> entitiesToRemove = new List<GameObject>();
 
-        foreach (GameObject prefab in spawnedPrefabs)
+        foreach (GameObject spawned in spawnedPrefabs)
         {
-            for (int i = 0; i > count; i++)
+            if (spawned != null && spawned.name.StartsWith(entityName))
             {
-                if (prefab.name == entityName)
-                {
-                    Destroy(prefab);
-                }
+                entitiesToRemove.Add(spawned);
             }
         }
-           
+
+        // Limit to the requested count
+        int removeCount = Mathf.Min(count, entitiesToRemove.Count);
+
+        // Remove the specified number of entities
+        for (int i = 0; i < removeCount; i++)
+        {
+            if (entitiesToRemove[i] != null)
+            {
+                Destroy(entitiesToRemove[i]);
+                spawnedPrefabs.Remove(entitiesToRemove[i]);
+            }
+        }
+
+        Debug.Log($"Despawned {removeCount} of {entityName}");
     }
 
     public void ClearEntities()
