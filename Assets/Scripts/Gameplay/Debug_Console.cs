@@ -3,63 +3,51 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
+// Ensures this component is always attached with Debug_Spawn_Entity
 [RequireComponent(typeof(Debug_Spawn_Entity))]
 public class Debug_Console : MonoBehaviour
 {
     [Header("Console Settings")]
-    public KeyCode toggleKey = KeyCode.BackQuote;
-    public bool showConsole = false;
-    public float consoleWidth = 400f;
-    public int maxHistoryLines = 50;
+    public KeyCode toggleKey = KeyCode.BackQuote; // Key to toggle the console
+    public bool showConsole = false;              // Is the console currently visible?
+    public float consoleWidth = 400f;             // Width of the console window
+    public int maxHistoryLines = 50;              // Max lines to keep in output history
 
-    private string inputText = "";
-    private Vector2 scrollPosition = Vector2.zero;
-    private List<string> outputHistory = new List<string>();
-    private Dictionary<string, Action<string[]>> commandDictionary = new Dictionary<string, Action<string[]>>();
-    private bool focusOnTextfield = false;
+    private string inputText = "";                // Current input in the text field
+    private Vector2 scrollPosition = Vector2.zero;// Scroll position for output history
+    private List<string> outputHistory = new List<string>(); // Stores console output lines
+    private Dictionary<string, Action<string[]>> commandDictionary = new Dictionary<string, Action<string[]>>(); // Maps command names to actions
+    private bool focusOnTextfield = false;        // Should the input field be focused?
 
-    public PlayerInput playerInput;
-    public PlayerInput consoleInput;
+    public PlayerInput playerInput;               // Reference to player input (for toggling)
+    public PlayerInput consoleInput;              // Reference to console input (for toggling)
+    public InputAction toggleConsoleAction;       // (Unused) InputAction for toggling
 
-     public InputAction toggleConsoleAction;
-
-    private Debug_Spawn_Entity debug_Spawn_Entity;
-
-
+    private Debug_Spawn_Entity debug_Spawn_Entity; // Reference to entity spawner
+    private Debug_Upgrades debug_Upgrades;         // Reference to upgrades debug helper
 
     void Start()
     {
+        // Get required components
         debug_Spawn_Entity = GetComponent<Debug_Spawn_Entity>();
-        // Register default commands
+        debug_Upgrades = GetComponent<Debug_Upgrades>();
+        // Register all available commands
         RegisterCommands();
 
-        // Add welcome message
+        // Show welcome messages
         AddOutputLine("Debug Console Initialized. Press ` to toggle.");
         AddOutputLine("Type 'help' for available commands.");
     }
 
     void Update()
     {
-        // Toggle console with "`" key
-        //if (toggleConsoleAction.triggered)
-        //{
-        //    playerInput.enabled = !playerInput.enabled;
-        //    consoleInput.enabled = !consoleInput.enabled;
-
-        //    showConsole = !showConsole;
-        //    focusOnTextfield = showConsole;
-
-        //    // Lock/unlock cursor based on console state
-        //    Cursor.lockState = showConsole ? CursorLockMode.None : CursorLockMode.Locked;
-        //    Cursor.visible = showConsole;
-        //}
-        // Toggle console with "`" key
+        // Toggle the console when the toggle key is pressed
         if (Input.GetKeyDown(toggleKey))
         {
             showConsole = !showConsole;
             focusOnTextfield = showConsole;
 
-            // Lock/unlock cursor based on console state
+            // Lock or unlock the cursor based on console state
             Cursor.lockState = showConsole ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = showConsole;
         }
@@ -67,16 +55,16 @@ public class Debug_Console : MonoBehaviour
 
     void OnGUI()
     {
-        if (!showConsole) return;
+        if (!showConsole) return; // Only draw if console is visible
 
-        // Draw console background
+        // Draw the console background
         GUI.Box(new Rect(0, 0, consoleWidth, Screen.height), "");
 
-        // Draw output history with scroll view
+        // Draw the output history in a scrollable area
         GUILayout.BeginArea(new Rect(5, 5, consoleWidth - 10, Screen.height - 40));
         scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(consoleWidth - 10), GUILayout.Height(Screen.height - 40));
 
-        // Display all output lines
+        // Display each line in the output history
         for (int i = 0; i < outputHistory.Count; i++)
         {
             GUILayout.Label(outputHistory[i]);
@@ -85,29 +73,30 @@ public class Debug_Console : MonoBehaviour
         GUILayout.EndScrollView();
         GUILayout.EndArea();
 
-        // Draw input field at the bottom
+        // Draw the input field and submit button at the bottom
         GUILayout.BeginArea(new Rect(5, Screen.height - 30, consoleWidth - 10, 25));
         GUILayout.BeginHorizontal();
 
         GUI.SetNextControlName("ConsoleInput");
         inputText = GUILayout.TextField(inputText, GUILayout.Width(consoleWidth - 80));
 
-        // Focus on textfield if needed
+        // Focus the input field if needed
         if (focusOnTextfield)
         {
             GUI.FocusControl("ConsoleInput");
             focusOnTextfield = false;
         }
 
+        // Handle submit button or Enter key
         if (GUILayout.Button("Submit", GUILayout.Width(70)) || (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return))
         {
             if (!string.IsNullOrEmpty(inputText))
             {
-                ProcessCommand(inputText);
+                ProcessCommand(inputText); // Process the entered command
                 inputText = "";
                 focusOnTextfield = true;
 
-                // Scroll to bottom after new input
+                // Scroll to the bottom after new input
                 scrollPosition.y = Mathf.Infinity;
             }
         }
@@ -116,24 +105,23 @@ public class Debug_Console : MonoBehaviour
         GUILayout.EndArea();
     }
 
+    // Processes a command string entered by the user
     void ProcessCommand(string command)
     {
-        // Add command to output
-        AddOutputLine("> " + command);
+        AddOutputLine("> " + command); // Echo the command
 
         if (string.IsNullOrWhiteSpace(command))
             return;
 
-        // Split command into parts
+        // Split the command into parts (by spaces)
         string[] parts = command.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        string commandName = parts[0].ToLower();
+        string commandName = parts[0].ToLower(); // First word is the command
 
-        // Check if command exists
+        // Check if the command exists and execute it
         if (commandDictionary.ContainsKey(commandName))
         {
             try
             {
-                // Execute command
                 commandDictionary[commandName].Invoke(parts);
             }
             catch (Exception e)
@@ -147,20 +135,24 @@ public class Debug_Console : MonoBehaviour
         }
     }
 
+    // Adds a line to the output history and trims if necessary
     void AddOutputLine(string line)
     {
         outputHistory.Add(line);
 
-        // Limit the number of lines
+        // Remove oldest lines if over the max
         while (outputHistory.Count > maxHistoryLines)
         {
             outputHistory.RemoveAt(0);
         }
     }
 
+    // Registers all available console commands
     void RegisterCommands()
     {
-        // Help command
+        // Each command is registered with a lambda that implements its logic
+
+        // Help command: lists all available commands
         commandDictionary.Add("help", (parts) =>
         {
             AddOutputLine("Available commands:");
@@ -175,17 +167,16 @@ public class Debug_Console : MonoBehaviour
             AddOutputLine("  spawn <entity name> <count> - Spawn entities at player location");
             AddOutputLine("  despawn <entity name> <count> - Despawn specific number of entities");
             AddOutputLine("  clearall - Clear all spawned entities");
-
         });
 
-        // Clear command
+        // Clear command: clears the output history
         commandDictionary.Add("clear", (parts) =>
         {
             outputHistory.Clear();
             AddOutputLine("Console cleared.");
         });
 
-        // Time scale command
+        // Timescale command: sets or displays the current time scale
         commandDictionary.Add("timescale", (parts) =>
         {
             if (parts.Length < 2)
@@ -206,8 +197,7 @@ public class Debug_Console : MonoBehaviour
             }
         });
 
-
-        // Quit command
+        // Quit command: exits the game or stops play mode in editor
         commandDictionary.Add("quit", (parts) =>
         {
             AddOutputLine("Quitting application...");
@@ -218,7 +208,7 @@ public class Debug_Console : MonoBehaviour
 #endif
         });
 
-        // Add money
+        // Givesoul command: adds soul essence to the player
         commandDictionary.Add("givesoul", (parts) =>
         {
             if (parts.Length < 2)
@@ -246,10 +236,9 @@ public class Debug_Console : MonoBehaviour
             }
         });
 
-        // God mode command
+        // Godmode command: toggles player invincibility
         commandDictionary.Add("godmode", (parts) =>
         {
-
             PlayerStats playerStats = FindObjectOfType<PlayerStats>();
             if (playerStats == null)
             {
@@ -263,18 +252,14 @@ public class Debug_Console : MonoBehaviour
                 string boolStr = parts[1].ToLower();
                 if (boolStr == "true" || boolStr == "1" || boolStr == "on")
                 {
-                    //playerStats.ToggleGodMode(true);
                     playerStats.isGodMode = true;
-
                     AddOutputLine("God mode enabled.");
                 }
                 else if (boolStr == "false" || boolStr == "0" || boolStr == "off")
                 {
-                    //playerStats.ToggleGodMode(false);
                     playerStats.isGodMode = false;
                     AddOutputLine("God mode disabled.");
                 }
-
             }
             else
             {
@@ -283,7 +268,7 @@ public class Debug_Console : MonoBehaviour
             }
         });
 
-
+        // Get currentstats command: displays current player stats
         commandDictionary.Add("get currentstats", (parts) =>
         {
             PlayerStats playerStats = FindAnyObjectByType<PlayerStats>();
@@ -300,43 +285,10 @@ public class Debug_Console : MonoBehaviour
             AddOutputLine("Luck: " + playerStats.luck);
             AddOutputLine("Affinity: " + playerStats.affinity);
             AddOutputLine("Focus Duration: " + playerStats.focusDuration);
-
         });
 
-        //commandDictionary.Add("sethealth", (parts) =>
-
-        //{
-        //    if (parts.Length < 2)
-        //    {
-        //        AddOutputLine("Usage: sethealth <value>");
-        //        return;
-        //    }
-
-        //    if (int.TryParse(parts[1], out int amount))
-        //    {
-        //        PlayerStats playerStats = FindObjectOfType<PlayerStats>();
-        //        if (playerStats != null)
-        //        {   
-
-        //            playerStats.maxHealth = amount;
-
-        //            playerStats.currentHealth = playerStats.maxHealth;
-        //            AddOutputLine($"Updated Health: {playerStats.currentHealth}");
-        //        }
-        //        else
-        //        {
-        //            AddOutputLine("PlayerStats component not found.");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        AddOutputLine("Invalid amount. Usage: sethealth <value>");
-        //    }
-        //});
-
-        // Stat value changer command
+        // Set command: sets a player stat to a value
         commandDictionary.Add("set", (parts) =>
-
         {
             if (parts.Length < 2)
             {
@@ -351,11 +303,9 @@ public class Debug_Console : MonoBehaviour
             AddOutputLine("Stat to set: " + stat);
 
             playerstats.SetStat(stat, statValue);
-
-
         });
 
-        // Spawning Entity Command
+        // Spawn command: spawns entities at the player location
         commandDictionary.Add("spawn", (parts) =>
         {
             if (parts.Length < 2)
@@ -366,7 +316,6 @@ public class Debug_Console : MonoBehaviour
 
             GameObject player = GameObject.Find("Player");
             Transform playerLocation = player.transform;
-
 
             if (int.TryParse(parts[2], out int amount))
             {
@@ -381,11 +330,9 @@ public class Debug_Console : MonoBehaviour
             {
                 AddOutputLine("Invalid count parameter");
             }
-
-
         });
 
-        // Remove specfic spawned entities command
+        // Despawn command: removes a specific number of entities by name
         commandDictionary.Add("despawn", (parts) =>
         {
             if (parts.Length < 3)
@@ -405,7 +352,7 @@ public class Debug_Console : MonoBehaviour
             }
         });
 
-        // Clears all spawned entities
+        // Clearall command: removes all spawned entities
         commandDictionary.Add("clearall", (parts) =>
         {
             AddOutputLine("Clearing spawned Entities)");
@@ -413,8 +360,7 @@ public class Debug_Console : MonoBehaviour
             AddOutputLine("Removed " + debug_Spawn_Entity.spawnedPrefabs.Count + "Entities");
         });
 
-
-        // Control Waves Command
+        // setwave command: destroys all enemies and starts a new wave at the specified number
         commandDictionary.Add("setwave", (parts) =>
         {
             if (parts.Length < 2)
@@ -429,7 +375,7 @@ public class Debug_Console : MonoBehaviour
                 return;
             }
 
-            // Destroy all enemy tags
+            // Destroy all enemies with the "Enemy" tag
             string enemyTag = "Enemy";
             var enemies = GameObject.FindGameObjectsWithTag(enemyTag);
             int destroyedCount = 0;
@@ -440,7 +386,7 @@ public class Debug_Console : MonoBehaviour
             }
             AddOutputLine($"Destroyed {destroyedCount} enemies with tag '{enemyTag}'.");
 
-            // Find WaveManager
+            // Find and reset the WaveManager and WaveSpawner
             WaveManager waveManager = FindObjectOfType<WaveManager>();
             if (waveManager == null)
             {
@@ -448,7 +394,6 @@ public class Debug_Console : MonoBehaviour
                 return;
             }
 
-            // Resets the WaveSpawner state
             var waveSpawner = waveManager.GetComponent<WaveSpawner>();
             if (waveSpawner != null)
             {
@@ -457,16 +402,15 @@ public class Debug_Console : MonoBehaviour
                 waveManager.enemiesAlive = 0;
                 waveManager.enemiesSpawned = 0;
             }
-            
 
             waveManager.currentWave = waveNumber - 1; // -1 because StartNextWave() increments it
             waveManager.StartNextWave();
             AddOutputLine($"Set wave to {waveNumber} and started the wave.");
         });
 
+        // nextwave command: destroys all enemies and starts the next wave
         commandDictionary.Add("nextwave", (parts) =>
         {
-            // Destroy all enemy tags
             string enemyTag = "Enemy";
             var enemies = GameObject.FindGameObjectsWithTag(enemyTag);
             int destroyedCount = 0;
@@ -477,7 +421,6 @@ public class Debug_Console : MonoBehaviour
             }
             AddOutputLine($"Destroyed {destroyedCount} enemies with tag '{enemyTag}'.");
 
-            // Find WaveManager
             WaveManager waveManager = FindObjectOfType<WaveManager>();
             if (waveManager == null)
             {
@@ -485,7 +428,6 @@ public class Debug_Console : MonoBehaviour
                 return;
             }
 
-            // Resets the WaveSpawner state
             var waveSpawner = waveManager.GetComponent<WaveSpawner>();
             if (waveSpawner != null)
             {
@@ -495,38 +437,70 @@ public class Debug_Console : MonoBehaviour
                 waveManager.enemiesSpawned = 0;
             }
 
-
             waveManager.StartNextWave();
             AddOutputLine($"Starting Wave {waveManager.currentWave + 1}");
         });
-    
 
-
-        // Summling Party Cheats
+        // summling command: (placeholder for summling party cheats)
         commandDictionary.Add("summling", (parts) =>
         {
-
-
-
+            // No implementation yet
         });
 
-        // Upgrade Editor Command
-        commandDictionary.Add("upgrade", (parts) =>
+        // addupgrade command: adds upgrades by name, supports names with spaces
+        commandDictionary.Add("addupgrade", (parts) =>
         {
+            if (parts.Length < 3)
+            {
+                AddOutputLine("Usage: addupgrade <upgrade name> <count>");
+                return;
+            }
 
+            // Combine all parts except the last one for the upgrade name
+            string upgradeName = string.Join(" ", parts, 1, parts.Length - 2);
+            string countStr = parts[parts.Length - 1];
 
+            if (!int.TryParse(countStr, out int count))
+            {
+                AddOutputLine("Invalid count. Usage: addupgrade <upgrade name> <count>");
+                return;
+            }
 
+            debug_Upgrades.AddUpgrade(upgradeName, count);
+            AddOutputLine($"Added Upgrade: {upgradeName} Amount: {count}");
         });
 
+        // removeupgrade command: removes upgrades by name, supports names with spaces
+        commandDictionary.Add("removeupgrade", (parts) =>
+        {
+            if (parts.Length < 3)
+            {
+                AddOutputLine("Usage: removeupgrade <upgrade name> <count>");
+                return;
+            }
+
+            // Combine all parts except the last one for the upgrade name
+            string upgradeName = string.Join(" ", parts, 1, parts.Length - 2);
+            string countStr = parts[parts.Length - 1];
+
+            if (!int.TryParse(countStr, out int count))
+            {
+                AddOutputLine("Invalid count. Usage: removeupgrade <upgrade name> <count>");
+                return;
+            }
+
+            debug_Upgrades.RemoveUpgrade(upgradeName, count);
+            AddOutputLine($"Removed Upgrade: {upgradeName} Amount: {count}");
+        });
     }
 
-    // Adds output to unity log
+    // Utility: log a message to the console output
     public void LogToConsole(string message)
     {
         AddOutputLine(message);
     }
 
-    // Easy creation of new commands
+    // Utility: register a new command at runtime
     public void RegisterCommand(string commandName, Action<string[]> action)
     {
         string key = commandName.ToLower();

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UpgradeInventory : MonoBehaviour
-{
+{   
+    public static UpgradeInventory Instance;
+
     private UpgradeManager upgradeManager;
 
     [System.Serializable]
@@ -46,6 +48,26 @@ public class UpgradeInventory : MonoBehaviour
 
         // Update the list for the Inspector
         SyncListWithDictionary();
+    }
+
+    public void RemoveUpgrade(string upgradeName, int count)
+    {
+        if (ownedUpgrades.ContainsKey(upgradeName))
+        {
+            ownedUpgrades[upgradeName] -= count;
+
+            if (ownedUpgrades[upgradeName] <= 0)
+            {
+                ownedUpgrades.Remove(upgradeName);
+            }
+            SyncListWithDictionary();
+            Debug.Log($"Removed {count} of upgrade '{upgradeName}'.");
+        }
+        else
+        {
+            Debug.LogWarning($"Upgrade '{upgradeName}' not found in inventory.");
+        }
+    
     }
 
     // Sync the list with the dictionary
