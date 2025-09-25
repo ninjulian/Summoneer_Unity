@@ -7,6 +7,8 @@ public class Debug_Upgrades : MonoBehaviour
     UpgradeInventory uprgadeInventory;
     UpgradeManager upgradeManager;
 
+    public static Debug_Upgrades Instance;
+
     private void Start()
     { 
         upgradeManager = FindAnyObjectByType<UpgradeManager>();

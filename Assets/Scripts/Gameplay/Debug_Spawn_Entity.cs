@@ -4,7 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class Debug_Spawn_Entity : MonoBehaviour
-{
+{   
+    public static Debug_Spawn_Entity Instance;
+
     public List<GameObject> entityPrefabs;
     public List<GameObject> spawnedPrefabs = new List<GameObject>();
 

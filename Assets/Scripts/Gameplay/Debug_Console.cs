@@ -25,6 +25,7 @@ public class Debug_Console : MonoBehaviour
 
     private Debug_Spawn_Entity debug_Spawn_Entity; // Reference to entity spawner
     private Debug_Upgrades debug_Upgrades;         // Reference to upgrades debug helper
+    private Debug_Summling debug_Summling;
 
     void Start()
     {
@@ -491,6 +492,19 @@ public class Debug_Console : MonoBehaviour
 
             debug_Upgrades.RemoveUpgrade(upgradeName, count);
             AddOutputLine($"Removed Upgrade: {upgradeName} Amount: {count}");
+        });
+
+
+        commandDictionary.Add("addSummling", (parts) =>
+        {
+            if (parts.Length < 2)
+            {
+                AddOutputLine("Usage: addSummling <summling name>");
+                return;
+            }
+            string summlingName = string.Join(" ", parts, 1, parts.Length - 1);
+            
+            AddOutputLine($"Added Summling: {summlingName}");
         });
     }
 

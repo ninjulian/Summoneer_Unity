@@ -8,8 +8,10 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 
 
-public class SummlingManager : MonoBehaviour
+public class SummlingManager : MonoBehaviour    
 {
+    public static SummlingManager Instance;
+
     [Header("Configuration")]
     private int maxSlots = 5;
     public int baseSummonCost = 20;
