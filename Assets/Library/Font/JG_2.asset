@@ -48,8 +48,8 @@ Material:
     m_Floats:
     - _Ambient: 0
     - _Bevel: 1
-    - _BevelClamp: 0.317
-    - _BevelOffset: -0.029
+    - _BevelClamp: 0.4
+    - _BevelOffset: -0.173
     - _BevelRoundness: 1
     - _BevelWidth: 0.5
     - _BumpFace: 0
