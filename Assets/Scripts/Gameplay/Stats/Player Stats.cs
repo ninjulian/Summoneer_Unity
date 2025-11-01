@@ -6,7 +6,7 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 public class PlayerStats : StatClass
 {
-
+    public static PlayerStats Instance;
     // Player speciic 
     public float focusDuration = 5f;
     public float fireRate;

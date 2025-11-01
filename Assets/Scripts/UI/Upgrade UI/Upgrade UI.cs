@@ -1,7 +1,8 @@
-using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class UpgradeUI : MonoBehaviour
 {
@@ -10,37 +11,46 @@ public class UpgradeUI : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private GameObject player;
-    [SerializeField] private Button rerollButton;
+    [SerializeField] private UnityEngine.UI.Button rerollButton;
     [SerializeField] private TMP_Text descriptionText;
+    [SerializeField] private GameObject descriptionBoxPrefab;
     [SerializeField] private TMP_Text soulEssenceText;
-    
-   
+
+    public GameObject descriptionBox;
 
     public UnityEvent onCurrencyUpdate;
 
-    private void Start()
+    private void Awake()
     {
-        UpdateCurrencyText();
+        // Proper singleton pattern implementation
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
+        // Find the Description Background object
+        Transform child = transform.Find("Description Background");
+        if (child != null)
+        {
+            descriptionBox = child.gameObject;
+        }
+    }
+
+    private void Start()
+    {   
+        // Find the PlayerStats component in the scene
+        playerStats = FindObjectOfType<PlayerStats>();
+        if (playerStats != null)
+        {
+            UpdateCurrencyText();
+        }
     }
 
     private void FixedUpdate()
     {
         UpdateCurrencyText();
-    }
-
-    private void Awake()
-    {
-
-        
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-       
     }
 
     public void UpdateCurrencyText()
@@ -51,6 +61,23 @@ public class UpgradeUI : MonoBehaviour
     public void HighlightRerollButton()
     {
         descriptionText.text = "Reroll upgrades?";
+    }
+
+    public void MoveDescriptionBoxPosition(Vector3 position)
+    {
+        if (descriptionBox != null)
+        {   
+            descriptionBox.SetActive(true);
+            descriptionBox.transform.position = position;
+        }
+    }
+
+    public void HideDescriptionBox()
+    {
+        if (descriptionBox != null)
+        {
+            descriptionBox.SetActive(false);
+        }
     }
 }
 

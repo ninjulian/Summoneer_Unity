@@ -24,6 +24,7 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("References")]
     public Transform[] upgradeSlots;
+    public Transform[] descriptionBoxLocations;
     [SerializeField] private GameObject upgradeButtonPrefab;
 
     // Summling Upgrade Modifiers
@@ -179,6 +180,11 @@ public class UpgradeManager : MonoBehaviour
         // Creates upgrade prefabs
         GameObject buttonObj = Instantiate(upgradeButtonPrefab, upgradeSlots[currentButtons.Count]);
 
+        //Transform descriptionBoxLocation = transform.parent.parent.Find("Description Box Location ");
+        //Debug.Log("Description Box Location: " + descriptionBoxLocation);
+
+        UpgradeButton upgradeButton = buttonObj.GetComponent<UpgradeButton>();
+        upgradeButton.descriptionBoxLocation = descriptionBoxLocations[currentButtons.Count].transform;
 
         Button buttonComponent = buttonObj.GetComponentInChildren<Button>();
 

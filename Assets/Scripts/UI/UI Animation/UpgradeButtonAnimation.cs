@@ -21,17 +21,29 @@ public class UpgradeButtonAnimation : MonoBehaviour
     private bool isHovering = false;
     private Vector3 currentTargetEuler = Vector3.zero;
 
+    // Cached original positions to ensure shake always returns to start
+    private Vector2 originalAnchoredPos;
+
     private void Start()
     {
+
         if (upgradeCardRectTransform != null)
         {
             originalLocalEuler = upgradeCardRectTransform.localEulerAngles;
         }
         else
         {
-            Debug.LogWarning("UpgradeCardRectTransform not assigned in " + gameObject.name);
+            upgradeCardRectTransform = GetComponent<RectTransform>();
+            if (upgradeCardRectTransform == null)
+            {
+                Debug.LogWarning("UpgradeCardRectTransform not assigned in " + gameObject.name);
+
+            }
             originalLocalEuler = transform.localEulerAngles;
         }
+        
+        
+        originalAnchoredPos = upgradeCardRectTransform.anchoredPosition;
     }
 
     private void Update()
@@ -52,6 +64,29 @@ public class UpgradeButtonAnimation : MonoBehaviour
             transform.DOScaleX(0f, 0.5f).SetEase(Ease.OutBounce);
         }
     }
+
+    public void CantBuyAnimation()
+    {
+        // DOTween shake for UI-friendly RectTransform if present, otherwise shake world/local position
+        float duration = 0.5f;
+        Vector2 strength = new Vector2(15f, 7f); // pixels
+        int vibrato = 12;
+        float randomness = 90f;
+
+
+        upgradeCardRectTransform.anchoredPosition = originalAnchoredPos;    
+
+        // Kill any existing tweens affecting this rect and snap back to original before shaking
+        upgradeCardRectTransform.DOKill();
+        upgradeCardRectTransform.anchoredPosition = originalAnchoredPos;
+
+        // Start shake and ensure we restore original when complete / if killed
+        upgradeCardRectTransform.DOShakeAnchorPos(duration, strength, vibrato, randomness, snapping: false, fadeOut: true)
+        .OnComplete(() => upgradeCardRectTransform.anchoredPosition = originalAnchoredPos)
+        .OnKill(() => upgradeCardRectTransform.anchoredPosition = originalAnchoredPos);
+       
+    }
+
 
     public void HoverScale()
     {

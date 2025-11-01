@@ -22,6 +22,11 @@ public class UpgradeButton : MonoBehaviour
     private PlayerStatUI playerStatsUI;
     private UpgradeButtonAnimation upgradeButtonAnimation;
 
+    public Transform descriptionBoxLocation;
+    //public GameObject descriptionBox;
+
+    
+
     public void Awake()
     {
         playerStats = FindAnyObjectByType<PlayerStats>();
@@ -29,6 +34,8 @@ public class UpgradeButton : MonoBehaviour
         upgradeButtonAnimation = GetComponent<UpgradeButtonAnimation>();
 
         upgradeButtonAnimation.SpawnItem();
+
+
     }
 
     public void Initialize(UpgradeData data, int price)
@@ -77,12 +84,24 @@ public class UpgradeButton : MonoBehaviour
 
         upgradeButtonAnimation.HoverScale();
 
+        // Update the description box position through the UpgradeUI instance
+        if (UpgradeUI.Instance != null && descriptionBoxLocation != null)
+        {
+            UpgradeUI.Instance.MoveDescriptionBoxPosition(descriptionBoxLocation.position);
+            Debug.Log("Upating description box position");
+        }
+        else
+        {
+            Debug.Log("UpgradeUI instance or descriptionBoxLocation is null");
+        }
     }
 
     public void NotHighlightingUpgrade()
     {
         descriptionText.text = "Welcome to the Shop";
         upgradeButtonAnimation.LeaveScale();
+        UpgradeUI.Instance.HideDescriptionBox();
+       
     }
 
     private string GetStatDisplayName(StatType statType)
@@ -110,14 +129,16 @@ public class UpgradeButton : MonoBehaviour
 
     public void HighlightBuyButton()
     {
-        descriptionText.text = "Buy " + upgradeData.upgradeName + "?";
+        //descriptionText.text = "Buy " + upgradeData.upgradeName + "?";
     }
 
     // Buying the Upgrade
     public void OnClick()
     {
         if (playerStats.soulEssence >= upgradePrice)
-        {
+        {   
+            // Buy SFX
+
             playerStats.SpendSoulEssence(upgradePrice);
             upgradeData.currentStackCount += 1;
 
@@ -134,8 +155,14 @@ public class UpgradeButton : MonoBehaviour
         }
         else
         {
-            descriptionText.text = "Insufficient Soul Essence";
+            //descriptionText.text = "Insufficient Soul Essence";
             //descriptionText.color = Color.red;
+
+            // Optional: Add a shake animation to indicate failure
+
+            upgradeButtonAnimation.CantBuyAnimation();
+
+            // Failure SFX
         }
     }
 
@@ -181,10 +208,9 @@ public class UpgradeButton : MonoBehaviour
         {
             return false;
         }
-
             
     }
-
+       
 
     //private void OnDestroy()
     //{
