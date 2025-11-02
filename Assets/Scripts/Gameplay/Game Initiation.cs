@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class GameInitiation : MonoBehaviour
 {
@@ -11,5 +12,7 @@ public class GameInitiation : MonoBehaviour
     {
         player = GameObject.Find("Player");
         playerStats = player.GetComponent<PlayerStats>();
+
+        DOTween.useSafeMode = true;
     }
 }

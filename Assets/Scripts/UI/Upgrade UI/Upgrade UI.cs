@@ -17,8 +17,11 @@ public class UpgradeUI : MonoBehaviour
     [SerializeField] private TMP_Text soulEssenceText;
 
     public GameObject descriptionBox;
+    public RectTransform descriptionBoxRectTransform;
 
     public UnityEvent onCurrencyUpdate;
+
+    public UpgradeUIAnimations upgradeUIAnimation;
 
     private void Awake()
     {
@@ -46,6 +49,8 @@ public class UpgradeUI : MonoBehaviour
         {
             UpdateCurrencyText();
         }
+
+        descriptionBoxRectTransform = descriptionBox.GetComponent<RectTransform>();
     }
 
     private void FixedUpdate()
@@ -67,6 +72,7 @@ public class UpgradeUI : MonoBehaviour
     {
         if (descriptionBox != null)
         {   
+            upgradeUIAnimation.OpenAnimation(descriptionBox);
             descriptionBox.SetActive(true);
             descriptionBox.transform.position = position;
         }
@@ -75,7 +81,9 @@ public class UpgradeUI : MonoBehaviour
     public void HideDescriptionBox()
     {
         if (descriptionBox != null)
-        {
+        {   
+            //upgradeUIAnimation.CloseAnimation(descriptionBox);
+            //upgradeUIAnimation.StopSwayingAnimation();  
             descriptionBox.SetActive(false);
         }
     }
