@@ -11,7 +11,7 @@ public class UpgradeUIAnimations : MonoBehaviour
     [Header("Sway Settings")]
     public float swayAngle = 5f;      // How far to sway in degrees
     public float swayDuration = 2f;   // Time for one sway cycle
-    public Ease easeType = Ease.InOutSine;
+    public Ease easeType = Ease.OutSine;
 
 
     public void OpenAnimation(GameObject obj)
@@ -62,19 +62,12 @@ public class UpgradeUIAnimations : MonoBehaviour
         // Kill any existing sway animations first
         DOTween.Kill("ui_sway");
 
-        // Create a sequence for proper back-and-forth motion
-        Sequence swaySequence = DOTween.Sequence();
-        swaySequence.SetId("ui_sway");
-
-        // Rotate to positive angle
-        swaySequence.Append(rt.DOLocalRotate(new Vector3(0, 0, swayAngle), swayDuration).SetEase(easeType));
-        // Rotate to negative angle
-        swaySequence.Append(rt.DOLocalRotate(new Vector3(0, 0, -swayAngle), swayDuration).SetEase(easeType));
-
-        // Loop infinitely
-        swaySequence.SetLoops(-1, LoopType.Restart);
+        // Create a continuous back-and-forth rotation
+        rt.DOLocalRotate(new Vector3(0, 0, swayAngle), swayDuration)
+            .SetEase(easeType)
+            .SetLoops(-1, LoopType.Yoyo)     // Infinite yoyo motion
+            .SetId("ui_sway");
     }
-
     public void StopSwayingAnimation()
     {
                 // Kill the sway animation using its ID

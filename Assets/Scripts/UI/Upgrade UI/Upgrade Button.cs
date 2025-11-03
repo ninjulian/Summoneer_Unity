@@ -83,13 +83,14 @@ public class UpgradeButton : MonoBehaviour
         descriptionText.text = description;
 
         upgradeButtonAnimation.HoverScale();
+        UpgradeUI.Instance.upgradeUIAnimation.SwayingSidewaysAnimation(UpgradeUI.Instance.descriptionBoxRectTransform);
 
         // Update the description box position through the UpgradeUI instance
         if (UpgradeUI.Instance != null && descriptionBoxLocation != null)
         {
             UpgradeUI.Instance.MoveDescriptionBoxPosition(descriptionBoxLocation.position);
             Debug.Log("Upating description box position");
-            UpgradeUI.Instance.upgradeUIAnimation.SwayingSidewaysAnimation(UpgradeUI.Instance.descriptionBoxRectTransform);
+            ;
         }
         else
         {

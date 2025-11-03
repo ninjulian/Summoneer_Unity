@@ -39,6 +39,8 @@ public class UpgradeUI : MonoBehaviour
         {
             descriptionBox = child.gameObject;
         }
+
+      
     }
 
     private void Start()
@@ -51,6 +53,7 @@ public class UpgradeUI : MonoBehaviour
         }
 
         descriptionBoxRectTransform = descriptionBox.GetComponent<RectTransform>();
+        OpenDescriptionBox();
     }
 
     private void FixedUpdate()
@@ -74,6 +77,7 @@ public class UpgradeUI : MonoBehaviour
         {   
             upgradeUIAnimation.OpenAnimation(descriptionBox);
             descriptionBox.SetActive(true);
+            OpenDescriptionBox();
             descriptionBox.transform.position = position;
         }
     }
@@ -86,6 +90,12 @@ public class UpgradeUI : MonoBehaviour
             //upgradeUIAnimation.StopSwayingAnimation();  
             descriptionBox.SetActive(false);
         }
+    }
+
+    public void OpenDescriptionBox()
+    {
+        descriptionBox.transform.rotation = Quaternion.Euler(0f, 0f, -5f);
+        upgradeUIAnimation.SwayingSidewaysAnimation(descriptionBoxRectTransform);
     }
 }
 
