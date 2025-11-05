@@ -146,6 +146,7 @@ public class UpgradeButton : MonoBehaviour
 
             UpgradeManager.Instance.AddOwnedUpgrade(upgradeData);
             UpgradeManager.Instance.ApplyUpgradeEffects(upgradeData.effects);
+            UpgradeManager.Instance.ApplyUpradeScripts(upgradeData);
             UpgradeUI.Instance.UpdateCurrencyText();
 
             if (playerStatsUI != null) 

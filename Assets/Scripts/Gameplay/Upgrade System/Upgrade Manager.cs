@@ -195,9 +195,28 @@ public class UpgradeManager : MonoBehaviour
         currentButtons.Add(button);
     }
 
+    public void ApplyUpradeScripts(UpgradeData upgradeData)
+    {
+        // Adds script/component to player if any, normally will change the gameplay of the Player
+        if (upgradeData.scriptToAdd != null)
+        {
+            playerStats.gameObject.AddComponent(upgradeData.scriptToAdd.GetType());
+            Debug.Log("Adding the script/component: " + upgradeData.scriptToAdd.GetType().Name);
+        }
+
+        // Adds prefab component to player if any, normally will change the gameplay of the Player
+        if (upgradeData.componentPrefab != null)
+        {
+            GameObject prefabInstance = Instantiate(upgradeData.componentPrefab, playerStats.transform);
+            Debug.Log("Creating the prefab instance: " + prefabInstance.name);
+        }
+    }
+
     // Applies  effect to corresponding stat
     public void ApplyUpgradeEffects(List<StatModifier> effects)
     {   
+
+
 
         foreach (var effect in effects)
         {
@@ -281,6 +300,8 @@ public class UpgradeManager : MonoBehaviour
             {
                 ApplyDOTEffect(effect, effect.DOTType);
             }
+
+            
         }
     }
 

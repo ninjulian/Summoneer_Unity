@@ -154938,7 +154938,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6a8042c8a47a4b0419f6544b3a446d0a, type: 2}
   - {fileID: 11400000, guid: c8bc9643bde15bc469b5a5da1b643396, type: 2}
   - {fileID: 11400000, guid: 597ae8bd41bd7d74a85ef2269cd9f771, type: 2}
-  - {fileID: 11400000, guid: c8bc9643bde15bc469b5a5da1b643396, type: 2}
   commonWeight: 50
   uncommonWeight: 30
   epicWeight: 15

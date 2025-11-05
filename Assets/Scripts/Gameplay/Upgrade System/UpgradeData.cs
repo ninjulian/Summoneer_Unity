@@ -38,6 +38,17 @@ public class UpgradeData : ScriptableObject
     [Tooltip("Upgrade Modifiers")] public List<StatModifier> effects;
     [Tooltip("Descrition of the Upgrade effects")] public string descriptionText;
 
+
+    //Script component to add to player
+    [Tooltip("Script/Component to add to player when purchased")]
+    public MonoBehaviour scriptToAdd;
+
+    //Prefab component to add to player
+    [Tooltip("Prefab containing components to add to player")]
+    public GameObject componentPrefab;
+
+
+
     [System.Serializable]
     public struct StatModifier
     {
